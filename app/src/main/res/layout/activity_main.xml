@@ -6,6 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <LinearLayout
+        android:id="@+id/vertical_layoit"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
     <TextView
         android:id="@+id/text_view"
         android:layout_width="wrap_content"
@@ -17,10 +24,17 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.shirbi.downfall.Wheel
-        android:id="@+id/rotate_button"
+        android:id="@+id/wheel1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="onRotateButtonClick"
         android:src="@drawable/rotate" />
+
+    <com.shirbi.downfall.Wheel
+        android:id="@+id/wheel2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/rotate" />
+
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
