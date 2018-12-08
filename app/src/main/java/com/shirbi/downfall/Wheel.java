@@ -5,30 +5,64 @@ import android.graphics.Matrix;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
-public class Wheel extends ImageButton {
+import java.util.HashSet;
+import java.util.Set;
+
+public class Wheel extends ImageView {
     private double m_previous_angle, m_start_touch_angle, m_current_angle;
     private long m_start_time_milliseconds;
 
+    private Set<Hole> m_holes;
+
+    private void Init() {
+        m_holes = new HashSet<Hole>();
+    }
+
     public Wheel(Context context) {
         super(context);
+        Init();
     }
 
     public Wheel(Context context, AttributeSet attrs) {
         super(context, attrs);
+        Init();
+    }
+
+    public void UpdateDisplay(int diameter) {
+        RelativeLayout relativeLayout = (RelativeLayout)this.getParent();
+
+        relativeLayout.getLayoutParams().width = diameter;
+        relativeLayout.getLayoutParams().height = diameter;
+
+        getLayoutParams().width = diameter;
+        getLayoutParams().height = diameter;
+
+        requestLayout();
+        relativeLayout.requestLayout();
+    }
+
+    public void AddHole(Hole hole) {
+        m_holes.add(hole);
     }
 
     private void rotate() {
         Matrix matrix = new Matrix();
         setScaleType(ImageView.ScaleType.MATRIX);   //required
 
-        int pivotX = getDrawable().getBounds().width()/2;
-        int pivotY = getDrawable().getBounds().height()/2;
+        int pivotX = getWidth() / 2;
+        int pivotY = getHeight() / 2;
 
+        float scaleFactor = getWidth()/(float)getDrawable().getIntrinsicWidth();
+        matrix.setScale(scaleFactor, scaleFactor, 0, 0);
         matrix.postRotate((float) m_current_angle, pivotX, pivotY);
         setImageMatrix(matrix);
+
+        for (Hole hole : m_holes) {
+            hole.SetAngle(m_current_angle);
+        }
     }
 
     public boolean onTouch(View v, MotionEvent event) {
