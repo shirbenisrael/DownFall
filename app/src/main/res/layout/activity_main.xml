@@ -50,6 +50,18 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/rotate" />
 
+            <com.shirbi.downfall.Hole
+                android:id="@+id/hole2_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/hole" />
+
+            <com.shirbi.downfall.Hole
+                android:id="@+id/hole2_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/hole" />
+
         </RelativeLayout>
 
     </LinearLayout>

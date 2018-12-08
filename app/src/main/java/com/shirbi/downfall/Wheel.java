@@ -1,17 +1,15 @@
 package com.shirbi.downfall;
 
 import android.content.Context;
-import android.graphics.Matrix;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import java.util.HashSet;
 import java.util.Set;
 
-public class Wheel extends ImageView {
+public class Wheel extends RotatableImage {
     private double m_previous_angle, m_start_touch_angle, m_current_angle;
     private long m_start_time_milliseconds;
 
@@ -48,17 +46,8 @@ public class Wheel extends ImageView {
         m_holes.add(hole);
     }
 
-    private void rotate() {
-        Matrix matrix = new Matrix();
-        setScaleType(ImageView.ScaleType.MATRIX);   //required
-
-        int pivotX = getWidth() / 2;
-        int pivotY = getHeight() / 2;
-
-        float scaleFactor = getWidth()/(float)getDrawable().getIntrinsicWidth();
-        matrix.setScale(scaleFactor, scaleFactor, 0, 0);
-        matrix.postRotate((float) m_current_angle, pivotX, pivotY);
-        setImageMatrix(matrix);
+    public void Rotate(double angle) {
+        super.Rotate(angle);
 
         for (Hole hole : m_holes) {
             hole.SetAngle(m_current_angle);
@@ -100,7 +89,7 @@ public class Wheel extends ImageView {
                     m_previous_angle = m_current_angle;
                     m_start_touch_angle = new_angle;
 
-                    rotate();
+                    Rotate(m_current_angle);
                 }
 
                 break;

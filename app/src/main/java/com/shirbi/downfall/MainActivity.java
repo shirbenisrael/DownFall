@@ -34,6 +34,14 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         hole.SetBaseAngle(30);
         ((Wheel)findViewById(R.id.wheel1)).AddHole(hole);
 
+        hole = (Hole)findViewById(R.id.hole2_1);
+        hole.SetBaseAngle(90);
+        ((Wheel)findViewById(R.id.wheel2)).AddHole(hole);
+
+        hole = (Hole)findViewById(R.id.hole2_2);
+        hole.SetBaseAngle(270);
+        ((Wheel)findViewById(R.id.wheel2)).AddHole(hole);
+
         ((Wheel)findViewById(R.id.wheel1)).UpdateDisplay(m_size.x / 2);
         ((Wheel)findViewById(R.id.wheel2)).UpdateDisplay(m_size.x / 2);
 

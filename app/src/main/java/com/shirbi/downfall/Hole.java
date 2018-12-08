@@ -3,10 +3,9 @@ package com.shirbi.downfall;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-public class Hole extends ImageView {
+public class Hole extends RotatableImage {
     private int m_baseAngle;
 
     public Hole(Context context) {
@@ -31,16 +30,18 @@ public class Hole extends ImageView {
         double radius = centerXY * 0.8;
         double angle = wheelAngle + m_baseAngle;
         double angleRadians = Math.toRadians(angle);
-        double leftFromCenter = radius * Math.cos(angleRadians);
-        double topFromCenter = radius * Math.sin(angleRadians);
+        double leftFromCenter = radius * Math.sin(angleRadians);
+        double topFromCenter = -radius * Math.cos(angleRadians);
 
         params.leftMargin = (int)(centerXY + leftFromCenter);
         params.topMargin  = (int)(centerXY + topFromCenter);
         params.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
         params.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
-       
+
         relativeLayout.removeView(this);
         relativeLayout.addView(this, params);
+
+        super.Rotate(angle);
     }
 
 }
