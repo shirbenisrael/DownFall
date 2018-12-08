@@ -31,7 +31,7 @@
                 android:id="@+id/wheel1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/rotate" />
+                android:src="@drawable/wheel" />
 
             <com.shirbi.downfall.Hole
                 android:id="@+id/hole1_1"
@@ -48,7 +48,7 @@
                 android:id="@+id/wheel2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/rotate" />
+                android:src="@drawable/wheel" />
 
             <com.shirbi.downfall.Hole
                 android:id="@+id/hole2_1"
