@@ -2,6 +2,7 @@ package com.shirbi.downfall;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 public class Hole extends RotatableImage {
@@ -21,10 +22,24 @@ public class Hole extends RotatableImage {
 
     public void SetAngle(double wheelAngle) {
         RelativeLayout relativeLayout = (RelativeLayout) this.getParent();
-        double angle = wheelAngle + m_baseAngle;
 
-        getLayoutParams().width = relativeLayout.getLayoutParams().width;
-        getLayoutParams().height = relativeLayout.getLayoutParams().height;
+        RelativeLayout.LayoutParams params =
+           new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                   ViewGroup.LayoutParams.WRAP_CONTENT);
+        double centerXY = relativeLayout.getWidth()/2;
+        double radius = centerXY * 0.8;
+        double angle = wheelAngle + m_baseAngle;
+        double angleRadians = Math.toRadians(angle);
+        double leftFromCenter = radius * Math.sin(angleRadians);
+        double topFromCenter = -radius * Math.cos(angleRadians);
+
+        params.leftMargin = (int)(centerXY + leftFromCenter) - (getWidth() / 2);
+        params.topMargin  = (int)(centerXY + topFromCenter) - (getHeight() / 2);
+        params.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
+        params.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
+
+        relativeLayout.removeView(this);
+        relativeLayout.addView(this, params);
 
         super.Rotate(angle);
     }

@@ -43,7 +43,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         ((Wheel)findViewById(R.id.wheel2)).AddHole(hole);
 
         ((Wheel)findViewById(R.id.wheel1)).UpdateDisplay(m_size.x / 2);
-        ((Wheel)findViewById(R.id.wheel2)).UpdateDisplay(m_size.x / 2);
+        ((Wheel)findViewById(R.id.wheel2)).UpdateDisplay(m_size.x / 3);
 
         ((TextView)findViewById(R.id.text_view)).setText("Width: " + m_size.x + ", Height: " + m_size.y);
     }
