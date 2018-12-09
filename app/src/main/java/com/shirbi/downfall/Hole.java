@@ -5,8 +5,12 @@ import android.util.AttributeSet;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import java.util.Set;
+
 public class Hole extends RotatableImage {
     private int m_baseAngle;
+    private double m_current_angle;
+    private Wheel m_owner_wheel;
 
     private Token m_resident;
 
@@ -18,7 +22,8 @@ public class Hole extends RotatableImage {
         super(context, attrs);
     }
 
-    public void SetBaseAngle(int angle) {
+    public void SetBaseAngle(Wheel owner_wheel, int angle) {
+        m_owner_wheel = owner_wheel;
         m_baseAngle = angle;
     }
 
@@ -51,10 +56,26 @@ public class Hole extends RotatableImage {
 
             m_resident.SetParentView(relativeLayout, params);
         }
+
+        m_current_angle = angle;
     }
 
     public void SetResident(Token resident) {
         m_resident = resident;
     }
 
+    public void CheckConnection(Set<Connection> connections) {
+        boolean connected = false;
+        for (Connection connection : connections) {
+            if (connection.CompareHoleAngle(m_owner_wheel, m_current_angle)) {
+                setImageResource(R.drawable.hole_connected);
+                connected = true;
+                break;
+            }
+        }
+
+        if (!connected) {
+            setImageResource(R.drawable.hole);
+        }
+    }
 }

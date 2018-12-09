@@ -14,9 +14,11 @@ public class Wheel extends RotatableImage {
     private long m_start_time_milliseconds;
 
     private Set<Hole> m_holes;
+    private Set<Connection> m_connections;
 
     private void Init() {
         m_holes = new HashSet<Hole>();
+        m_connections = new HashSet<Connection>();
     }
 
     public Wheel(Context context) {
@@ -42,8 +44,15 @@ public class Wheel extends RotatableImage {
         relativeLayout.requestLayout();
     }
 
-    public void AddHole(Hole hole) {
+    public void AddHole(Hole hole, int base_angle) {
         m_holes.add(hole);
+        hole.SetBaseAngle(this, base_angle);
+    }
+
+    public void ConnectAsBottom(Wheel top_wheel, double bottom_angle) {
+        Connection connection = new Connection(top_wheel, this, bottom_angle);
+        m_connections.add(connection);
+        top_wheel.m_connections.add(connection);
     }
 
     public void Rotate(double angle) {
@@ -51,6 +60,7 @@ public class Wheel extends RotatableImage {
 
         for (Hole hole : m_holes) {
             hole.SetAngle(m_current_angle);
+            hole.CheckConnection(m_connections);
         }
     }
 

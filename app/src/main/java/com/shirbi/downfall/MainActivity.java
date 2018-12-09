@@ -31,24 +31,23 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         ((ImageView)findViewById(R.id.wheel2)).setOnTouchListener(this);
 
         Hole hole = (Hole)findViewById(R.id.hole1_1);
-        hole.SetBaseAngle(30);
-        ((Wheel)findViewById(R.id.wheel1)).AddHole(hole);
+        ((Wheel)findViewById(R.id.wheel1)).AddHole(hole, 30);
 
         hole = (Hole)findViewById(R.id.hole2_1);
-        hole.SetBaseAngle(90);
-        ((Wheel)findViewById(R.id.wheel2)).AddHole(hole);
+        ((Wheel)findViewById(R.id.wheel2)).AddHole(hole, 90);
 
         hole = (Hole)findViewById(R.id.hole2_2);
-        hole.SetBaseAngle(270);
-        ((Wheel)findViewById(R.id.wheel2)).AddHole(hole);
+        ((Wheel)findViewById(R.id.wheel2)).AddHole(hole, 270);
 
         ((Wheel)findViewById(R.id.wheel1)).UpdateDisplay(m_size.x / 2);
         ((Wheel)findViewById(R.id.wheel2)).UpdateDisplay(m_size.x / 3);
 
         ((TextView)findViewById(R.id.text_view)).setText("Width: " + m_size.x + ", Height: " + m_size.y);
 
-        ((Hole)findViewById(R.id.hole1_1)).SetResident((Token)findViewById(R.id.token1_1));
+        //((Hole)findViewById(R.id.hole1_1)).SetResident((Token)findViewById(R.id.token1_1));
         ((Hole)findViewById(R.id.hole2_1)).SetResident((Token)findViewById(R.id.token1_2));
+
+        ((Wheel)findViewById(R.id.wheel2)).ConnectAsBottom(((Wheel)findViewById(R.id.wheel1)), 0);
     }
 
     public boolean onTouch(View v, MotionEvent event) {
