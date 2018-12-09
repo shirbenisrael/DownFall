@@ -8,6 +8,8 @@ import android.widget.RelativeLayout;
 public class Hole extends RotatableImage {
     private int m_baseAngle;
 
+    private Token m_resident;
+
     public Hole(Context context) {
         super(context);
     }
@@ -42,6 +44,17 @@ public class Hole extends RotatableImage {
         relativeLayout.addView(this, params);
 
         super.Rotate(angle);
+
+        if (m_resident != null) {
+            params.leftMargin = (int)(centerXY + leftFromCenter) - (m_resident.getWidth() / 2);
+            params.topMargin  = (int)(centerXY + topFromCenter) - (m_resident.getHeight() / 2);
+
+            m_resident.SetParentView(relativeLayout, params);
+        }
+    }
+
+    public void SetResident(Token resident) {
+        m_resident = resident;
     }
 
 }

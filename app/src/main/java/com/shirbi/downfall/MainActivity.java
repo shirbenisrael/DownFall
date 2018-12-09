@@ -46,6 +46,9 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         ((Wheel)findViewById(R.id.wheel2)).UpdateDisplay(m_size.x / 3);
 
         ((TextView)findViewById(R.id.text_view)).setText("Width: " + m_size.x + ", Height: " + m_size.y);
+
+        ((Hole)findViewById(R.id.hole1_1)).SetResident((Token)findViewById(R.id.token1_1));
+        ((Hole)findViewById(R.id.hole2_1)).SetResident((Token)findViewById(R.id.token1_2));
     }
 
     public boolean onTouch(View v, MotionEvent event) {
