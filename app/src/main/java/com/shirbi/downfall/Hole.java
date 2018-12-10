@@ -67,7 +67,7 @@ public class Hole extends RotatableImage {
     public void CheckConnection(Set<Connection> connections) {
         boolean connected = false;
         for (Connection connection : connections) {
-            if (connection.CompareHoleAngle(m_owner_wheel, m_current_angle)) {
+            if (connection.CompareHoleAngle(m_owner_wheel, this, m_current_angle)) {
                 setImageResource(R.drawable.hole_connected);
                 connected = true;
                 break;
@@ -77,5 +77,19 @@ public class Hole extends RotatableImage {
         if (!connected) {
             setImageResource(R.drawable.hole);
         }
+    }
+
+    public void FallDownToken(Hole bottom_hole) {
+        if (m_resident == null) {
+            return;
+        }
+        if (bottom_hole.m_resident != null) {
+            return;
+        }
+
+        bottom_hole.m_resident = m_resident;
+        m_resident = null;
+
+        bottom_hole.SetAngle(bottom_hole.m_current_angle - bottom_hole.m_baseAngle);
     }
 }

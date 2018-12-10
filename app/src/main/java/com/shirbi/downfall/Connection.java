@@ -7,12 +7,16 @@ public class Connection {
     Wheel m_bottom_wheel;
     double m_bottom_angle;
     double m_top_angle;
+    Hole m_bottom_hole;
+    Hole m_top_hole;
 
     Connection(Wheel top, Wheel bottom, double bottom_angle) {
         m_top_wheel = top;
         m_bottom_wheel = bottom;
         m_bottom_angle = bottom_angle;
         m_top_angle = (bottom_angle + 180) % 360;
+        m_bottom_hole = null;
+        m_top_hole = null;
     }
 
     private double angle_diff(double angle1, double angle2) {
@@ -23,13 +27,31 @@ public class Connection {
         return diff;
     }
 
-    Boolean CompareHoleAngle(Wheel owner_wheel, double angle) {
+    Boolean CompareHoleAngle(Wheel owner_wheel, Hole hole, double angle) {
         if (owner_wheel == m_top_wheel) {
-            return (angle_diff(angle, m_top_angle)  < 20);
+            if (angle_diff(angle, m_top_angle)  < 20) {
+                m_top_hole = hole;
+                m_top_hole.FallDownToken(m_bottom_hole);
+                return true;
+            } else {
+                if (m_top_hole == hole) {
+                    m_top_hole = null;
+                }
+            }
         }
 
         if (owner_wheel == m_bottom_wheel) {
-            return (angle_diff(angle, m_bottom_angle) < 20);
+            if (angle_diff(angle, m_bottom_angle) < 20) {
+                m_bottom_hole = hole;
+                if (m_top_hole != null) {
+                    m_top_hole.FallDownToken(m_bottom_hole);
+                }
+                return true;
+            } else {
+                if (m_bottom_hole == hole) {
+                    m_bottom_hole = null;
+                }
+            }
         }
 
         return false;
