@@ -9,9 +9,13 @@ import android.widget.RelativeLayout;
 import java.util.HashSet;
 import java.util.Set;
 
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
+
 public class Wheel extends RotatableImage {
     private double m_previous_angle, m_start_touch_angle, m_current_angle;
     private long m_start_time_milliseconds;
+    private int m_diameter;
 
     private Set<Hole> m_holes;
     private Set<Connection> m_connections;
@@ -32,6 +36,8 @@ public class Wheel extends RotatableImage {
     }
 
     public void UpdateDisplay(int diameter) {
+        m_diameter = diameter;
+
         RelativeLayout relativeLayout = (RelativeLayout)this.getParent();
 
         relativeLayout.getLayoutParams().width = diameter;
@@ -53,6 +59,24 @@ public class Wheel extends RotatableImage {
         Connection connection = new Connection(top_wheel, this, bottom_angle);
         m_connections.add(connection);
         top_wheel.m_connections.add(connection);
+
+        RelativeLayout topWheelRelativeLayout = (RelativeLayout) top_wheel.getParent();
+        double top = ((RelativeLayout.LayoutParams)topWheelRelativeLayout.getLayoutParams()).topMargin;
+        double left = ((RelativeLayout.LayoutParams)topWheelRelativeLayout.getLayoutParams()).leftMargin;
+
+        top += top_wheel.m_diameter / 2;
+        left += top_wheel.m_diameter / 2;
+
+        double hypotenuse = (m_diameter + top_wheel.m_diameter)/2;
+
+        double angleRadians = Math.toRadians(bottom_angle);
+        top += cos(angleRadians) * hypotenuse;
+        left -= sin(angleRadians) * hypotenuse;
+
+        top -= m_diameter / 2;
+        left -= m_diameter / 2;
+
+        SetLocation((int)left,(int)top);
     }
 
     public void Rotate(double angle) {
@@ -111,5 +135,20 @@ public class Wheel extends RotatableImage {
         }
 
         return true;
+    }
+
+    public void SetLocation(int left, int top) {
+        RelativeLayout relativeLayout = (RelativeLayout) this.getParent();
+        RelativeLayout boardLayout = (RelativeLayout) relativeLayout.getParent();
+
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(m_diameter, m_diameter);
+
+        params.leftMargin = left;
+        params.topMargin  = top;
+        params.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
+        params.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
+
+        boardLayout.removeView(relativeLayout);
+        boardLayout.addView(relativeLayout, params);
     }
 }

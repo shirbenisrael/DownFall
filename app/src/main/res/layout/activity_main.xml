@@ -24,43 +24,127 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <RelativeLayout
+            android:id="@+id/wheels_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
-            <com.shirbi.downfall.Wheel
-                android:id="@+id/wheel1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/wheel" />
+            <RelativeLayout
+                android:id="@+id/wheel1_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <com.shirbi.downfall.Hole
-                android:id="@+id/hole1_1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/hole" />
-        </RelativeLayout>
+                <com.shirbi.downfall.Wheel
+                    android:id="@+id/wheel1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/wheel" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+                <com.shirbi.downfall.Hole
+                    android:id="@+id/hole1_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/hole" />
+            </RelativeLayout>
 
-            <com.shirbi.downfall.Wheel
-                android:id="@+id/wheel2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/wheel" />
+            <RelativeLayout
+                android:id="@+id/wheel2_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <com.shirbi.downfall.Hole
-                android:id="@+id/hole2_1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/hole" />
+                <com.shirbi.downfall.Wheel
+                    android:id="@+id/wheel2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/wheel" />
 
-            <com.shirbi.downfall.Hole
-                android:id="@+id/hole2_2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/hole" />
+                <com.shirbi.downfall.Hole
+                    android:id="@+id/hole2_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/hole" />
+
+                <com.shirbi.downfall.Hole
+                    android:id="@+id/hole2_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/hole" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/wheel3_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.shirbi.downfall.Wheel
+                    android:id="@+id/wheel3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/wheel" />
+
+                <com.shirbi.downfall.Hole
+                    android:id="@+id/hole3_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/hole" />
+
+                <com.shirbi.downfall.Hole
+                    android:id="@+id/hole3_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/hole" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/wheel4_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.shirbi.downfall.Wheel
+                    android:id="@+id/wheel4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/wheel" />
+
+                <com.shirbi.downfall.Hole
+                    android:id="@+id/hole4_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/hole" />
+
+                <com.shirbi.downfall.Hole
+                    android:id="@+id/hole4_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/hole" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/wheel5_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.shirbi.downfall.Wheel
+                    android:id="@+id/wheel5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/wheel" />
+
+                <com.shirbi.downfall.Hole
+                    android:id="@+id/hole5_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/hole" />
+
+                <com.shirbi.downfall.Hole
+                    android:id="@+id/hole5_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/hole" />
+
+            </RelativeLayout>
 
         </RelativeLayout>
 
