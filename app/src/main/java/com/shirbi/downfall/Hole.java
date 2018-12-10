@@ -80,7 +80,7 @@ public class Hole extends RotatableImage {
     }
 
     public void FallDownToken(Hole bottom_hole) {
-        if (m_resident == null) {
+        if ((m_resident == null) || (bottom_hole == null)) {
             return;
         }
         if (bottom_hole.m_resident != null) {
