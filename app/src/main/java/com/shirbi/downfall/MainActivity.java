@@ -67,10 +67,12 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         SetWheelDiameter(R.id.wheel5, base_diameter * 3 / 2);
 
         SetWheelLocation(R.id.wheel1, base_diameter,0 );
-        ConnectWheels(R.id.wheel2, R.id.wheel1, 30);
-        ConnectWheels(R.id.wheel3, R.id.wheel2, 300);
-        ConnectWheels(R.id.wheel4, R.id.wheel3, 0);
-        ConnectWheels(R.id.wheel5, R.id.wheel4, 60);
+        ConnectWheels(R.id.wheel2, R.id.wheel1, 20);
+        ConnectWheels(R.id.wheel3, R.id.wheel2, 315);
+        ConnectWheels(R.id.wheel4, R.id.wheel2, 15);
+        ConnectWheels(R.id.wheel4, R.id.wheel3, 70);
+        ConnectWheels(R.id.wheel5, R.id.wheel4, 307);
+        ConnectWheels(R.id.wheel5, R.id.wheel3, 358);
 
         AddHole(R.id.wheel1, 30);
         AddHoles(R.id.wheel2, 90, 3);

@@ -10,6 +10,8 @@ public class Connection {
     Hole m_bottom_hole;
     Hole m_top_hole;
 
+    public static final int MAX_DIFF_DEGREE = 5;
+
     Connection(Wheel top, Wheel bottom, double bottom_angle) {
         m_top_wheel = top;
         m_bottom_wheel = bottom;
@@ -29,7 +31,7 @@ public class Connection {
 
     Boolean CompareHoleAngle(Wheel owner_wheel, Hole hole, double angle) {
         if (owner_wheel == m_top_wheel) {
-            if (angle_diff(angle, m_top_angle)  < 20) {
+            if (angle_diff(angle, m_top_angle) < MAX_DIFF_DEGREE) {
                 m_top_hole = hole;
                 m_top_hole.FallDownToken(m_bottom_hole);
                 return true;
@@ -41,7 +43,7 @@ public class Connection {
         }
 
         if (owner_wheel == m_bottom_wheel) {
-            if (angle_diff(angle, m_bottom_angle) < 20) {
+            if (angle_diff(angle, m_bottom_angle) < MAX_DIFF_DEGREE) {
                 m_bottom_hole = hole;
                 if (m_top_hole != null) {
                     m_top_hole.FallDownToken(m_bottom_hole);
