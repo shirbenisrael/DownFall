@@ -15,7 +15,6 @@ import static java.lang.Math.sin;
 public class Wheel extends RotatableImage {
     private double m_previous_angle, m_start_touch_angle, m_current_angle;
     private long m_start_time_milliseconds;
-    private int m_diameter;
 
     private Set<Hole> m_holes;
     private Set<Connection> m_connections;
@@ -36,7 +35,7 @@ public class Wheel extends RotatableImage {
     }
 
     public void UpdateDisplay(int diameter) {
-        m_diameter = diameter;
+        SetDiameter(diameter);
 
         RelativeLayout relativeLayout = (RelativeLayout)this.getParent();
 
@@ -53,6 +52,10 @@ public class Wheel extends RotatableImage {
     public void AddHole(Hole hole, int base_angle) {
         m_holes.add(hole);
         hole.SetBaseAngle(this, base_angle);
+
+        RelativeLayout relativeLayout = (RelativeLayout) this.getParent();
+        relativeLayout.addView(hole);
+        hole.SetAngle(0);
     }
 
     public void ConnectAsBottom(Wheel top_wheel, double bottom_angle) {
@@ -89,8 +92,8 @@ public class Wheel extends RotatableImage {
     }
 
     public boolean onTouch(View v, MotionEvent event) {
-        final float xc = getWidth() / 2;
-        final float yc = getHeight() / 2;
+        final float xc = m_diameter / 2;
+        final float yc = m_diameter / 2;
 
         final float x = event.getX();
         final float y = event.getY();
@@ -150,5 +153,10 @@ public class Wheel extends RotatableImage {
 
         boardLayout.removeView(relativeLayout);
         boardLayout.addView(relativeLayout, params);
+    }
+
+    //temp
+    public void SetToken(Token token) {
+        m_holes.iterator().next().SetResident(token);
     }
 }

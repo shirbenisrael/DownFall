@@ -14,16 +14,21 @@ public class RotatableImage extends ImageView {
         super(context, attrs);
     }
 
+    protected int m_diameter;
+
+    public void SetDiameter(int diameter) {
+        m_diameter = diameter;
+    }
+
     public void Rotate(double angle) {
         Matrix matrix = new Matrix();
         setScaleType(ImageView.ScaleType.MATRIX);   //required
 
-        int pivotX = getWidth() / 2;
-        int pivotY = getHeight() / 2;
+        int pivotXY = m_diameter /2;
 
-        float scaleFactor = getWidth()/(float)getDrawable().getIntrinsicWidth();
+        float scaleFactor = m_diameter/(float)getDrawable().getIntrinsicWidth();
         matrix.setScale(scaleFactor, scaleFactor, 0, 0);
-        matrix.postRotate((float) angle, pivotX, pivotY);
+        matrix.postRotate((float) angle, pivotXY, pivotXY);
         setImageMatrix(matrix);
     }
 }
