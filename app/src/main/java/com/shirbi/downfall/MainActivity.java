@@ -45,6 +45,14 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         ((Wheel)findViewById(wheel_id)).SetLocation((int)left, (int)top);
     }
 
+    private void SetInputTokenQueueDiameter(int queue_id, double diameter) {
+        ((InputTokenQueue)findViewById(queue_id)).UpdateDisplay((int)diameter);
+    }
+
+    private void SetInputTokenQueueLocation(int queue_id, double left, double top) {
+        ((InputTokenQueue)findViewById(queue_id)).SetLocation((int)left, (int)top);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,13 +68,19 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 
         double base_diameter = m_size.x / 3;
 
+        SetInputTokenQueueDiameter(R.id.input_token_queue_left, base_diameter * 1);
+        SetInputTokenQueueDiameter(R.id.input_token_queue_right, base_diameter * 1);
+
         SetWheelDiameter(R.id.wheel1, base_diameter * 1);
         SetWheelDiameter(R.id.wheel2, base_diameter * 11 / 10);
         SetWheelDiameter(R.id.wheel3, base_diameter * 1);
         SetWheelDiameter(R.id.wheel4, base_diameter * 4 / 3);
         SetWheelDiameter(R.id.wheel5, base_diameter * 3 / 2);
 
-        SetWheelLocation(R.id.wheel1, base_diameter,0 );
+        SetInputTokenQueueLocation(R.id.input_token_queue_left, 0, 0);
+        SetInputTokenQueueLocation(R.id.input_token_queue_right, base_diameter * 2, 0);
+
+        SetWheelLocation(R.id.wheel1, base_diameter,30 );
         ConnectWheels(R.id.wheel2, R.id.wheel1, 20);
         ConnectWheels(R.id.wheel3, R.id.wheel2, 315);
         ConnectWheels(R.id.wheel4, R.id.wheel2, 15);

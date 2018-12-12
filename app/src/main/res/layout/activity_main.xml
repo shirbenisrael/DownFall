@@ -19,6 +19,32 @@
             android:layout_height="match_parent">
 
             <RelativeLayout
+                android:id="@+id/input_token_queue_left_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.shirbi.downfall.InputTokenQueue
+                    android:id="@+id/input_token_queue_left"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/input_left" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/input_token_queue_right_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.shirbi.downfall.InputTokenQueue
+                    android:id="@+id/input_token_queue_right"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/input_right" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:id="@+id/wheel1_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
