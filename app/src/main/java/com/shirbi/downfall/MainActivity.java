@@ -111,7 +111,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         AddHoles(R.id.wheel5, 90, 5);
 
         AddTokenToInputQueue(R.id.input_token_queue_left, (Token)findViewById(R.id.token1_1));
-        AddTokenToInputQueue(R.id.input_token_queue_right, (Token)findViewById(R.id.token1_2));
+        AddTokenToInputQueue(R.id.input_token_queue_left, (Token)findViewById(R.id.token1_2));
 
         findViewById(R.id.wheels_layout).requestLayout();
     }

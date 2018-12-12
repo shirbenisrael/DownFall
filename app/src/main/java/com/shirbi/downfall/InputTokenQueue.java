@@ -30,7 +30,23 @@ public class InputTokenQueue extends ConnectableImage {
     }
 
     public void AddToken(Token token) {
-        m_tokens.add(token);
+        if (m_hole_out.HasResident()) {
+            m_tokens.add(token);
+        } else {
+            m_hole_out.SetResident(token);
+            m_hole_out.SetAngle(0); // This will make the token shown */
+        }
+    }
+
+    public void TokenUsed() {
+        if (m_tokens.isEmpty()) {
+            return;
+        }
+
+        Token token = m_tokens.get(0);
+        m_hole_out.SetResident(token);
+        m_hole_out.SetAngle(0); // This will make the token shown */
+        m_tokens.remove(0);
     }
 
     public void SetLocation(int left, int top) {

@@ -24,4 +24,6 @@ public abstract class ConnectableImage extends RotatableImage {
     }
 
     public abstract void AddHole(Hole hole, int base_angle);
+
+    public void TokenUsed() {}
 }

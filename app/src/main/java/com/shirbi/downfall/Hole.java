@@ -73,6 +73,10 @@ public class Hole extends RotatableImage {
         m_resident = resident;
     }
 
+    public Boolean HasResident() {
+        return (m_resident != null);
+    }
+
     public void CheckConnection(Set<Connection> connections) {
         boolean connected = false;
         for (Connection connection : connections) {
@@ -100,5 +104,7 @@ public class Hole extends RotatableImage {
         m_resident = null;
 
         bottom_hole.SetAngle(bottom_hole.m_current_angle - bottom_hole.m_baseAngle);
+
+        m_owner_wheel.TokenUsed();
     }
 }
