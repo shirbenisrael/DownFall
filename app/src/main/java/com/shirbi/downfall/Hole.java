@@ -60,9 +60,9 @@ public class Hole extends RotatableImage {
         super.Rotate(angle);
 
         if (m_resident != null) {
-            params.leftMargin = (int)(centerXY + leftFromCenter) - (m_resident.getWidth() / 2);
-            params.topMargin  = (int)(centerXY + topFromCenter) - (m_resident.getHeight() / 2);
-
+            // Use same parameters for hole and resident.
+            // Remember that if we want to change this, we need to use copy constructor to
+            // create new params for the resident.
             m_resident.SetParentView(relativeLayout, params);
         }
 
