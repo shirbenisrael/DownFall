@@ -12,7 +12,6 @@ public class InputTokenQueue extends ConnectableImage {
 
     private ArrayList<Token> m_tokens;
 
-    private Connection m_connection;
     private Hole m_hole_out;
 
     private void Init(Context context) {
@@ -71,6 +70,7 @@ public class InputTokenQueue extends ConnectableImage {
         RelativeLayout relativeLayout = (RelativeLayout) this.getParent();
         relativeLayout.addView(hole);
         hole.SetAngle(0);
+        hole.CheckConnection(m_connections);
     }
 
 
