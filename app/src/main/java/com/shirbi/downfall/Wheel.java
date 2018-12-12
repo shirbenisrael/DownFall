@@ -12,16 +12,14 @@ import java.util.Set;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 
-public class Wheel extends RotatableImage {
+public class Wheel extends ConnectableImage {
     private double m_previous_angle, m_start_touch_angle, m_current_angle;
     private long m_start_time_milliseconds;
 
     private Set<Hole> m_holes;
-    private Set<Connection> m_connections;
 
     private void Init() {
         m_holes = new HashSet<Hole>();
-        m_connections = new HashSet<Connection>();
     }
 
     public Wheel(Context context) {
@@ -56,6 +54,12 @@ public class Wheel extends RotatableImage {
         RelativeLayout relativeLayout = (RelativeLayout) this.getParent();
         relativeLayout.addView(hole);
         hole.SetAngle(0);
+    }
+
+    public void ConnectToInputQueue(InputTokenQueue input_queue, double bottom_angle)  {
+        Connection connection = new Connection(input_queue, this, bottom_angle);
+        m_connections.add(connection);
+        input_queue.m_connections.add(connection);
     }
 
     public void ConnectAsBottom(Wheel top_wheel, double bottom_angle) {

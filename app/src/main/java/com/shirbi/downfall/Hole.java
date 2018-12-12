@@ -11,7 +11,7 @@ import java.util.Set;
 public class Hole extends RotatableImage {
     private int m_baseAngle;
     private double m_current_angle;
-    private Wheel m_owner_wheel;
+    private ConnectableImage m_owner_wheel;
     private Token m_resident;
 
     public void Init() {
@@ -31,7 +31,7 @@ public class Hole extends RotatableImage {
         Init();
     }
 
-    public void SetBaseAngle(Wheel owner_wheel, int angle) {
+    public void SetBaseAngle(ConnectableImage owner_wheel, int angle) {
         m_owner_wheel = owner_wheel;
         m_baseAngle = angle;
     }

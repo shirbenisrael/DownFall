@@ -6,26 +6,28 @@ import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
 
-public class InputTokenQueue extends RotatableImage {
+public class InputTokenQueue extends ConnectableImage {
 
     private static final int MAX_TOKENS = 5;
 
     private ArrayList<Token> m_tokens;
 
     private Connection m_connection;
+    private Hole m_hole_out;
 
-    private void Init() {
+    private void Init(Context context) {
         m_tokens = new ArrayList<Token>();
+        m_hole_out = new Hole(context);
     }
 
     public InputTokenQueue(Context context) {
         super(context);
-        Init();
+        Init(context);
     }
 
     public InputTokenQueue(Context context, AttributeSet attrs) {
         super(context, attrs);
-        Init();
+        Init(context);
     }
 
     public void AddToken(Token token) {
@@ -60,6 +62,15 @@ public class InputTokenQueue extends RotatableImage {
 
         requestLayout();
         relativeLayout.requestLayout();
+    }
+
+    public void AddHole(Hole hole, int base_angle) {
+        m_hole_out = hole;
+        hole.SetBaseAngle(this, base_angle);
+
+        RelativeLayout relativeLayout = (RelativeLayout) this.getParent();
+        relativeLayout.addView(hole);
+        hole.SetAngle(0);
     }
 
 

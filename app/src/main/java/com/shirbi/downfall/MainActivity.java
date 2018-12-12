@@ -22,7 +22,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
     private void AddHole(int wheel_id, int angle) {
         Hole hole = new Hole(this);
         hole.SetDiameter(m_size.x / 18);
-        ((Wheel)findViewById(wheel_id)).AddHole(hole, angle);
+        ((ConnectableImage)findViewById(wheel_id)).AddHole(hole, angle);
     }
 
     private void AddHoles(int wheel_id, int first_angle, int num_holes) {
@@ -53,6 +53,16 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         ((InputTokenQueue)findViewById(queue_id)).SetLocation((int)left, (int)top);
     }
 
+    private void AddTokenToInputQueue(int queue_id, Token token) {
+        ((InputTokenQueue)findViewById(queue_id)).AddToken(token);
+    }
+
+    private void ConnectWheelToInputQueue(int wheel_id, int queue_id, double bottom_angle) {
+        Wheel wheel = ((Wheel)findViewById(wheel_id));
+        wheel.ConnectToInputQueue(((InputTokenQueue)findViewById(queue_id)), bottom_angle);
+    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,6 +90,9 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         SetInputTokenQueueLocation(R.id.input_token_queue_left, 0, 0);
         SetInputTokenQueueLocation(R.id.input_token_queue_right, base_diameter * 2, 0);
 
+        ConnectWheelToInputQueue(R.id.wheel1, R.id.input_token_queue_left, 270);
+        ConnectWheelToInputQueue(R.id.wheel1, R.id.input_token_queue_right, 90);
+
         SetWheelLocation(R.id.wheel1, base_diameter,30 );
         ConnectWheels(R.id.wheel2, R.id.wheel1, 20);
         ConnectWheels(R.id.wheel3, R.id.wheel2, 315);
@@ -88,15 +101,17 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         ConnectWheels(R.id.wheel5, R.id.wheel4, 307);
         ConnectWheels(R.id.wheel5, R.id.wheel3, 358);
 
+        AddHole(R.id.input_token_queue_left, 90);
+        AddHole(R.id.input_token_queue_right, 270);
+
         AddHole(R.id.wheel1, 30);
         AddHoles(R.id.wheel2, 90, 3);
         AddHoles(R.id.wheel3, 90, 2);
         AddHoles(R.id.wheel4, 45, 4);
         AddHoles(R.id.wheel5, 90, 5);
 
-        // temp
-        ((Wheel)findViewById(R.id.wheel1)).SetToken((Token)findViewById(R.id.token1_1));
-        ((Wheel)findViewById(R.id.wheel2)).SetToken((Token)findViewById(R.id.token1_2));
+        AddTokenToInputQueue(R.id.input_token_queue_left, (Token)findViewById(R.id.token1_1));
+        AddTokenToInputQueue(R.id.input_token_queue_right, (Token)findViewById(R.id.token1_2));
 
         findViewById(R.id.wheels_layout).requestLayout();
     }
