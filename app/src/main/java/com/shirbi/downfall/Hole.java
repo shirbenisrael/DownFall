@@ -36,6 +36,10 @@ public class Hole extends RotatableImage {
         m_baseAngle = angle;
     }
 
+    public int GetBaseAngle() {
+        return m_baseAngle;
+    }
+
     public void SetAngle(double wheelAngle) {
         RelativeLayout relativeLayout = (RelativeLayout) this.getParent();
 
@@ -75,6 +79,10 @@ public class Hole extends RotatableImage {
 
     public Boolean HasResident() {
         return (m_resident != null);
+    }
+
+    public Token GetResident() {
+        return m_resident;
     }
 
     public void CheckConnection(Set<Connection> connections) {

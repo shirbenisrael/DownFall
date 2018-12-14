@@ -30,12 +30,26 @@ public class InputTokenQueue extends ConnectableImage {
     }
 
     public void AddToken(Token token) {
+        token.SetDiameter(m_hole_out.m_diameter);
+
         if (m_hole_out.HasResident()) {
+            int angle = m_hole_out.GetBaseAngle();
+            Token last_token;
+
+            if (m_tokens.isEmpty()) {
+                last_token = m_hole_out.GetResident();
+            } else {
+                last_token = m_tokens.get(m_tokens.size() - 1);
+            }
+
+            token.SetLocationNearOtherToken(last_token, angle);
             m_tokens.add(token);
         } else {
             m_hole_out.SetResident(token);
             m_hole_out.SetAngle(0); // This will make the token shown */
         }
+
+        token.Rotate(0);
     }
 
     public void TokenUsed() {
@@ -56,7 +70,7 @@ public class InputTokenQueue extends ConnectableImage {
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(m_diameter, m_diameter);
 
         params.leftMargin = left;
-        params.topMargin  = top;
+        params.topMargin = top;
         params.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
         params.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
 
@@ -67,7 +81,7 @@ public class InputTokenQueue extends ConnectableImage {
     public void UpdateDisplay(int diameter) {
         SetDiameter(diameter);
 
-        RelativeLayout relativeLayout = (RelativeLayout)this.getParent();
+        RelativeLayout relativeLayout = (RelativeLayout) this.getParent();
 
         relativeLayout.getLayoutParams().width = diameter;
         relativeLayout.getLayoutParams().height = diameter;
