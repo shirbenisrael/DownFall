@@ -12,7 +12,7 @@ public class Connection {
 
     public static final int MAX_DIFF_DEGREE = 5;
 
-    Connection(ConnectableImage top, Wheel bottom, double bottom_angle) {
+    Connection(ConnectableImage top, ConnectableImage bottom, double bottom_angle) {
         m_top_wheel = top;
         m_bottom_wheel = bottom;
         m_bottom_angle = bottom_angle;

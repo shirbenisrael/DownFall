@@ -34,23 +34,19 @@ public class MainActivity extends Activity implements View.OnTouchListener {
     }
 
     private void ConnectWheels(int bottom_id, int top_id, int bottom_angle) {
-        ((Wheel)findViewById(bottom_id)).ConnectAsBottom(((Wheel)findViewById(top_id)), bottom_angle);
+        ((ConnectableImage)findViewById(bottom_id)).ConnectAsBottom(((Wheel)findViewById(top_id)), bottom_angle);
     }
 
-    private void SetWheelDiameter(int wheel_id, double diameter) {
-        ((Wheel)findViewById(wheel_id)).UpdateDisplay((int)diameter);
+    private void SetConnectableImageDiameter(int wheel_id, double diameter) {
+        ((ConnectableImage)findViewById(wheel_id)).UpdateDisplay((int)diameter);
     }
 
     private void SetWheelLocation(int wheel_id, double left, double top) {
-        ((Wheel)findViewById(wheel_id)).SetLocation((int)left, (int)top);
+        ((ConnectableImage)findViewById(wheel_id)).SetLocation((int)left, (int)top);
     }
 
-    private void SetInputTokenQueueDiameter(int queue_id, double diameter) {
-        ((InputTokenQueue)findViewById(queue_id)).UpdateDisplay((int)diameter);
-    }
-
-    private void SetInputTokenQueueLocation(int queue_id, double left, double top) {
-        ((InputTokenQueue)findViewById(queue_id)).SetLocation((int)left, (int)top);
+    private void SetTokenQueueLocation(int queue_id, double left, double top) {
+        ((ConnectableImage)findViewById(queue_id)).SetLocation((int)left, (int)top);
     }
 
     private void AddTokensToInputQueue(int queue_id, Token.COLOR color) {
@@ -82,17 +78,19 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 
         double base_diameter = m_size.x / 3;
 
-        SetInputTokenQueueDiameter(R.id.input_token_queue_left, base_diameter * 1);
-        SetInputTokenQueueDiameter(R.id.input_token_queue_right, base_diameter * 1);
+        SetConnectableImageDiameter(R.id.input_token_queue_left, base_diameter * 1);
+        SetConnectableImageDiameter(R.id.input_token_queue_right, base_diameter * 1);
 
-        SetWheelDiameter(R.id.wheel1, base_diameter * 1);
-        SetWheelDiameter(R.id.wheel2, base_diameter * 11 / 10);
-        SetWheelDiameter(R.id.wheel3, base_diameter * 1);
-        SetWheelDiameter(R.id.wheel4, base_diameter * 4 / 3);
-        SetWheelDiameter(R.id.wheel5, base_diameter * 3 / 2);
+        SetConnectableImageDiameter(R.id.wheel1, base_diameter * 1);
+        SetConnectableImageDiameter(R.id.wheel2, base_diameter * 11 / 10);
+        SetConnectableImageDiameter(R.id.wheel3, base_diameter * 1);
+        SetConnectableImageDiameter(R.id.wheel4, base_diameter * 4 / 3);
+        SetConnectableImageDiameter(R.id.wheel5, base_diameter * 3 / 2);
 
-        SetInputTokenQueueLocation(R.id.input_token_queue_left, 0, 0);
-        SetInputTokenQueueLocation(R.id.input_token_queue_right, base_diameter * 2, 0);
+        SetConnectableImageDiameter(R.id.output, base_diameter * 1);
+
+        SetTokenQueueLocation(R.id.input_token_queue_left, 0, 0);
+        SetTokenQueueLocation(R.id.input_token_queue_right, base_diameter * 2, 0);
 
         ConnectWheelToInputQueue(R.id.wheel1, R.id.input_token_queue_left, 270);
         ConnectWheelToInputQueue(R.id.wheel1, R.id.input_token_queue_right, 90);
@@ -105,6 +103,8 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         ConnectWheels(R.id.wheel5, R.id.wheel4, 307);
         ConnectWheels(R.id.wheel5, R.id.wheel3, 358);
 
+        ConnectWheels(R.id.output, R.id.wheel5, 90);
+
         AddHole(R.id.input_token_queue_left, 90);
         AddHole(R.id.input_token_queue_right, 270);
 
@@ -113,6 +113,8 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         AddHoles(R.id.wheel3, 90, 2);
         AddHoles(R.id.wheel4, 45, 4);
         AddHoles(R.id.wheel5, 90, 5);
+
+        AddHole(R.id.output, 90);
 
         AddTokensToInputQueue(R.id.input_token_queue_left, Token.COLOR.COLOR_1);
         AddTokensToInputQueue(R.id.input_token_queue_right, Token.COLOR.COLOR_2);

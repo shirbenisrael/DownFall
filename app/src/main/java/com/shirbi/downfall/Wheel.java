@@ -32,21 +32,6 @@ public class Wheel extends ConnectableImage {
         Init();
     }
 
-    public void UpdateDisplay(int diameter) {
-        SetDiameter(diameter);
-
-        RelativeLayout relativeLayout = (RelativeLayout)this.getParent();
-
-        relativeLayout.getLayoutParams().width = diameter;
-        relativeLayout.getLayoutParams().height = diameter;
-
-        getLayoutParams().width = diameter;
-        getLayoutParams().height = diameter;
-
-        requestLayout();
-        relativeLayout.requestLayout();
-    }
-
     public void AddHole(Hole hole, int base_angle) {
         m_holes.add(hole);
         hole.SetBaseAngle(this, base_angle);
@@ -62,29 +47,7 @@ public class Wheel extends ConnectableImage {
         input_queue.m_connections.add(connection);
     }
 
-    public void ConnectAsBottom(Wheel top_wheel, double bottom_angle) {
-        Connection connection = new Connection(top_wheel, this, bottom_angle);
-        m_connections.add(connection);
-        top_wheel.m_connections.add(connection);
 
-        RelativeLayout topWheelRelativeLayout = (RelativeLayout) top_wheel.getParent();
-        double top = ((RelativeLayout.LayoutParams)topWheelRelativeLayout.getLayoutParams()).topMargin;
-        double left = ((RelativeLayout.LayoutParams)topWheelRelativeLayout.getLayoutParams()).leftMargin;
-
-        top += top_wheel.m_diameter / 2;
-        left += top_wheel.m_diameter / 2;
-
-        double hypotenuse = (m_diameter + top_wheel.m_diameter)/2;
-
-        double angleRadians = Math.toRadians(bottom_angle);
-        top += cos(angleRadians) * hypotenuse;
-        left -= sin(angleRadians) * hypotenuse;
-
-        top -= m_diameter / 2;
-        left -= m_diameter / 2;
-
-        SetLocation((int)left,(int)top);
-    }
 
     public void Rotate(double angle) {
         super.Rotate(angle);

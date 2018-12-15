@@ -7,6 +7,9 @@ import android.widget.RelativeLayout;
 import java.util.HashSet;
 import java.util.Set;
 
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
+
 public abstract class ConnectableImage extends RotatableImage {
     protected Set<Connection> m_connections;
 
@@ -39,7 +42,48 @@ public abstract class ConnectableImage extends RotatableImage {
         boardLayout.addView(relativeLayout, params);
     }
 
+    public void UpdateDisplay(int diameter) {
+        SetDiameter(diameter);
+
+        RelativeLayout relativeLayout = (RelativeLayout) this.getParent();
+
+        relativeLayout.getLayoutParams().width = diameter;
+        relativeLayout.getLayoutParams().height = diameter;
+
+        getLayoutParams().width = diameter;
+        getLayoutParams().height = diameter;
+
+        requestLayout();
+        relativeLayout.requestLayout();
+    }
+
+    public void ConnectAsBottom(Wheel top_wheel, double bottom_angle) {
+        Connection connection = new Connection(top_wheel, this, bottom_angle);
+        m_connections.add(connection);
+        top_wheel.m_connections.add(connection);
+
+        RelativeLayout topWheelRelativeLayout = (RelativeLayout) top_wheel.getParent();
+        double top = ((RelativeLayout.LayoutParams)topWheelRelativeLayout.getLayoutParams()).topMargin;
+        double left = ((RelativeLayout.LayoutParams)topWheelRelativeLayout.getLayoutParams()).leftMargin;
+
+        top += top_wheel.m_diameter / 2;
+        left += top_wheel.m_diameter / 2;
+
+        double hypotenuse = (m_diameter + top_wheel.m_diameter)/2;
+
+        double angleRadians = Math.toRadians(bottom_angle);
+        top += cos(angleRadians) * hypotenuse;
+        left -= sin(angleRadians) * hypotenuse;
+
+        top -= m_diameter / 2;
+        left -= m_diameter / 2;
+
+        SetLocation((int)left,(int)top);
+    }
+
     public abstract void AddHole(Hole hole, int base_angle);
 
     public void TokenUsed() {}
+
+    public void TokenEntered() {}
 }

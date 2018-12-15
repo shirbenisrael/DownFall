@@ -72,21 +72,6 @@ public class InputTokenQueue extends ConnectableImage {
         }
     }
 
-    public void UpdateDisplay(int diameter) {
-        SetDiameter(diameter);
-
-        RelativeLayout relativeLayout = (RelativeLayout) this.getParent();
-
-        relativeLayout.getLayoutParams().width = diameter;
-        relativeLayout.getLayoutParams().height = diameter;
-
-        getLayoutParams().width = diameter;
-        getLayoutParams().height = diameter;
-
-        requestLayout();
-        relativeLayout.requestLayout();
-    }
-
     public void AddHole(Hole hole, int base_angle) {
         m_hole_out = hole;
         hole.SetBaseAngle(this, base_angle);

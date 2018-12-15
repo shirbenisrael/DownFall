@@ -114,5 +114,6 @@ public class Hole extends RotatableImage {
         bottom_hole.SetAngle(bottom_hole.m_current_angle - bottom_hole.m_baseAngle);
 
         m_owner_wheel.TokenUsed();
+        bottom_hole.m_owner_wheel.TokenEntered();
     }
 }
