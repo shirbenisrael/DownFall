@@ -61,6 +61,15 @@ public class InputTokenQueue extends ConnectableImage {
         m_hole_out.SetResident(token);
         m_hole_out.SetAngle(0); // This will make the token shown */
         m_tokens.remove(0);
+
+        int num_tokens_to_update = m_tokens.size();
+        int angle = m_hole_out.GetBaseAngle();
+
+        for (int i = 0; i < num_tokens_to_update; i++) {
+            Token next_token = m_tokens.get(i);
+            next_token.SetLocationNearOtherToken(token, angle);
+            token = next_token;
+        }
     }
 
     public void SetLocation(int left, int top) {
@@ -102,6 +111,4 @@ public class InputTokenQueue extends ConnectableImage {
         hole.SetAngle(0);
         hole.CheckConnection(m_connections);
     }
-
-
 }
