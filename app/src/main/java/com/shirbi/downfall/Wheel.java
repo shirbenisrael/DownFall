@@ -143,9 +143,4 @@ public class Wheel extends ConnectableImage {
 
         return true;
     }
-
-    //temp
-    public void SetToken(Token token) {
-        m_holes.iterator().next().SetResident(token);
-    }
 }
