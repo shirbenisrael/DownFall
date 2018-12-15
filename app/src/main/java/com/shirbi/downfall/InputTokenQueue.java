@@ -72,21 +72,6 @@ public class InputTokenQueue extends ConnectableImage {
         }
     }
 
-    public void SetLocation(int left, int top) {
-        RelativeLayout relativeLayout = (RelativeLayout) this.getParent();
-        RelativeLayout boardLayout = (RelativeLayout) relativeLayout.getParent();
-
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(m_diameter, m_diameter);
-
-        params.leftMargin = left;
-        params.topMargin = top;
-        params.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
-        params.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
-
-        boardLayout.removeView(relativeLayout);
-        boardLayout.addView(relativeLayout, params);
-    }
-
     public void UpdateDisplay(int diameter) {
         SetDiameter(diameter);
 
