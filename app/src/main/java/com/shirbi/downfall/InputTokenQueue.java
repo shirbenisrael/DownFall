@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class InputTokenQueue extends ConnectableImage {
 
-    private static final int MAX_TOKENS = 5;
+    public static final int MAX_TOKENS = 5;
 
     private ArrayList<Token> m_tokens;
 

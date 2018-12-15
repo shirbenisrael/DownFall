@@ -8,12 +8,39 @@ import android.widget.RelativeLayout;
 
 public class Token extends RotatableImage {
 
+    static final int color_1_images[] = {R.drawable.token1_1, R.drawable.token1_2,
+            R.drawable.token1_3, R.drawable.token1_4, R.drawable.token1_5};
+    static final int color_2_images[] = {R.drawable.token2_1, R.drawable.token2_2,
+            R.drawable.token2_3, R.drawable.token2_4, R.drawable.token2_5};
+
+    private int m_number;
+    private COLOR m_color;
+
+    enum COLOR {
+        COLOR_1,
+        COLOR_2
+    }
+
     public Token(Context context) {
         super(context);
     }
 
     public Token(Context context, AttributeSet attrs) {
         super(context, attrs);
+    }
+
+    public void SetType(COLOR color, int number) {
+        m_number = number;
+        m_color = color;
+        switch (color) {
+            case COLOR_1:
+                setImageResource(color_1_images[number-1]);
+                break;
+
+            case COLOR_2:
+                setImageResource(color_2_images[number-1]);
+                break;
+        }
     }
 
     public void SetParentView(ViewGroup newParent, RelativeLayout.LayoutParams params) {

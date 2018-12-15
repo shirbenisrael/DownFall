@@ -110,18 +110,6 @@
 
         </RelativeLayout>
 
-        <com.shirbi.downfall.Token
-            android:id="@+id/token1_1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/token1_1" />
-
-        <com.shirbi.downfall.Token
-            android:id="@+id/token1_2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/token1_2" />
-
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

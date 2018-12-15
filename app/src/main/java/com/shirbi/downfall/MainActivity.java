@@ -53,8 +53,12 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         ((InputTokenQueue)findViewById(queue_id)).SetLocation((int)left, (int)top);
     }
 
-    private void AddTokenToInputQueue(int queue_id, Token token) {
-        ((InputTokenQueue)findViewById(queue_id)).AddToken(token);
+    private void AddTokensToInputQueue(int queue_id, Token.COLOR color) {
+        for (int number = 1; number <= InputTokenQueue.MAX_TOKENS; number++) {
+            Token token = new Token(this);
+            token.SetType(color, number);
+            ((InputTokenQueue) findViewById(queue_id)).AddToken(token);
+        }
     }
 
     private void ConnectWheelToInputQueue(int wheel_id, int queue_id, double bottom_angle) {
@@ -110,8 +114,8 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         AddHoles(R.id.wheel4, 45, 4);
         AddHoles(R.id.wheel5, 90, 5);
 
-        AddTokenToInputQueue(R.id.input_token_queue_left, (Token)findViewById(R.id.token1_1));
-        AddTokenToInputQueue(R.id.input_token_queue_left, (Token)findViewById(R.id.token1_2));
+        AddTokensToInputQueue(R.id.input_token_queue_left, Token.COLOR.COLOR_1);
+        AddTokensToInputQueue(R.id.input_token_queue_right, Token.COLOR.COLOR_2);
 
         findViewById(R.id.wheels_layout).requestLayout();
     }
