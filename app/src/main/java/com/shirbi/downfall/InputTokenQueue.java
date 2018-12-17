@@ -14,6 +14,8 @@ public class InputTokenQueue extends ConnectableImage {
 
     private Hole m_hole_out;
 
+    Token.HORIZONTAL_ALIGNMENT m_horizontal_alignment;
+
     private void Init(Context context) {
         m_tokens = new ArrayList<Token>();
         m_hole_out = new Hole(context);
@@ -42,7 +44,7 @@ public class InputTokenQueue extends ConnectableImage {
                 last_token = m_tokens.get(m_tokens.size() - 1);
             }
 
-            token.SetLocationNearOtherToken(last_token, angle);
+            token.SetLocationNearOtherToken(last_token, m_horizontal_alignment, Token.VERTICAL_ALIGNMENT.TOP);
             m_tokens.add(token);
         } else {
             m_hole_out.SetResident(token);
@@ -67,7 +69,7 @@ public class InputTokenQueue extends ConnectableImage {
 
         for (int i = 0; i < num_tokens_to_update; i++) {
             Token next_token = m_tokens.get(i);
-            next_token.SetLocationNearOtherToken(token, angle);
+            next_token.SetLocationNearOtherToken(token, m_horizontal_alignment, Token.VERTICAL_ALIGNMENT.TOP);
             token = next_token;
         }
     }
@@ -80,5 +82,9 @@ public class InputTokenQueue extends ConnectableImage {
         relativeLayout.addView(hole);
         hole.SetAngle(0);
         hole.CheckConnection(m_connections);
+
+        m_horizontal_alignment = base_angle < 180 ?
+                Token.HORIZONTAL_ALIGNMENT.LEFT_EDJE :
+                Token.HORIZONTAL_ALIGNMENT.RIGHT_EDJE;
     }
 }

@@ -53,20 +53,34 @@ public class Token extends RotatableImage {
         newParent.addView(this, params);
     }
 
-    public void SetLocationNearOtherToken( Token other_token, int angle) {
+    public enum HORIZONTAL_ALIGNMENT {
+        LEFT_EDJE,
+        RIGHT_EDJE,
+    };
+
+    public enum VERTICAL_ALIGNMENT {
+        TOP,
+        BOTTOM,
+    }
+
+    public void SetLocationNearOtherToken( Token other_token, HORIZONTAL_ALIGNMENT hor, VERTICAL_ALIGNMENT ver) {
         RelativeLayout relativeLayout = (RelativeLayout) other_token.getParent();
 
         RelativeLayout.LayoutParams other_token_params = (RelativeLayout.LayoutParams)other_token.getLayoutParams();
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(other_token_params);
 
-        if (angle < 180) {
+        if (hor == HORIZONTAL_ALIGNMENT.LEFT_EDJE) {
             params.leftMargin =  other_token_params.leftMargin - m_diameter;
         } else {
             params.leftMargin =  other_token_params.leftMargin + m_diameter;
-
         }
 
-        params.topMargin  = other_token_params.topMargin - (m_diameter / 2);
+        if (ver == VERTICAL_ALIGNMENT.TOP) {
+            params.topMargin = other_token_params.topMargin - (m_diameter / 2);
+        } else {
+            params.topMargin = other_token_params.topMargin + (m_diameter / 2);
+        }
+
         params.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
         params.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
 
