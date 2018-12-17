@@ -87,12 +87,12 @@ public class Hole extends RotatableImage {
 
     public void CheckConnection(Set<Connection> connections) {
         boolean connected = false;
+        boolean connected_top = false;
+
         for (Connection connection : connections) {
             if (connection.CompareHoleAngle(m_owner_wheel, this, m_current_angle)) {
+                connected_top = connection.IsTopWheel(m_owner_wheel);
                 setImageResource(R.drawable.hole_connected);
-                if (m_resident != null) {
-                    m_resident.SetImageConnected();
-                }
                 connected = true;
                 break;
             }
@@ -100,10 +100,17 @@ public class Hole extends RotatableImage {
 
         if (!connected) {
             setImageResource(R.drawable.hole);
-            if (m_resident != null) {
+        }
+
+        if (m_resident != null) {
+            if (connected_top) {
+                m_resident.SetImageConnected();
+            } else {
+                // When token already fallen, no reason to color it.
                 m_resident.SetImageDisconnected();
             }
         }
+
     }
 
     public void FallDownToken(Hole bottom_hole) {

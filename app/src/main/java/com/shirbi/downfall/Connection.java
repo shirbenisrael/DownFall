@@ -29,6 +29,10 @@ public class Connection {
         return diff;
     }
 
+    Boolean IsTopWheel(ConnectableImage wheel) {
+        return (wheel == m_top_wheel);
+    }
+
     Boolean CompareHoleAngle(ConnectableImage owner_wheel, Hole hole, double angle) {
         if (owner_wheel == m_top_wheel) {
             if (angle_diff(angle, m_top_angle) < MAX_DIFF_DEGREE) {
