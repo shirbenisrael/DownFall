@@ -12,6 +12,10 @@ public class Token extends RotatableImage {
             R.drawable.token1_3, R.drawable.token1_4, R.drawable.token1_5};
     static final int color_2_images[] = {R.drawable.token2_1, R.drawable.token2_2,
             R.drawable.token2_3, R.drawable.token2_4, R.drawable.token2_5};
+    static final int color_1_connected_images[] = {R.drawable.token1_1_connected, R.drawable.token1_2_connected,
+            R.drawable.token1_3_connected, R.drawable.token1_4_connected, R.drawable.token1_5_connected};
+    static final int color_2_connected_images[] = {R.drawable.token2_1_connected, R.drawable.token2_2_connected,
+            R.drawable.token2_3_connected, R.drawable.token2_4_connected, R.drawable.token2_5_connected};
 
     private int m_number;
     private COLOR m_color;
@@ -32,13 +36,29 @@ public class Token extends RotatableImage {
     public void SetType(COLOR color, int number) {
         m_number = number;
         m_color = color;
-        switch (color) {
+        SetImageDisconnected();
+    }
+
+    public void SetImageDisconnected() {
+        switch (m_color) {
             case COLOR_1:
-                setImageResource(color_1_images[number-1]);
+                setImageResource(color_1_images[m_number-1]);
                 break;
 
             case COLOR_2:
-                setImageResource(color_2_images[number-1]);
+                setImageResource(color_2_images[m_number-1]);
+                break;
+        }
+    }
+
+    public void SetImageConnected() {
+        switch (m_color) {
+            case COLOR_1:
+                setImageResource(color_1_connected_images[m_number-1]);
+                break;
+
+            case COLOR_2:
+                setImageResource(color_2_connected_images[m_number-1]);
                 break;
         }
     }

@@ -90,6 +90,9 @@ public class Hole extends RotatableImage {
         for (Connection connection : connections) {
             if (connection.CompareHoleAngle(m_owner_wheel, this, m_current_angle)) {
                 setImageResource(R.drawable.hole_connected);
+                if (m_resident != null) {
+                    m_resident.SetImageConnected();
+                }
                 connected = true;
                 break;
             }
@@ -97,6 +100,9 @@ public class Hole extends RotatableImage {
 
         if (!connected) {
             setImageResource(R.drawable.hole);
+            if (m_resident != null) {
+                m_resident.SetImageDisconnected();
+            }
         }
     }
 
