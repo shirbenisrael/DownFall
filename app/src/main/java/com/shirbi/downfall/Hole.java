@@ -1,6 +1,7 @@
 package com.shirbi.downfall;
 
 import android.content.Context;
+import android.media.MediaPlayer;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -13,6 +14,8 @@ public class Hole extends RotatableImage {
     private double m_current_angle;
     private ConnectableImage m_owner_wheel;
     private Token m_resident;
+    private MediaPlayer m_media_player;
+    private Context m_context;
 
     public void Init() {
         setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -24,11 +27,13 @@ public class Hole extends RotatableImage {
     public Hole(Context context) {
         super(context);
         Init();
+        m_context = context;
     }
 
     public Hole(Context context, AttributeSet attrs) {
         super(context, attrs);
         Init();
+        m_context = context;
     }
 
     public void SetBaseAngle(ConnectableImage owner_wheel, int angle) {
@@ -128,5 +133,14 @@ public class Hole extends RotatableImage {
 
         m_owner_wheel.TokenUsed();
         bottom_hole.m_owner_wheel.TokenEntered();
+
+        m_media_player = MediaPlayer.create(m_context, R.raw.token_fall);
+        m_media_player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                mp.release();
+            }
+        });
+        m_media_player.start();
     }
 }
