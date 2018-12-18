@@ -4,22 +4,15 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.RelativeLayout;
 
 import java.util.HashSet;
-import java.util.Set;
-
-import static java.lang.Math.cos;
-import static java.lang.Math.sin;
 
 public class Wheel extends ConnectableImage {
     private double m_previous_angle, m_start_touch_angle, m_current_angle;
     private long m_start_time_milliseconds;
 
-    private Set<Hole> m_holes;
-
     private void Init() {
-        m_holes = new HashSet<Hole>();
+
     }
 
     public Wheel(Context context) {
@@ -30,15 +23,6 @@ public class Wheel extends ConnectableImage {
     public Wheel(Context context, AttributeSet attrs) {
         super(context, attrs);
         Init();
-    }
-
-    public void AddHole(Hole hole, int base_angle) {
-        m_holes.add(hole);
-        hole.SetBaseAngle(this, base_angle);
-
-        RelativeLayout relativeLayout = (RelativeLayout) this.getParent();
-        relativeLayout.addView(hole);
-        hole.SetAngle(0);
     }
 
     public void ConnectToInputQueue(InputTokenQueue input_queue, double bottom_angle)  {

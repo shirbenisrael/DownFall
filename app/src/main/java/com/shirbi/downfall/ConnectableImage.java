@@ -12,9 +12,11 @@ import static java.lang.Math.sin;
 
 public abstract class ConnectableImage extends RotatableImage {
     protected Set<Connection> m_connections;
+    protected Set<Hole> m_holes;
 
     private void Init() {
         m_connections = new HashSet<Connection>();
+        m_holes = new HashSet<Hole>();
     }
 
     public ConnectableImage(Context context) {
@@ -81,9 +83,16 @@ public abstract class ConnectableImage extends RotatableImage {
         SetLocation((int)left,(int)top);
     }
 
-    public abstract void AddHole(Hole hole, int base_angle);
+    public void AddHole(Hole hole, int base_angle) {
+        m_holes.add(hole);
+        hole.SetBaseAngle(this, base_angle);
 
-    public void TokenUsed() {}
+        RelativeLayout relativeLayout = (RelativeLayout) this.getParent();
+        relativeLayout.addView(hole);
+        hole.SetAngle(0);
+    }
 
-    public void TokenEntered() {}
+    public void TokenUsed(Hole hole) {}
+
+    public void TokenEntered(Hole hole) {}
 }

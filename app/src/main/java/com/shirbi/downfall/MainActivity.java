@@ -61,9 +61,16 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 
     private void AddTokensToInputQueue(int queue_id, Token.COLOR color) {
         for (int number = 1; number <= InputTokenQueue.MAX_TOKENS; number++) {
+            InputTokenQueue inputQueue = ((InputTokenQueue) findViewById(queue_id));
+
             Token token = new Token(this);
             token.SetType(color, number);
-            ((InputTokenQueue) findViewById(queue_id)).AddToken(token);
+            inputQueue.AddToken(token);
+
+            token = new Token(this);
+            token.SetType(color, number);
+            token.SetOppositeSide();
+            inputQueue.AddToken(token);
         }
     }
 
@@ -116,7 +123,9 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         ConnectWheels(R.id.output, R.id.wheel5, 90);
 
         AddHole(R.id.input_token_queue_left, 90, false);
+        AddHole(R.id.input_token_queue_left, 90, true);
         AddHole(R.id.input_token_queue_right, 270, false);
+        AddHole(R.id.input_token_queue_right, 270, true);
 
         AddHoles(R.id.wheel1, 30, 1);
         AddHoles(R.id.wheel2, 90, 3);
@@ -125,6 +134,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         AddHoles(R.id.wheel5, 90, 5);
 
         AddHole(R.id.output, 90, false);
+        AddHole(R.id.output, 90, true);
 
         AddTokensToInputQueue(R.id.input_token_queue_left, Token.COLOR.COLOR_1);
         AddTokensToInputQueue(R.id.input_token_queue_right, Token.COLOR.COLOR_2);

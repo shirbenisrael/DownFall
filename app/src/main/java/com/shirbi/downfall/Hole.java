@@ -47,6 +47,10 @@ public class Hole extends RotatableImage {
         ((View)this).setAlpha(ALPHA_FOR_OPPOSITE);
     }
 
+    public Boolean GetOppositeSide() {
+        return m_opposite_side;
+    }
+
     public void SetBaseAngle(ConnectableImage owner_wheel, int angle) {
         m_owner_wheel = owner_wheel;
         m_baseAngle = angle;
@@ -145,8 +149,8 @@ public class Hole extends RotatableImage {
 
         bottom_hole.SetAngle(bottom_hole.m_current_angle - bottom_hole.m_baseAngle);
 
-        m_owner_wheel.TokenUsed();
-        bottom_hole.m_owner_wheel.TokenEntered();
+        m_owner_wheel.TokenUsed(this);
+        bottom_hole.m_owner_wheel.TokenEntered(bottom_hole);
 
         m_media_player = MediaPlayer.create(m_context, R.raw.token_fall);
         m_media_player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {

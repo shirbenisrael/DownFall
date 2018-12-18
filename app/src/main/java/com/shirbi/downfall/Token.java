@@ -2,6 +2,7 @@ package com.shirbi.downfall;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.RelativeLayout;
@@ -20,17 +21,37 @@ public class Token extends RotatableImage {
     private int m_number;
     private COLOR m_color;
 
+    public Boolean m_opposite_side;
+
     enum COLOR {
         COLOR_1,
         COLOR_2
     }
 
+    // TODO: We have the same in Hole. Move it to different file.
+    private static final float ALPHA_FOR_OPPOSITE = (float)0.2;
+
+    private void Init() {
+        m_opposite_side = false;
+    }
+
     public Token(Context context) {
         super(context);
+        Init();
     }
 
     public Token(Context context, AttributeSet attrs) {
         super(context, attrs);
+        Init();
+    }
+
+    public void SetOppositeSide() {
+        m_opposite_side = true;
+        ((View)this).setAlpha(ALPHA_FOR_OPPOSITE);
+    }
+
+    public Boolean GetOppositeSide() {
+        return m_opposite_side;
     }
 
     public void SetType(COLOR color, int number) {
