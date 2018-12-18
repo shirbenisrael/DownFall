@@ -1,15 +1,20 @@
 package com.shirbi.downfall;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
-import java.util.HashSet;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Wheel extends ConnectableImage {
     private double m_previous_angle, m_start_touch_angle, m_current_angle;
     private long m_start_time_milliseconds;
+    private Timer m_timer;
+    private int m_auto_rotate_angle;
+    private Context m_context;
 
     private void Init() {
 
@@ -17,11 +22,13 @@ public class Wheel extends ConnectableImage {
 
     public Wheel(Context context) {
         super(context);
+        m_context = context;
         Init();
     }
 
     public Wheel(Context context, AttributeSet attrs) {
         super(context, attrs);
+        m_context = context;
         Init();
     }
 
@@ -41,6 +48,43 @@ public class Wheel extends ConnectableImage {
             hole.CheckConnection(m_connections);
         }
     }
+
+    public void AddRotation(int angle) {
+        m_auto_rotate_angle = angle;
+        m_timer = new Timer();
+        m_timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                TimerMethod();
+            }
+
+        }, 0, 20);
+    }
+
+    private void TimerMethod() {
+        ((Activity)m_context).runOnUiThread(m_timer_tick);
+    }
+
+    private Runnable m_timer_tick = new Runnable() {
+        public void run() {
+            if (m_auto_rotate_angle  ==0) {
+                m_timer.cancel();
+                m_previous_angle = m_current_angle;
+            }
+
+            if (m_auto_rotate_angle > 0) {
+                m_current_angle++;
+                m_auto_rotate_angle--;
+            }
+
+            if (m_auto_rotate_angle < 0) {
+                m_current_angle--;
+                m_auto_rotate_angle++;
+            }
+
+            Rotate(m_current_angle);
+        }
+    };
 
     public boolean onTouch(View v, MotionEvent event) {
         final float xc = m_diameter / 2;

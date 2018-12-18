@@ -8,9 +8,12 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 
+import java.util.Random;
+
 public class MainActivity extends Activity implements View.OnTouchListener {
 
     private Point m_size;
+    private int m_wheel_ids[] = {R.id.wheel1, R.id.wheel2, R.id.wheel3, R.id.wheel4, R.id.wheel5};
 
     private Point GetWindowSize() {
         Display display = getWindowManager().getDefaultDisplay();
@@ -146,5 +149,13 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         Wheel wheel = (Wheel)v;
         wheel.onTouch(v, event);
         return true;
+    }
+
+    public void onFinishTurnButtonClick(View view) {
+        int wheel_num = new Random().nextInt(m_wheel_ids.length);
+        Wheel wheel = (Wheel)findViewById(m_wheel_ids[wheel_num]);
+        int angle = new Random().nextInt(360 * 4) - (360 * 2);
+
+        wheel.AddRotation(angle);
     }
 }
