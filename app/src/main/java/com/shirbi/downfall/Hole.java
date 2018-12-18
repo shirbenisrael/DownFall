@@ -3,6 +3,7 @@ package com.shirbi.downfall;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.util.AttributeSet;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
@@ -16,12 +17,17 @@ public class Hole extends RotatableImage {
     private Token m_resident;
     private MediaPlayer m_media_player;
     private Context m_context;
+    private Boolean m_opposite_side;
+
+    private static final float ALPHA_FOR_OPPOSITE = (float)0.2;
 
     public void Init() {
         setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
 
         setImageResource(R.drawable.hole);
+
+        m_opposite_side = false;
     }
 
     public Hole(Context context) {
@@ -34,6 +40,11 @@ public class Hole extends RotatableImage {
         super(context, attrs);
         Init();
         m_context = context;
+    }
+
+    public void SetOppositeSide() {
+        m_opposite_side = true;
+        ((View)this).setAlpha(ALPHA_FOR_OPPOSITE);
     }
 
     public void SetBaseAngle(ConnectableImage owner_wheel, int angle) {
@@ -123,6 +134,9 @@ public class Hole extends RotatableImage {
             return;
         }
         if (bottom_hole.m_resident != null) {
+            return;
+        }
+        if (m_opposite_side != bottom_hole.m_opposite_side) {
             return;
         }
 

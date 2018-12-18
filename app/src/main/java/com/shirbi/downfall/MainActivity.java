@@ -19,16 +19,26 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         return size;
     }
 
-    private void AddHole(int wheel_id, int angle) {
+    private void AddHole(int wheel_id, int angle, Boolean opposite) {
         Hole hole = new Hole(this);
         hole.SetDiameter(m_size.x / 18);
         ((ConnectableImage)findViewById(wheel_id)).AddHole(hole, angle);
+
+        if (opposite) {
+            hole.SetOppositeSide();
+        }
     }
 
     private void AddHoles(int wheel_id, int first_angle, int num_holes) {
         int angle = first_angle;
         for (int i = 0; i < num_holes; i++) {
-            AddHole(wheel_id, angle);
+            AddHole(wheel_id, angle, false);
+            angle += 360 / num_holes;
+        }
+
+        angle = first_angle + (180 / num_holes);
+        for (int i = 0; i < num_holes; i++) {
+            AddHole(wheel_id, angle, true);
             angle += 360 / num_holes;
         }
     }
@@ -105,16 +115,16 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 
         ConnectWheels(R.id.output, R.id.wheel5, 90);
 
-        AddHole(R.id.input_token_queue_left, 90);
-        AddHole(R.id.input_token_queue_right, 270);
+        AddHole(R.id.input_token_queue_left, 90, false);
+        AddHole(R.id.input_token_queue_right, 270, false);
 
-        AddHole(R.id.wheel1, 30);
+        AddHoles(R.id.wheel1, 30, 1);
         AddHoles(R.id.wheel2, 90, 3);
         AddHoles(R.id.wheel3, 90, 2);
         AddHoles(R.id.wheel4, 45, 4);
         AddHoles(R.id.wheel5, 90, 5);
 
-        AddHole(R.id.output, 90);
+        AddHole(R.id.output, 90, false);
 
         AddTokensToInputQueue(R.id.input_token_queue_left, Token.COLOR.COLOR_1);
         AddTokensToInputQueue(R.id.input_token_queue_right, Token.COLOR.COLOR_2);
