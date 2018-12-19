@@ -11,8 +11,8 @@ import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 
 public abstract class ConnectableImage extends RotatableImage {
-    protected Set<Connection> m_connections;
-    protected Set<Hole> m_holes;
+    public Set<Connection> m_connections;
+    public Set<Hole> m_holes;
 
     private void Init() {
         m_connections = new HashSet<Connection>();

@@ -6,14 +6,13 @@ import android.os.Bundle;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.ImageView;
-
-import java.util.Random;
 
 public class MainActivity extends Activity implements View.OnTouchListener {
 
     private Point m_size;
     private int m_wheel_ids[] = {R.id.wheel1, R.id.wheel2, R.id.wheel3, R.id.wheel4, R.id.wheel5};
+    SimpleStupidAI m_simple_stupid_ai;
+    Wheel m_wheels[];
 
     private Point GetWindowSize() {
         Display display = getWindowManager().getDefaultDisplay();
@@ -90,11 +89,19 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 
         m_size = GetWindowSize();
 
-        ((ImageView)findViewById(R.id.wheel1)).setOnTouchListener(this);
-        ((ImageView)findViewById(R.id.wheel2)).setOnTouchListener(this);
-        ((ImageView)findViewById(R.id.wheel3)).setOnTouchListener(this);
-        ((ImageView)findViewById(R.id.wheel4)).setOnTouchListener(this);
-        ((ImageView)findViewById(R.id.wheel5)).setOnTouchListener(this);
+        m_wheels = new Wheel[5];
+
+        m_wheels[0] = ((Wheel)findViewById(R.id.wheel1));
+        m_wheels[1] = ((Wheel)findViewById(R.id.wheel2));
+        m_wheels[2] = ((Wheel)findViewById(R.id.wheel3));
+        m_wheels[3] = ((Wheel)findViewById(R.id.wheel4));
+        m_wheels[4] = ((Wheel)findViewById(R.id.wheel5));
+
+        for (int i = 0; i < m_wheels.length; i++) {
+            m_wheels[i].setOnTouchListener(this);
+        }
+
+        m_simple_stupid_ai = new SimpleStupidAI(m_wheels);
 
         double base_diameter = m_size.x / 3;
 
@@ -152,10 +159,12 @@ public class MainActivity extends Activity implements View.OnTouchListener {
     }
 
     public void onFinishTurnButtonClick(View view) {
-        int wheel_num = new Random().nextInt(m_wheel_ids.length);
-        Wheel wheel = (Wheel)findViewById(m_wheel_ids[wheel_num]);
-        int angle = new Random().nextInt(360 * 4) - (360 * 2);
+//        int wheel_num = new Random().nextInt(m_wheel_ids.length);
+//        Wheel wheel = (Wheel)findViewById(m_wheel_ids[wheel_num]);
+//        int angle = new Random().nextInt(360 * 4) - (360 * 2);
+//
+//        wheel.AddRotation(angle);
 
-        wheel.AddRotation(angle);
+        m_simple_stupid_ai.Run();
     }
 }

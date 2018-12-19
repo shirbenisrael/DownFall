@@ -37,7 +37,7 @@ public class Connection {
         return (wheel == m_top_wheel);
     }
 
-    private Hole GetBottomConnected(Hole hole) {
+    public Hole GetBottomConnected(Hole hole) {
         for (Hole bottom_hole : m_bottom_holes) {
             if (bottom_hole.GetOppositeSide() == hole.GetOppositeSide()) {
                 return bottom_hole;
@@ -46,7 +46,7 @@ public class Connection {
         return null;
     }
 
-    private Hole GetTopConnected(Hole hole) {
+    public Hole GetTopConnected(Hole hole) {
         for (Hole top_hole : m_top_holes) {
             if (top_hole.GetOppositeSide() == hole.GetOppositeSide()) {
                 return top_hole;

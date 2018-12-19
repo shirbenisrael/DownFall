@@ -32,6 +32,8 @@ public class Wheel extends ConnectableImage {
         Init();
     }
 
+    public double GetCurrentAngle() { return m_current_angle; }
+
     public void ConnectToInputQueue(InputTokenQueue input_queue, double bottom_angle)  {
         Connection connection = new Connection(input_queue, this, bottom_angle);
         m_connections.add(connection);
