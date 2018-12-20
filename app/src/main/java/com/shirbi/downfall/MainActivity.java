@@ -191,10 +191,9 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 
         // Allow the player use all wheels except the one used by the AI.
         if (rotated_wheel < m_wheels.length) {
-            m_wheels[rotated_wheel].SetAllowRotation(false);
-
-            if (m_last_wheel_rotated != m_wheels.length)
-                m_wheels[m_last_wheel_rotated].SetAllowRotation(true);
+            for (int i = 0; i < m_wheels.length; i++) {
+                m_wheels[i].SetAllowRotation(i != rotated_wheel);
+            }
         }
 
         m_last_wheel_rotated = m_wheels.length;
