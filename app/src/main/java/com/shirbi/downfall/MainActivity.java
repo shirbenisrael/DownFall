@@ -13,6 +13,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
     private int m_wheel_ids[] = {R.id.wheel1, R.id.wheel2, R.id.wheel3, R.id.wheel4, R.id.wheel5};
     SimpleStupidAI m_simple_stupid_ai;
     Wheel m_wheels[];
+    int m_last_wheel_rotated;
 
     private Point GetWindowSize() {
         Display display = getWindowManager().getDefaultDisplay();
@@ -99,6 +100,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 
         for (int i = 0; i < m_wheels.length; i++) {
             m_wheels[i].setOnTouchListener(this);
+            m_wheels[i].SetWheelNum(i);
         }
 
         m_simple_stupid_ai = new SimpleStupidAI(m_wheels);
@@ -150,21 +152,51 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         AddTokensToInputQueue(R.id.input_token_queue_right, Token.COLOR.COLOR_2);
 
         findViewById(R.id.wheels_layout).requestLayout();
+
+        m_last_wheel_rotated = m_wheels.length;
     }
 
     public boolean onTouch(View v, MotionEvent event) {
         Wheel wheel = (Wheel)v;
+
+        if (!wheel.GetAllowRotation()) {
+            return true;
+        }
+
+        int selected_wheel_num = wheel.GetWheelNum();
+
+        // New wheel touch - block all other wheels.
+        if (m_last_wheel_rotated == m_wheels.length) {
+            m_last_wheel_rotated = selected_wheel_num;
+            for (int i = 0 ; i < m_wheels.length; i++) {
+                m_wheels[i].SetAllowRotation(i == m_last_wheel_rotated);
+            }
+        }
+
         wheel.onTouch(v, event);
         return true;
     }
 
     public void onFinishTurnButtonClick(View view) {
-//        int wheel_num = new Random().nextInt(m_wheel_ids.length);
-//        Wheel wheel = (Wheel)findViewById(m_wheel_ids[wheel_num]);
-//        int angle = new Random().nextInt(360 * 4) - (360 * 2);
-//
-//        wheel.AddRotation(angle);
+        if (m_last_wheel_rotated != m_wheels.length) {
+            // If player touch a wheel,
+            // allow AI to use all wheels expect the one which rotated by the human player.
+            for (int i = 0; i < m_wheels.length; i++) {
+                m_wheels[i].SetAllowRotation(i != m_last_wheel_rotated);
+            }
+            // Else - player skip its turn. The AI is allowed to touch all wheels except the one he touched.
+        }
 
-        m_simple_stupid_ai.Run();
+        int rotated_wheel = m_simple_stupid_ai.Run();
+
+        // Allow the player use all wheels except the one used by the AI.
+        if (rotated_wheel < m_wheels.length) {
+            m_wheels[rotated_wheel].SetAllowRotation(false);
+
+            if (m_last_wheel_rotated != m_wheels.length)
+                m_wheels[m_last_wheel_rotated].SetAllowRotation(true);
+        }
+
+        m_last_wheel_rotated = m_wheels.length;
     }
 }

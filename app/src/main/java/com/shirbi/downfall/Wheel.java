@@ -15,9 +15,11 @@ public class Wheel extends ConnectableImage {
     private Timer m_timer;
     private int m_auto_rotate_angle;
     private Context m_context;
+    private Boolean m_allow_rotation;
+    private int m_wheel_num;
 
     private void Init() {
-
+        m_allow_rotation = true;
     }
 
     public Wheel(Context context) {
@@ -60,7 +62,7 @@ public class Wheel extends ConnectableImage {
                 TimerMethod();
             }
 
-        }, 0, 20);
+        }, 0, 2);
     }
 
     private void TimerMethod() {
@@ -135,5 +137,21 @@ public class Wheel extends ConnectableImage {
         }
 
         return true;
+    }
+
+    public void SetAllowRotation(Boolean is_allow) {
+        m_allow_rotation = is_allow;
+    }
+
+    public Boolean GetAllowRotation() {
+        return m_allow_rotation;
+    }
+
+    public void SetWheelNum(int wheel_num) {
+        m_wheel_num = wheel_num;
+    }
+
+    public int GetWheelNum() {
+        return m_wheel_num;
     }
 }

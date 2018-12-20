@@ -140,13 +140,17 @@ public class SimpleStupidAI {
         return rotationResult;
     }
 
-    public void Run() {
+    public int Run() {
         RotationResult bestResult = new RotationResult();
         bestResult.m_wheel = null;
         bestResult.m_angle = 0;
         bestResult.m_num_holes_connected = 0;
 
         for (Wheel wheel : m_wheels) {
+            if (!wheel.GetAllowRotation()) {
+                continue;
+            }
+
             RotationResult rotationResult = RotateWheelResult(wheel);
             if (rotationResult == null) {
                 continue;
@@ -169,7 +173,11 @@ public class SimpleStupidAI {
 
         if (bestResult.m_wheel != null) {
             bestResult.m_wheel.AddRotation(bestResult.m_angle);
+            return bestResult.m_wheel.GetWheelNum();
+        } else {
+            return m_wheels.length;
         }
+
     }
 
 }
