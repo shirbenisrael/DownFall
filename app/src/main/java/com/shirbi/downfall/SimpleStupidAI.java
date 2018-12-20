@@ -87,18 +87,7 @@ public class SimpleStupidAI {
         return null;
     }
 
-    private RotationResult RotateWheelResult(Wheel wheel) {
-        RotationResult rotationResult = new RotationResult();
-        rotationResult.m_wheel = null;
-        rotationResult.m_angle = 0;
-        rotationResult.m_num_holes_connected = 0;
-
-        RotationResult result_will_fall_token = RotateWheelResultWithTokenFall(wheel);
-        if (result_will_fall_token != null) {
-            return result_will_fall_token;
-        }
-
-        // Can't fall any token? at least put a hole in better position
+    private RotationResult RotateWheelResultTokenBetterPosition(Wheel wheel) {
         for (Hole hole : wheel.m_holes) {
             if (!hole.GetOppositeSide()) {
                 // Simple stupid AI doesn't care about the human player tokens
@@ -128,6 +117,7 @@ public class SimpleStupidAI {
                 int hole_current_angle = hole_base_angle + (int) wheel.GetCurrentAngle();
                 int hole_desired_angle = (int) connection.m_top_angle;
 
+                RotationResult rotationResult = new RotationResult();
                 rotationResult.m_wheel = wheel;
                 rotationResult.m_angle = hole_desired_angle - hole_current_angle;
                 rotationResult.m_num_token_fall = 0;
@@ -135,6 +125,86 @@ public class SimpleStupidAI {
 
                 return rotationResult;
             }
+        }
+
+        return null;
+    }
+
+    private RotationResult RotateWheelResultHoleBetterPosition(Wheel wheel) {
+
+        for (Hole hole : wheel.m_holes) {
+            if (hole.GetOppositeSide()) {
+                // Simple stupid AI doesn't care about the human player tokens
+                continue;
+            }
+
+            // If wheel has tokens and we reach this function, it means they are already in good place.
+            // Better not move this wheel.
+            if (hole.GetResident() != null) {
+                return null;
+            }
+
+            for (Connection connection : wheel.m_connections) {
+                if (connection.m_bottom_wheel != wheel) {
+                    continue;
+                }
+
+                if (connection.GetTopConnected(hole) == hole) {
+                    // Empty hole is already connected to other top wheel.
+                    return null;
+                }
+            }
+        }
+
+        for (Hole hole : wheel.m_holes) {
+            if (!hole.GetOppositeSide()) {
+                // Simple stupid AI doesn't care about the human player tokens
+                continue;
+            }
+
+            for (Connection connection : wheel.m_connections) {
+                if (connection.m_bottom_wheel != wheel) {
+                    continue;
+                }
+
+                int hole_base_angle = hole.GetBaseAngle();
+                int hole_current_angle = hole_base_angle + (int) wheel.GetCurrentAngle();
+                int hole_desired_angle = (int) connection.m_bottom_angle;
+
+                RotationResult rotationResult = new RotationResult();
+                rotationResult.m_wheel = wheel;
+                rotationResult.m_angle = hole_desired_angle - hole_current_angle;
+                rotationResult.m_num_token_fall = 0;
+                rotationResult.m_num_holes_connected = 1;
+
+                return rotationResult;
+            }
+        }
+
+        return null;
+    }
+
+    private RotationResult RotateWheelResult(Wheel wheel) {
+        RotationResult rotationResult = new RotationResult();
+        rotationResult.m_wheel = null;
+        rotationResult.m_angle = 0;
+        rotationResult.m_num_holes_connected = 0;
+
+        RotationResult result_will_fall_token = RotateWheelResultWithTokenFall(wheel);
+        if (result_will_fall_token != null) {
+            return result_will_fall_token;
+        }
+
+        // Can't fall any token? at least put a token in better position so it can fall later.
+        RotationResult result_will_move_token = RotateWheelResultTokenBetterPosition(wheel);
+        if (result_will_move_token != null) {
+            return result_will_move_token;
+        }
+
+        // Can't put token in better position? At least put a hole in better position.
+        RotationResult result_will_move_hole = RotateWheelResultHoleBetterPosition(wheel);
+        if (result_will_move_hole != null) {
+            return result_will_move_hole;
         }
 
         return rotationResult;
