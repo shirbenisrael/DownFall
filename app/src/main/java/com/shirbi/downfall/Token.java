@@ -127,4 +127,6 @@ public class Token extends RotatableImage {
 
         SetParentView(relativeLayout, params);
     }
+
+    public int GetNumber() { return m_number; }
 }

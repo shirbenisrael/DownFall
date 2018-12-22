@@ -24,6 +24,7 @@ public class SimpleStupidAI {
                     rotationResult.m_wheel = wheel;
                     rotationResult.m_angle = hole_desired_angle - hole_current_angle;
                     rotationResult.m_num_token_fall = 1;
+                    rotationResult.m_moved_token_number = hole.GetResident().GetNumber();
                     rotationResult.m_num_holes_connected = 0;
 
                     return rotationResult;
@@ -51,6 +52,7 @@ public class SimpleStupidAI {
                     rotationResult.m_wheel = wheel;
                     rotationResult.m_angle = hole_desired_angle - hole_current_angle;
                     rotationResult.m_num_token_fall = 1;
+                    rotationResult.m_moved_token_number = top_hole.GetResident().GetNumber();
                     rotationResult.m_num_holes_connected = 0;
 
                     return rotationResult;
@@ -137,6 +139,7 @@ public class SimpleStupidAI {
                 rotationResult.m_wheel = wheel;
                 rotationResult.m_angle = hole_desired_angle - hole_current_angle;
                 rotationResult.m_num_token_fall = 0;
+                rotationResult.m_moved_token_number = hole.GetResident().GetNumber();
                 rotationResult.m_num_holes_connected = 1;
 
                 return rotationResult;
@@ -256,8 +259,24 @@ public class SimpleStupidAI {
                 continue;
             }
 
+            // Prefer falling token with smaller number.
+            if (bestResult.m_num_token_fall > 0) {
+                if (bestResult.m_moved_token_number > rotationResult.m_moved_token_number) {
+                    bestResult = rotationResult;
+                }
+                continue;
+            }
+
             if (bestResult.m_num_holes_connected < rotationResult.m_num_holes_connected) {
                 bestResult = rotationResult;
+                continue;
+            }
+
+            // Prefer moving token with smaller number.
+            if (rotationResult.m_num_holes_connected > 0) {
+                if (bestResult.m_moved_token_number > rotationResult.m_moved_token_number) {
+                    bestResult = rotationResult;
+                }
                 continue;
             }
         }
