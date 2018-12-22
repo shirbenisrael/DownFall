@@ -1,11 +1,15 @@
 package com.shirbi.downfall;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.RelativeLayout;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Token extends RotatableImage {
 
@@ -20,8 +24,11 @@ public class Token extends RotatableImage {
 
     private int m_number;
     private COLOR m_color;
-
     public Boolean m_opposite_side;
+    private Context m_context;
+    private Timer m_timer;
+    private int m_count_down;
+    private Token m_this_token;
 
     enum COLOR {
         COLOR_1,
@@ -33,15 +40,18 @@ public class Token extends RotatableImage {
 
     private void Init() {
         m_opposite_side = false;
+        m_this_token = this;
     }
 
     public Token(Context context) {
         super(context);
+        m_context = context;
         Init();
     }
 
     public Token(Context context, AttributeSet attrs) {
         super(context, attrs);
+        m_context = context;
         Init();
     }
 
@@ -129,4 +139,35 @@ public class Token extends RotatableImage {
     }
 
     public int GetNumber() { return m_number; }
+
+    public void OutputAnimation() {
+        m_count_down = 5;
+        m_timer = new Timer();
+        m_timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                TimerMethod();
+            }
+
+        }, 0, 100);
+    }
+
+    private void TimerMethod() {
+        ((Activity)m_context).runOnUiThread(m_timer_tick);
+    }
+
+    private Runnable m_timer_tick = new Runnable() {
+        public void run() {
+            m_count_down--;
+
+            if (m_count_down == 0) {
+                m_timer.cancel();
+                ((ViewGroup) (getParent())).removeView(m_this_token);
+            } else {
+                SetLocationNearOtherToken(m_this_token,
+                        Token.HORIZONTAL_ALIGNMENT.LEFT_EDJE,
+                        Token.VERTICAL_ALIGNMENT.BOTTOM);
+            }
+        }
+    };
 }
