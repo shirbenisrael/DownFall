@@ -97,7 +97,7 @@ public abstract class ConnectableImage extends RotatableImage {
 
     public void TokenEntered(Hole hole) {}
 
-    public void RemoveAllTokens() {
+    public void Reset() {
         for (Hole hole : m_holes) {
             Token token = hole.GetResident();
 

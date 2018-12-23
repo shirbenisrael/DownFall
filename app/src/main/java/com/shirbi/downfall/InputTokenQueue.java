@@ -108,8 +108,8 @@ public class InputTokenQueue extends ConnectableImage {
                 Token.HORIZONTAL_ALIGNMENT.RIGHT_EDJE;
     }
 
-    public void RemoveAllTokens() {
-        super.RemoveAllTokens();
+    public void Reset() {
+        super.Reset();
 
         for (Token token : m_tokens) {
             ((ViewGroup) (token.getParent())).removeView(token);

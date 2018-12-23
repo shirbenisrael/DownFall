@@ -155,4 +155,11 @@ public class Wheel extends ConnectableImage {
     public int GetWheelNum() {
         return m_wheel_num;
     }
+
+    public void Reset() {
+        super.Reset();
+        m_current_angle = 0;
+        m_allow_rotation = true;
+        Rotate(m_current_angle);
+    }
 }

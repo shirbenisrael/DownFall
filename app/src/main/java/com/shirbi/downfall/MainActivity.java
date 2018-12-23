@@ -202,11 +202,11 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 
     public void onNewGameButtonClick(View view) {
         for (int i = 0; i < m_wheels.length; i++) {
-            m_wheels[i].RemoveAllTokens();
+            m_wheels[i].Reset();
         }
 
-        ((InputTokenQueue) findViewById(R.id.input_token_queue_left)).RemoveAllTokens();
-        ((InputTokenQueue) findViewById(R.id.input_token_queue_right)).RemoveAllTokens();
+        ((InputTokenQueue) findViewById(R.id.input_token_queue_left)).Reset();
+        ((InputTokenQueue) findViewById(R.id.input_token_queue_right)).Reset();
 
         AddTokensToInputQueue(R.id.input_token_queue_left, Token.COLOR.COLOR_1);
         AddTokensToInputQueue(R.id.input_token_queue_right, Token.COLOR.COLOR_2);
