@@ -23,8 +23,7 @@ public class Output extends ConnectableImage {
     }
 
     public void TokenEntered(Hole hole) {
-
-        hole.GetResident().OutputAnimation();
+        hole.GetResident().QueueAnimation(5, Token.HORIZONTAL_ALIGNMENT.LEFT_EDJE);
         hole.SetResident(null);
 
         if (hole.GetOppositeSide()) {

@@ -29,6 +29,7 @@ public class Token extends RotatableImage {
     private Timer m_timer;
     private int m_count_down;
     private Token m_this_token;
+    private Token.HORIZONTAL_ALIGNMENT m_move_animation_direction;
 
     enum COLOR {
         COLOR_1,
@@ -140,8 +141,9 @@ public class Token extends RotatableImage {
 
     public int GetNumber() { return m_number; }
 
-    public void OutputAnimation() {
-        m_count_down = 5;
+    public void QueueAnimation(int num_moves, Token.HORIZONTAL_ALIGNMENT direction) {
+        m_count_down = num_moves;
+        m_move_animation_direction = direction;
         m_timer = new Timer();
         m_timer.schedule(new TimerTask() {
             @Override
@@ -165,7 +167,7 @@ public class Token extends RotatableImage {
                 ((ViewGroup) (getParent())).removeView(m_this_token);
             } else {
                 SetLocationNearOtherToken(m_this_token,
-                        Token.HORIZONTAL_ALIGNMENT.LEFT_EDJE,
+                        m_move_animation_direction,
                         Token.VERTICAL_ALIGNMENT.BOTTOM);
             }
         }
