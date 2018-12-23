@@ -178,6 +178,8 @@ public class MainActivity extends Activity implements View.OnTouchListener {
     }
 
     public void onFinishTurnButtonClick(View view) {
+        EnableButtons(false);
+
         if (m_last_wheel_rotated != m_wheels.length) {
             // If player touch a wheel,
             // allow AI to use all wheels expect the one which rotated by the human player.
@@ -187,6 +189,8 @@ public class MainActivity extends Activity implements View.OnTouchListener {
             // Else - player skip its turn. The AI is allowed to touch all wheels except the one he touched.
         }
 
+        m_last_wheel_rotated = m_wheels.length;
+
         int rotated_wheel = m_simple_stupid_ai.Run();
 
         // Allow the player use all wheels except the one used by the AI.
@@ -194,8 +198,12 @@ public class MainActivity extends Activity implements View.OnTouchListener {
             for (int i = 0; i < m_wheels.length; i++) {
                 m_wheels[i].SetAllowRotation(i != rotated_wheel);
             }
+        } else {
+            EnableButtons(true);
         }
+    }
 
-        m_last_wheel_rotated = m_wheels.length;
+    public void EnableButtons(Boolean enable) {
+        findViewById(R.id.finish_turn_button).setEnabled(enable);
     }
 }

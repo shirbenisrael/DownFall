@@ -74,6 +74,7 @@ public class Wheel extends ConnectableImage {
             if (m_auto_rotate_angle  ==0) {
                 m_timer.cancel();
                 m_previous_angle = m_current_angle;
+                ((MainActivity)(m_context)).EnableButtons(true);
             }
 
             if (m_auto_rotate_angle > 0) {
