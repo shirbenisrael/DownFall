@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.TextView;
 
 public class MainActivity extends Activity implements View.OnTouchListener {
 
@@ -13,7 +14,10 @@ public class MainActivity extends Activity implements View.OnTouchListener {
     private int m_wheel_ids[] = {R.id.wheel1, R.id.wheel2, R.id.wheel3, R.id.wheel4, R.id.wheel5};
     SimpleStupidAI m_simple_stupid_ai;
     Wheel m_wheels[];
+    ConnectableImage m_connectable_images[];
     int m_last_wheel_rotated;
+    TextView m_player_text_view_token_counter_left;
+    TextView m_opposite_text_view_token_counter_left;
 
     private Point GetWindowSize() {
         Display display = getWindowManager().getDefaultDisplay();
@@ -91,6 +95,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         m_size = GetWindowSize();
 
         m_wheels = new Wheel[5];
+        m_connectable_images = new ConnectableImage[8];
 
         m_wheels[0] = ((Wheel)findViewById(R.id.wheel1));
         m_wheels[1] = ((Wheel)findViewById(R.id.wheel2));
@@ -101,7 +106,15 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         for (int i = 0; i < m_wheels.length; i++) {
             m_wheels[i].setOnTouchListener(this);
             m_wheels[i].SetWheelNum(i);
+            m_connectable_images[i] = m_wheels[i];
         }
+
+        m_connectable_images[5] = ((ConnectableImage)findViewById(R.id.input_token_queue_left));
+        m_connectable_images[6] = ((ConnectableImage)findViewById(R.id.input_token_queue_right));
+        m_connectable_images[7] = ((ConnectableImage)findViewById(R.id.output));
+
+        m_player_text_view_token_counter_left = (TextView)findViewById(R.id.player_token_counter);
+        m_opposite_text_view_token_counter_left = (TextView)findViewById(R.id.opposite_token_counter);
 
         m_simple_stupid_ai = new SimpleStupidAI(m_wheels);
 
@@ -201,12 +214,9 @@ public class MainActivity extends Activity implements View.OnTouchListener {
     }
 
     public void onNewGameButtonClick(View view) {
-        for (int i = 0; i < m_wheels.length; i++) {
-            m_wheels[i].Reset();
+        for (int i = 0; i < m_connectable_images.length; i++) {
+            m_connectable_images[i].Reset();
         }
-
-        ((InputTokenQueue) findViewById(R.id.input_token_queue_left)).Reset();
-        ((InputTokenQueue) findViewById(R.id.input_token_queue_right)).Reset();
 
         AddTokensToInputQueue(R.id.input_token_queue_left, Token.COLOR.COLOR_1);
         AddTokensToInputQueue(R.id.input_token_queue_right, Token.COLOR.COLOR_2);
@@ -217,5 +227,13 @@ public class MainActivity extends Activity implements View.OnTouchListener {
     public void EnableButtons(Boolean enable) {
         findViewById(R.id.finish_turn_button).setEnabled(enable);
         findViewById(R.id.new_game_button).setEnabled(enable);
+    }
+
+    public void ShowNumTokenLeft(Boolean is_opposite, int num_token_left) {
+        if (is_opposite) {
+            m_opposite_text_view_token_counter_left.setText(String.valueOf(num_token_left));
+        } else {
+            m_player_text_view_token_counter_left.setText(String.valueOf(num_token_left));
+        }
     }
 }

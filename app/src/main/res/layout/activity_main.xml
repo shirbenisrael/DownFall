@@ -130,6 +130,12 @@
             android:gravity="center"
             android:orientation="horizontal">
 
+            <TextView
+                android:id="@+id/player_token_counter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="New Game" />
+
             <Button
                 android:id="@+id/new_game_button"
                 android:layout_width="wrap_content"
@@ -143,6 +149,12 @@
                 android:layout_height="wrap_content"
                 android:onClick="onFinishTurnButtonClick"
                 android:text="Turn Done" />
+
+            <TextView
+                android:id="@+id/opposite_token_counter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="New Game" />
 
         </LinearLayout>
     </LinearLayout>
