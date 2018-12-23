@@ -2,8 +2,9 @@ package com.shirbi.downfall;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.ViewGroup;
 
-public class Output extends ConnectableImage {
+public class Output extends ConnectableImage implements SlideToken {
     int m_player_num_tokens_left;
     int m_opposite_num_tokens_left;
 
@@ -23,7 +24,7 @@ public class Output extends ConnectableImage {
     }
 
     public void TokenEntered(Hole hole) {
-        hole.GetResident().QueueAnimation(5, Token.HORIZONTAL_ALIGNMENT.LEFT_EDJE);
+        hole.GetResident().QueueAnimation(5, Token.HORIZONTAL_ALIGNMENT.LEFT_EDJE, this);
         hole.SetResident(null);
 
         if (hole.GetOppositeSide()) {
@@ -35,10 +36,16 @@ public class Output extends ConnectableImage {
         }
     }
 
+    public void TokenStoppedMoving(Token token) {
+        ((ViewGroup)(token.getParent())).removeView(token);
+    }
+
     public void Reset() {
         m_opposite_num_tokens_left = 10;
         m_activity.ShowNumTokenLeft(true, m_opposite_num_tokens_left);
         m_player_num_tokens_left = 10;
         m_activity.ShowNumTokenLeft(false, m_player_num_tokens_left);
     }
+
+
 }

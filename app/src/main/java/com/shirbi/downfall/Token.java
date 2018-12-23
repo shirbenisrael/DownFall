@@ -30,6 +30,7 @@ public class Token extends RotatableImage {
     private int m_count_down;
     private Token m_this_token;
     private Token.HORIZONTAL_ALIGNMENT m_move_animation_direction;
+    private SlideToken m_slider;
 
     enum COLOR {
         COLOR_1,
@@ -141,9 +142,10 @@ public class Token extends RotatableImage {
 
     public int GetNumber() { return m_number; }
 
-    public void QueueAnimation(int num_moves, Token.HORIZONTAL_ALIGNMENT direction) {
+    public void QueueAnimation(int num_moves, Token.HORIZONTAL_ALIGNMENT direction, SlideToken slider) {
         m_count_down = num_moves;
         m_move_animation_direction = direction;
+        m_slider = slider;
         m_timer = new Timer();
         m_timer.schedule(new TimerTask() {
             @Override
@@ -164,7 +166,7 @@ public class Token extends RotatableImage {
 
             if (m_count_down == 0) {
                 m_timer.cancel();
-                ((ViewGroup) (getParent())).removeView(m_this_token);
+                m_slider.TokenStoppedMoving(m_this_token);
             } else {
                 SetLocationNearOtherToken(m_this_token,
                         m_move_animation_direction,
