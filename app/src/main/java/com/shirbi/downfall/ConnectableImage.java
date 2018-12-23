@@ -2,6 +2,7 @@ package com.shirbi.downfall;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import java.util.HashSet;
@@ -95,4 +96,17 @@ public abstract class ConnectableImage extends RotatableImage {
     public void TokenUsed(Hole hole) {}
 
     public void TokenEntered(Hole hole) {}
+
+    public void RemoveAllTokens() {
+        for (Hole hole : m_holes) {
+            Token token = hole.GetResident();
+
+            if (token == null) {
+                continue;
+            }
+
+            ((ViewGroup) (token.getParent())).removeView(token);
+            hole.SetResident(null);
+        }
+    }
 }

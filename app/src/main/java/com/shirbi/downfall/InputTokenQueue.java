@@ -2,6 +2,7 @@ package com.shirbi.downfall;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
@@ -105,5 +106,19 @@ public class InputTokenQueue extends ConnectableImage {
         m_horizontal_alignment = base_angle < 180 ?
                 Token.HORIZONTAL_ALIGNMENT.LEFT_EDJE :
                 Token.HORIZONTAL_ALIGNMENT.RIGHT_EDJE;
+    }
+
+    public void RemoveAllTokens() {
+        super.RemoveAllTokens();
+
+        for (Token token : m_tokens) {
+            ((ViewGroup) (token.getParent())).removeView(token);
+        }
+        m_tokens.clear();
+
+        for (Token token : m_tokens_opposite) {
+            ((ViewGroup) (token.getParent())).removeView(token);
+        }
+        m_tokens_opposite.clear();
     }
 }

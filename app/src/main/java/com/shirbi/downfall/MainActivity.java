@@ -148,12 +148,9 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         AddHole(R.id.output, 90, false);
         AddHole(R.id.output, 90, true);
 
-        AddTokensToInputQueue(R.id.input_token_queue_left, Token.COLOR.COLOR_1);
-        AddTokensToInputQueue(R.id.input_token_queue_right, Token.COLOR.COLOR_2);
-
         findViewById(R.id.wheels_layout).requestLayout();
 
-        m_last_wheel_rotated = m_wheels.length;
+        onNewGameButtonClick(null);
     }
 
     public boolean onTouch(View v, MotionEvent event) {
@@ -203,7 +200,22 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         }
     }
 
+    public void onNewGameButtonClick(View view) {
+        for (int i = 0; i < m_wheels.length; i++) {
+            m_wheels[i].RemoveAllTokens();
+        }
+
+        ((InputTokenQueue) findViewById(R.id.input_token_queue_left)).RemoveAllTokens();
+        ((InputTokenQueue) findViewById(R.id.input_token_queue_right)).RemoveAllTokens();
+
+        AddTokensToInputQueue(R.id.input_token_queue_left, Token.COLOR.COLOR_1);
+        AddTokensToInputQueue(R.id.input_token_queue_right, Token.COLOR.COLOR_2);
+
+        m_last_wheel_rotated = m_wheels.length;
+    }
+
     public void EnableButtons(Boolean enable) {
         findViewById(R.id.finish_turn_button).setEnabled(enable);
+        findViewById(R.id.new_game_button).setEnabled(enable);
     }
 }
