@@ -13,17 +13,10 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <Button
-            android:id="@+id/finish_turn_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="onFinishTurnButtonClick"
-            android:text="Turn Done" />
-
         <RelativeLayout
             android:id="@+id/wheels_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <RelativeLayout
                 android:id="@+id/input_token_queue_left_layout"
@@ -129,6 +122,13 @@
             </RelativeLayout>
 
         </RelativeLayout>
+
+        <Button
+            android:id="@+id/finish_turn_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onFinishTurnButtonClick"
+            android:text="Turn Done" />
 
     </LinearLayout>
 
