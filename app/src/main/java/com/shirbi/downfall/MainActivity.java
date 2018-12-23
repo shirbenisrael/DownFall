@@ -69,21 +69,6 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         ((ConnectableImage)findViewById(queue_id)).SetLocation((int)left, (int)top);
     }
 
-    private void AddTokensToInputQueue(int queue_id, Token.COLOR color) {
-        for (int number = 1; number <= InputTokenQueue.MAX_TOKENS; number++) {
-            InputTokenQueue inputQueue = ((InputTokenQueue) findViewById(queue_id));
-
-            Token token = new Token(this);
-            token.SetType(color, number);
-            inputQueue.AddToken(token);
-
-            token = new Token(this);
-            token.SetType(color, number);
-            token.SetOppositeSide();
-            inputQueue.AddToken(token);
-        }
-    }
-
     private void ConnectWheelToInputQueue(int wheel_id, int queue_id, double bottom_angle) {
         Wheel wheel = ((Wheel)findViewById(wheel_id));
         wheel.ConnectToInputQueue(((InputTokenQueue)findViewById(queue_id)), bottom_angle);
@@ -242,10 +227,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         for (int i = 0; i < m_connectable_images.length; i++) {
             m_connectable_images[i].Reset();
         }
-
-        AddTokensToInputQueue(R.id.input_token_queue_left, Token.COLOR.COLOR_1);
-        AddTokensToInputQueue(R.id.input_token_queue_right, Token.COLOR.COLOR_2);
-
+        
         m_last_wheel_rotated = m_wheels.length;
     }
 

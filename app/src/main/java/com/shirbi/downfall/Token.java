@@ -72,6 +72,8 @@ public class Token extends RotatableImage {
         SetImageDisconnected();
     }
 
+    public Token.COLOR GetColor() { return m_color; }
+
     public void SetImageDisconnected() {
         switch (m_color) {
             case COLOR_1:
@@ -133,6 +135,25 @@ public class Token extends RotatableImage {
         } else {
             params.topMargin = other_token_params.topMargin + (m_diameter / 2);
         }
+
+        params.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
+        params.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
+
+        SetParentView(relativeLayout, params);
+    }
+
+    public void SetStartingLocationSlidingToHole(Hole hole, Token.HORIZONTAL_ALIGNMENT hor) {
+        RelativeLayout relativeLayout = (RelativeLayout) hole.getParent();
+        RelativeLayout.LayoutParams hole_params = (RelativeLayout.LayoutParams)hole.getLayoutParams();
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(hole_params);
+
+        if (hor == HORIZONTAL_ALIGNMENT.LEFT_EDJE) {
+            params.leftMargin =  hole_params.leftMargin - m_diameter * 4;
+        } else {
+            params.leftMargin =  hole_params.leftMargin + m_diameter * 4;
+        }
+
+        params.topMargin = hole_params.topMargin - ((m_diameter / 2) * 4);
 
         params.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
         params.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);

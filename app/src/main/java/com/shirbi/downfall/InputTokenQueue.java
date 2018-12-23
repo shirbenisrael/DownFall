@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
-public class InputTokenQueue extends ConnectableImage {
+public class InputTokenQueue extends ConnectableImage implements SlideToken {
 
     public static final int MAX_TOKENS = 5;
 
@@ -50,30 +50,41 @@ public class InputTokenQueue extends ConnectableImage {
         return hole.GetOppositeSide() ? m_tokens_opposite : m_tokens;
     }
 
-    public void AddToken(Token token) {
+    private void AddToken(Token token) {
         Hole hole = MatchHoleToToke(token);
         ArrayList<Token> tokens_list = MatchTokenList(token);
 
         token.SetDiameter(hole.m_diameter);
 
         if (hole.HasResident()) {
-            int angle = hole.GetBaseAngle();
-            Token last_token;
-
-            if (tokens_list.isEmpty()) {
-                last_token = hole.GetResident();
-            } else {
-                last_token = tokens_list.get(tokens_list.size() - 1);
-            }
-
-            token.SetLocationNearOtherToken(last_token, m_horizontal_alignment, Token.VERTICAL_ALIGNMENT.TOP);
             tokens_list.add(token);
         } else {
             hole.SetResident(token);
-            hole.SetAngle(0); // This will make the token shown */
         }
 
         token.Rotate(0);
+        token.SetStartingLocationSlidingToHole(hole, m_horizontal_alignment);
+
+        Token.HORIZONTAL_ALIGNMENT animation_direction =
+                (m_horizontal_alignment == Token.HORIZONTAL_ALIGNMENT.LEFT_EDJE) ?
+                        Token.HORIZONTAL_ALIGNMENT.RIGHT_EDJE :
+                        Token.HORIZONTAL_ALIGNMENT.LEFT_EDJE;
+
+        token.QueueAnimation(6 - token.GetNumber(),animation_direction, this );
+    }
+
+    public void TokenStoppedMoving(Token token) {
+        if (token.GetNumber() == 5) {
+            return;
+        }
+
+        Token new_token = new Token(m_activity);
+
+        new_token.SetType(token.GetColor(), token.GetNumber()+ 1 );
+        if (token.GetOppositeSide()) {
+            new_token.SetOppositeSide();
+        }
+        AddToken(new_token);
     }
 
     public void TokenUsed(Hole hole) {
@@ -120,5 +131,20 @@ public class InputTokenQueue extends ConnectableImage {
             ((ViewGroup) (token.getParent())).removeView(token);
         }
         m_tokens_opposite.clear();
+
+        Token token = new Token(m_activity);
+
+        Token.COLOR color =
+                (m_horizontal_alignment == Token.HORIZONTAL_ALIGNMENT.LEFT_EDJE) ?
+                        Token.COLOR.COLOR_1 :
+                        Token.COLOR.COLOR_2;
+
+        token.SetType(color, 1);
+        AddToken(token);
+
+        token = new Token(m_activity);
+        token.SetType(color, 1);
+        token.SetOppositeSide();
+        AddToken(token);
     }
 }
