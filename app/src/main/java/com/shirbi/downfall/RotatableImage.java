@@ -6,12 +6,16 @@ import android.util.AttributeSet;
 import android.widget.ImageView;
 
 public class RotatableImage extends ImageView {
+    protected MainActivity m_activity;
+
     public RotatableImage(Context context) {
         super(context);
+        m_activity = (MainActivity)context;
     }
 
     public RotatableImage(Context context, AttributeSet attrs) {
         super(context, attrs);
+        m_activity = (MainActivity)context;
     }
 
     protected int m_diameter;

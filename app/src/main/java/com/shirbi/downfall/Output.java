@@ -4,18 +4,15 @@ import android.content.Context;
 import android.util.AttributeSet;
 
 public class Output extends ConnectableImage {
-    private MainActivity m_activity;
     int m_player_num_tokens_left;
     int m_opposite_num_tokens_left;
 
     public Output(Context context) {
         super(context);
-        m_activity = (MainActivity)context;
     }
 
     public Output(Context context, AttributeSet attrs) {
         super(context, attrs);
-        m_activity = (MainActivity)context;
     }
 
     @Override

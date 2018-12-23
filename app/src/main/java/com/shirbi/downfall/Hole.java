@@ -16,7 +16,6 @@ public class Hole extends RotatableImage {
     private ConnectableImage m_owner_wheel;
     private Token m_resident;
     private MediaPlayer m_media_player;
-    private Context m_context;
     private Boolean m_opposite_side;
 
     private static final float ALPHA_FOR_OPPOSITE = (float)0.2;
@@ -33,13 +32,11 @@ public class Hole extends RotatableImage {
     public Hole(Context context) {
         super(context);
         Init();
-        m_context = context;
     }
 
     public Hole(Context context, AttributeSet attrs) {
         super(context, attrs);
         Init();
-        m_context = context;
     }
 
     public void SetOppositeSide() {
@@ -152,7 +149,7 @@ public class Hole extends RotatableImage {
         m_owner_wheel.TokenUsed(this);
         bottom_hole.m_owner_wheel.TokenEntered(bottom_hole);
 
-        m_media_player = MediaPlayer.create(m_context, R.raw.token_fall);
+        m_media_player = MediaPlayer.create(m_activity, R.raw.token_fall);
         m_media_player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
