@@ -1,7 +1,10 @@
 package com.shirbi.downfall;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Point;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Display;
 import android.view.MotionEvent;
@@ -163,7 +166,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 
         findViewById(R.id.wheels_layout).requestLayout();
 
-        onNewGameButtonClick(null);
+        StartNewGame();
     }
 
     public boolean onTouch(View v, MotionEvent event) {
@@ -214,6 +217,28 @@ public class MainActivity extends Activity implements View.OnTouchListener {
     }
 
     public void onNewGameButtonClick(View view) {
+        AlertDialog.Builder builder;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+        } else {
+            builder = new AlertDialog.Builder(this);
+        }
+        builder.setTitle("Start new game?");
+        builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                StartNewGame();
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                // do nothing
+            }
+        });
+        //builder.setIcon(R.drawable.new_game_icon); // TODO: Add this
+        builder.show();
+    }
+
+    public void StartNewGame() {
         for (int i = 0; i < m_connectable_images.length; i++) {
             m_connectable_images[i].Reset();
         }
