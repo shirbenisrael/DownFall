@@ -1,10 +1,9 @@
 package com.shirbi.downfall;
 
-public class SimpleStupidAI {
-    private Wheel m_wheels[];
+public class SimpleStupidAI extends OppositePlayer {
 
     SimpleStupidAI( Wheel wheels[]) {
-        m_wheels = wheels;
+        super(wheels);
     }
 
     private RotationResult RotateWheelResultTokenOnWheel(Wheel wheel, Hole hole) {

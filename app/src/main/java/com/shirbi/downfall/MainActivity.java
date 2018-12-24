@@ -16,6 +16,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
     private Point m_size;
     private int m_wheel_ids[] = {R.id.wheel1, R.id.wheel2, R.id.wheel3, R.id.wheel4, R.id.wheel5};
     SimpleStupidAI m_simple_stupid_ai;
+    SmartAI m_smart_ai;
     Wheel m_wheels[];
     ConnectableImage m_connectable_images[];
     int m_last_wheel_rotated;
@@ -104,8 +105,6 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         m_player_text_view_token_counter_left = (TextView)findViewById(R.id.player_token_counter);
         m_opposite_text_view_token_counter_left = (TextView)findViewById(R.id.opposite_token_counter);
 
-        m_simple_stupid_ai = new SimpleStupidAI(m_wheels);
-
         double base_diameter = m_size.x / 3;
 
         SetConnectableImageDiameter(R.id.input_token_queue_left, base_diameter * 1);
@@ -149,6 +148,9 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         AddHole(R.id.output, 90, false);
         AddHole(R.id.output, 90, true);
 
+        m_simple_stupid_ai = new SimpleStupidAI(m_wheels);
+        m_smart_ai = new SmartAI(m_wheels);
+
         findViewById(R.id.wheels_layout).requestLayout();
 
         StartNewGame();
@@ -190,6 +192,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         m_last_wheel_rotated = m_wheels.length;
 
         int rotated_wheel = m_simple_stupid_ai.Run();
+        //int rotated_wheel = m_smart_ai.Run();
 
         // Allow the player use all wheels except the one used by the AI.
         if (rotated_wheel < m_wheels.length) {
@@ -227,7 +230,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         for (int i = 0; i < m_connectable_images.length; i++) {
             m_connectable_images[i].Reset();
         }
-        
+
         m_last_wheel_rotated = m_wheels.length;
     }
 
