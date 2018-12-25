@@ -147,4 +147,12 @@ public class InputTokenQueue extends ConnectableImage implements SlideToken {
         token.SetOppositeSide();
         AddToken(token);
     }
+
+    // Ignore the one in the hole
+    public int GetNumTokensInQueue() {
+        return m_tokens.size();
+    }
+    public int GetNumTokensInQueueOpposite() {
+        return m_tokens_opposite.size();
+    }
 }

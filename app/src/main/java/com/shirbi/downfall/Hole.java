@@ -57,6 +57,10 @@ public class Hole extends RotatableImage {
         return m_baseAngle;
     }
 
+    public double GetCurrentAngle() {
+        return m_current_angle;
+    }
+
     public void SetAngle(double wheelAngle) {
         RelativeLayout relativeLayout = (RelativeLayout) this.getParent();
 

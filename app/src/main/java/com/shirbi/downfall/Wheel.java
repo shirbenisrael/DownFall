@@ -16,6 +16,8 @@ public class Wheel extends ConnectableImage {
     private Boolean m_allow_rotation;
     private int m_wheel_num;
 
+    static private final int WHEEL_ROTATION_RATE = 15; // Larger = slower.
+
     private void Init() {
         m_allow_rotation = true;
     }
@@ -58,7 +60,7 @@ public class Wheel extends ConnectableImage {
                 TimerMethod();
             }
 
-        }, 0, 2);
+        }, 0, WHEEL_ROTATION_RATE);
     }
 
     private void TimerMethod() {
@@ -81,6 +83,11 @@ public class Wheel extends ConnectableImage {
             if (m_auto_rotate_angle < 0) {
                 m_current_angle--;
                 m_auto_rotate_angle++;
+            }
+
+            m_current_angle = m_current_angle % 360;
+            if (m_current_angle < 0) {
+                m_current_angle += 360;
             }
 
             Rotate(m_current_angle);

@@ -25,7 +25,7 @@ public class Connection {
 
     }
 
-    private double angle_diff(double angle1, double angle2) {
+    public double angle_diff(double angle1, double angle2) {
         double diff =  abs(angle1 - angle2) % 360;
         if (diff > 180) {
             diff = 360 - diff;
