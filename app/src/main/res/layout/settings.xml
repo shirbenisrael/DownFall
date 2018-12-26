@@ -6,6 +6,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <RadioButton android:id="@+id/hide_holes_always_radio_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="hide_holes_always"/>
+        <RadioButton android:id="@+id/show_holes_on_connect_radio_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="show_holes_on_connect"/>
+        <RadioButton android:id="@+id/show_holes_always_radio_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="show_holes_always"/>
+    </RadioGroup>
+
     <CheckBox
         android:id="@+id/smart_ai_checkbox"
         android:layout_width="wrap_content"
