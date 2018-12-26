@@ -193,8 +193,10 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 
         m_last_wheel_rotated = m_wheels.length;
 
-        //int rotated_wheel = m_simple_stupid_ai.Run();
-        int rotated_wheel = m_smart_ai.Run();
+        CheckBox smart_ai_checkbox = (CheckBox)findViewById(R.id.smart_ai_checkbox);
+
+        OppositePlayer ai_player = smart_ai_checkbox.isChecked() ? m_smart_ai : m_simple_stupid_ai;
+        int rotated_wheel = ai_player.Run();
 
         // Allow the player use all wheels except the one used by the AI.
         if (rotated_wheel < m_wheels.length) {
