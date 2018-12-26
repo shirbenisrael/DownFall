@@ -7,7 +7,7 @@
     tools:context=".MainActivity">
 
     <LinearLayout
-        android:id="@+id/vertical_layout"
+        android:id="@+id/main_game_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
@@ -157,6 +157,18 @@
                 android:text="New Game" />
 
         </LinearLayout>
+
+        <Button
+            android:id="@+id/setting_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onSettingClick"
+            android:text="setting" />
     </LinearLayout>
+
+    <include
+        android:id="@+id/setting_layout"
+        layout="@layout/settings"/>
+
 
 </android.support.constraint.ConstraintLayout>

@@ -237,6 +237,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
     public void EnableButtons(Boolean enable) {
         findViewById(R.id.finish_turn_button).setEnabled(enable);
         findViewById(R.id.new_game_button).setEnabled(enable);
+        findViewById(R.id.setting_button).setEnabled(enable);
     }
 
     public void ShowNumTokenLeft(Boolean is_opposite, int num_token_left) {
@@ -245,5 +246,15 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         } else {
             m_player_text_view_token_counter_left.setText(String.valueOf(num_token_left));
         }
+    }
+
+    public void onSettingClick(View view) {
+        findViewById(R.id.main_game_layout).setVisibility(View.INVISIBLE);
+        findViewById(R.id.setting_layout).setVisibility(View.VISIBLE);
+    }
+
+    public void onBackFromSettingClick(View view) {
+        findViewById(R.id.main_game_layout).setVisibility(View.VISIBLE);
+        findViewById(R.id.setting_layout).setVisibility(View.INVISIBLE);
     }
 }
