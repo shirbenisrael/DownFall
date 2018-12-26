@@ -1,8 +1,7 @@
 package com.shirbi.downfall;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 
 public class SmartAI extends OppositePlayer {
     private int[][] m_interesting_angles;
@@ -118,12 +117,12 @@ public class SmartAI extends OppositePlayer {
         ROTATE_RIGHT
     }
 
-    private Set<SmartRotationResult> RotateWheelResult(int wheel_num, ROTATION_DIRECTION direction) {
+    private ArrayList<SmartRotationResult> RotateWheelResult(int wheel_num, ROTATION_DIRECTION direction) {
         Wheel wheel = m_wheels[wheel_num];
         SimulatedHole wheel_holes[] = m_simulated_wheel_holes[wheel_num];
         SimulatedConnection wheel_connections[] = m_simulated_wheel_connection[wheel_num];
 
-        Set<SmartRotationResult> rotation_results = new HashSet<>();
+        ArrayList<SmartRotationResult> rotation_results = new ArrayList<>();
 
         int first_interesting_angle;
         int wheel_interesting_angles[] = m_interesting_angles[wheel_num];
@@ -161,7 +160,7 @@ public class SmartAI extends OppositePlayer {
 
             if (direction == ROTATION_DIRECTION.ROTATE_RIGHT) {
                 next_angle_index = (first_interesting_angle + i) % num_angles;
-                previous_angle_index = (first_interesting_angle + i - 1 + num_angles * 2 ) % num_angles;
+                previous_angle_index = (first_interesting_angle + i - 1 + num_angles * 2) % num_angles;
                 next_angle = wheel_interesting_angles[next_angle_index];
             } else {
                 next_angle_index = (first_interesting_angle - i + num_angles * 2) % num_angles;
@@ -275,14 +274,14 @@ public class SmartAI extends OppositePlayer {
         return rotation_results;
     }
 
-    private Set<SmartRotationResult> m_last_wheel_result;
+    private ArrayList<SmartRotationResult> m_last_wheel_result;
 
     @Override
     public int Run() {
 
         SmartRotationResult best_result = null;
 
-        m_last_wheel_result = new HashSet<>();
+        m_last_wheel_result = new ArrayList<>();
 
         for (int i = 0; i < m_wheels.length; i++) {
             if (!m_wheels[i].GetAllowRotation()) {
@@ -291,7 +290,7 @@ public class SmartAI extends OppositePlayer {
 
             SetupWheelHoles(i);
             SetupSimulatedWheelConnections(i);
-            Set<SmartRotationResult> wheel_results = RotateWheelResult(i, ROTATION_DIRECTION.ROTATE_RIGHT);
+            ArrayList<SmartRotationResult> wheel_results = RotateWheelResult(i, ROTATION_DIRECTION.ROTATE_RIGHT);
 
             SetupWheelHoles(i);
             SetupSimulatedWheelConnections(i);
