@@ -4,11 +4,13 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.graphics.Point;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 public class MainActivity extends Activity implements View.OnTouchListener {
@@ -256,5 +258,23 @@ public class MainActivity extends Activity implements View.OnTouchListener {
     public void onBackFromSettingClick(View view) {
         findViewById(R.id.main_game_layout).setVisibility(View.VISIBLE);
         findViewById(R.id.setting_layout).setVisibility(View.INVISIBLE);
+    }
+
+    public void PlaySound(int sound_id) {
+        CheckBox enable_sound_check_box = (CheckBox)findViewById(R.id.enable_sound_checkbox);
+        Boolean is_sound_enable = enable_sound_check_box.isChecked();
+        if (!is_sound_enable) {
+            return;
+        }
+
+        MediaPlayer media_player;
+        media_player = MediaPlayer.create(this, sound_id);
+        media_player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                mp.release();
+            }
+        });
+        media_player.start();
     }
 }

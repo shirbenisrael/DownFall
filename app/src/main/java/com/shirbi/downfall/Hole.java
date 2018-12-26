@@ -153,13 +153,6 @@ public class Hole extends RotatableImage {
         m_owner_wheel.TokenUsed(this);
         bottom_hole.m_owner_wheel.TokenEntered(bottom_hole);
 
-        m_media_player = MediaPlayer.create(m_activity, R.raw.token_fall);
-        m_media_player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mp) {
-                mp.release();
-            }
-        });
-        m_media_player.start();
+        m_activity.PlaySound(R.raw.token_fall);
     }
 }
