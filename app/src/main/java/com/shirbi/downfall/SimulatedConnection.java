@@ -53,4 +53,18 @@ public class SimulatedConnection {
 
         m_original_connection = connection;
     }
+
+    public Boolean IsEfficient() {
+        if (m_original_connection.m_top_wheel instanceof Wheel) {
+            if (((Wheel)(m_original_connection.m_top_wheel)).GetWheelNum() != 2) {
+                return true;
+            }
+
+            if (((Wheel)(m_original_connection.m_bottom_wheel)).GetWheelNum() == 3) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

@@ -187,7 +187,7 @@ public class SmartAI extends OppositePlayer {
 
             for (SimulatedHole hole : wheel_holes) {
                 SimulatedConnection connection = IsHoleConnected(wheel_connections, hole);
-                if (connection != null) {
+                if (connection != null && connection.IsEfficient()) {
                     if ((!hole.m_has_resident) && (!connection.m_top_connection)) {
                         if (hole.m_opposite_side) {
                             rotation_result.m_bottom_empty_hole_count_opposite--;
@@ -215,18 +215,26 @@ public class SmartAI extends OppositePlayer {
                             if (hole.m_opposite_side) {
                                 if (connection.m_max_num_tokens_from_wheel_opposite > 0) {
                                     connection.m_max_num_tokens_from_wheel_opposite--;
-                                    rotation_result.m_fall_token_opposite++;
+                                    if (connection.IsEfficient()) {
+                                        rotation_result.m_fall_token_opposite++;
+                                    }
                                     hole.m_has_resident = false;
                                 } else {
-                                    rotation_result.m_top_occupied_hole_count_opposite++;
+                                    if (connection.IsEfficient()) {
+                                        rotation_result.m_top_occupied_hole_count_opposite++;
+                                    }
                                 }
                             } else {
                                 if (connection.m_max_num_tokens_from_wheel > 0) {
                                     connection.m_max_num_tokens_from_wheel--;
-                                    rotation_result.m_fall_token++;
+                                    if (connection.IsEfficient()) {
+                                        rotation_result.m_fall_token++;
+                                    }
                                     hole.m_has_resident = false;
                                 } else {
-                                    rotation_result.m_top_occupied_hole_count++;
+                                    if (connection.IsEfficient()) {
+                                        rotation_result.m_top_occupied_hole_count++;
+                                    }
                                 }
                             }
                         }
@@ -235,18 +243,26 @@ public class SmartAI extends OppositePlayer {
                             if (hole.m_opposite_side) {
                                 if (connection.m_max_num_tokens_to_wheel_opposite > 0) {
                                     connection.m_max_num_tokens_to_wheel_opposite--;
-                                    rotation_result.m_fall_token_opposite++;
+                                    if (connection.IsEfficient()) {
+                                        rotation_result.m_fall_token_opposite++;
+                                    }
                                     hole.m_has_resident = true;
                                 } else {
-                                    rotation_result.m_bottom_empty_hole_count_opposite++;
+                                    if (connection.IsEfficient()) {
+                                        rotation_result.m_bottom_empty_hole_count_opposite++;
+                                    }
                                 }
                             } else {
                                 if (connection.m_max_num_tokens_to_wheel > 0) {
                                     connection.m_max_num_tokens_to_wheel--;
-                                    rotation_result.m_fall_token++;
+                                    if (connection.IsEfficient()) {
+                                        rotation_result.m_fall_token++;
+                                    }
                                     hole.m_has_resident = true;
                                 } else {
-                                    rotation_result.m_bottom_empty_hole_count++;
+                                    if (connection.IsEfficient()) {
+                                        rotation_result.m_bottom_empty_hole_count++;
+                                    }
                                 }
                             }
                         } // empty hole
