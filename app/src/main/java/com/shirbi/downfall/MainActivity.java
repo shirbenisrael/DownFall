@@ -191,8 +191,8 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 
         m_last_wheel_rotated = m_wheels.length;
 
-        int rotated_wheel = m_simple_stupid_ai.Run();
-        //int rotated_wheel = m_smart_ai.Run();
+        //int rotated_wheel = m_simple_stupid_ai.Run();
+        int rotated_wheel = m_smart_ai.Run();
 
         // Allow the player use all wheels except the one used by the AI.
         if (rotated_wheel < m_wheels.length) {

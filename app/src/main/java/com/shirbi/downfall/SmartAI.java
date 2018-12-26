@@ -149,23 +149,41 @@ public class SmartAI extends OppositePlayer {
 
         SmartRotationResult rotation_result = new SmartRotationResult(wheel);
 
+        int previous_angle = 0;
+
         for (int i = 0; i < num_angles * 2; i++) {
             int next_angle_index;
             int num_full_cycles;
             int next_angle;
+            int previous_angle_index;
+            int previous_interesting_angle;
+            int diff_angels;
 
             if (direction == ROTATION_DIRECTION.ROTATE_RIGHT) {
                 next_angle_index = (first_interesting_angle + i) % num_angles;
-                num_full_cycles = (first_interesting_angle + i) / num_angles;
+                previous_angle_index = (first_interesting_angle + i - 1 + num_angles * 2 ) % num_angles;
                 next_angle = wheel_interesting_angles[next_angle_index];
             } else {
                 next_angle_index = (first_interesting_angle - i + num_angles * 2) % num_angles;
-                num_full_cycles = (first_interesting_angle - i) / num_angles;
+                previous_angle_index = (first_interesting_angle - i + 1 + num_angles * 2) % num_angles;
                 next_angle = wheel_interesting_angles[next_angle_index] - 360;
             }
 
+            if (i != 0) {
+                previous_interesting_angle = wheel_interesting_angles[previous_angle_index];
+            } else {
+                previous_interesting_angle = (int) wheel.GetCurrentAngle();
+            }
+
+            if (direction == ROTATION_DIRECTION.ROTATE_RIGHT) {
+                diff_angels = (next_angle - previous_interesting_angle + 360) % 360;
+            } else {
+                diff_angels = (next_angle - previous_interesting_angle - 360) % 360;
+            }
+
             rotation_result = new SmartRotationResult(rotation_result);
-            rotation_result.m_angle = next_angle + num_full_cycles * 360 - (int) wheel.GetCurrentAngle();
+            rotation_result.m_angle = previous_angle + diff_angels;
+            previous_angle = rotation_result.m_angle;
 
             for (SimulatedHole hole : wheel_holes) {
                 SimulatedConnection connection = IsHoleConnected(wheel_connections, hole);
@@ -241,10 +259,14 @@ public class SmartAI extends OppositePlayer {
         return rotation_results;
     }
 
+    private Set<SmartRotationResult> m_last_wheel_result;
+
     @Override
     public int Run() {
 
         SmartRotationResult best_result = null;
+
+        m_last_wheel_result = new HashSet<>();
 
         for (int i = 0; i < m_wheels.length; i++) {
             if (!m_wheels[i].GetAllowRotation()) {
@@ -264,6 +286,8 @@ public class SmartAI extends OppositePlayer {
                     best_result = result;
                 }
             }
+
+            m_last_wheel_result.addAll(wheel_results);
         }
 
         if (best_result != null) {
