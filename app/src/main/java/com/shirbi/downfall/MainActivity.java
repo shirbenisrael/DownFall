@@ -139,7 +139,8 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         AddHole(R.id.input_token_queue_right, 270, PlayerType.HUMAN_PLAYER);
         AddHole(R.id.input_token_queue_right, 270, PlayerType.AI_PLAYER);
 
-        AddHoles(R.id.wheel1, 30, 1);
+        AddHole(R.id.wheel1, 30, PlayerType.HUMAN_PLAYER);
+        AddHole(R.id.wheel1, 330, PlayerType.AI_PLAYER);
         AddHoles(R.id.wheel2, 90, 3);
         AddHoles(R.id.wheel3, 90, 2);
         AddHoles(R.id.wheel4, 45, 4);
