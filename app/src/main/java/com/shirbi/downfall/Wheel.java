@@ -162,6 +162,7 @@ public class Wheel extends ConnectableImage {
     public void Reset() {
         super.Reset();
         m_current_angle = 0;
+        m_previous_angle = 0;
         m_allow_rotation = true;
         Rotate(m_current_angle);
     }
