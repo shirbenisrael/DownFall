@@ -53,7 +53,7 @@
                     android:id="@+id/wheel1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/wheel" />
+                    android:src="@drawable/wheel1" />
 
             </RelativeLayout>
 
@@ -66,7 +66,7 @@
                     android:id="@+id/wheel2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/wheel" />
+                    android:src="@drawable/wheel2" />
 
             </RelativeLayout>
 
@@ -79,7 +79,7 @@
                     android:id="@+id/wheel3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/wheel" />
+                    android:src="@drawable/wheel3" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -91,7 +91,7 @@
                     android:id="@+id/wheel4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/wheel" />
+                    android:src="@drawable/wheel4" />
 
             </RelativeLayout>
 
@@ -104,7 +104,7 @@
                     android:id="@+id/wheel5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/wheel" />
+                    android:src="@drawable/wheel5" />
 
             </RelativeLayout>
 
