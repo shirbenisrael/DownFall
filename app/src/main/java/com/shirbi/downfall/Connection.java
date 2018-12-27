@@ -39,7 +39,7 @@ public class Connection {
 
     public Hole GetBottomConnected(Hole hole) {
         for (Hole bottom_hole : m_bottom_holes) {
-            if (bottom_hole.GetOppositeSide() == hole.GetOppositeSide()) {
+            if (bottom_hole.GetPlayerType() == hole.GetPlayerType()) {
                 return bottom_hole;
             }
         }
@@ -48,7 +48,7 @@ public class Connection {
 
     public Hole GetTopConnected(Hole hole) {
         for (Hole top_hole : m_top_holes) {
-            if (top_hole.GetOppositeSide() == hole.GetOppositeSide()) {
+            if (top_hole.GetPlayerType() == hole.GetPlayerType()) {
                 return top_hole;
             }
         }

@@ -22,8 +22,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
     Wheel m_wheels[];
     ConnectableImage m_connectable_images[];
     int m_last_wheel_rotated;
-    TextView m_player_text_view_token_counter_left;
-    TextView m_opposite_text_view_token_counter_left;
+    TextView m_player_text_view_token_counter_left[] = new TextView[PlayerType.NUM_PLAYERS];
 
     private Point GetWindowSize() {
         Display display = getWindowManager().getDefaultDisplay();
@@ -32,26 +31,23 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         return size;
     }
 
-    private void AddHole(int wheel_id, int angle, Boolean opposite) {
+    private void AddHole(int wheel_id, int angle, PlayerType player_type) {
         Hole hole = new Hole(this);
         hole.SetDiameter(m_size.x / 18);
         ((ConnectableImage)findViewById(wheel_id)).AddHole(hole, angle);
-
-        if (opposite) {
-            hole.SetOppositeSide();
-        }
+        hole.SetPlayerType(player_type);
     }
 
     private void AddHoles(int wheel_id, int first_angle, int num_holes) {
         int angle = first_angle;
         for (int i = 0; i < num_holes; i++) {
-            AddHole(wheel_id, angle, false);
+            AddHole(wheel_id, angle, PlayerType.HUMAN_PLAYER);
             angle += 360 / num_holes;
         }
 
         angle = first_angle + (180 / num_holes);
         for (int i = 0; i < num_holes; i++) {
-            AddHole(wheel_id, angle, true);
+            AddHole(wheel_id, angle, PlayerType.AI_PLAYER);
             angle += 360 / num_holes;
         }
     }
@@ -104,8 +100,10 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         m_connectable_images[6] = ((ConnectableImage)findViewById(R.id.input_token_queue_right));
         m_connectable_images[7] = ((ConnectableImage)findViewById(R.id.output));
 
-        m_player_text_view_token_counter_left = (TextView)findViewById(R.id.player_token_counter);
-        m_opposite_text_view_token_counter_left = (TextView)findViewById(R.id.opposite_token_counter);
+        m_player_text_view_token_counter_left[PlayerType.HUMAN_PLAYER.getInt()] =
+                (TextView)findViewById(R.id.player_token_counter);
+        m_player_text_view_token_counter_left[PlayerType.AI_PLAYER.getInt()]
+                = (TextView)findViewById(R.id.opposite_token_counter);
 
         double base_diameter = m_size.x / 3;
 
@@ -136,10 +134,10 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 
         ConnectWheels(R.id.output, R.id.wheel5, 90);
 
-        AddHole(R.id.input_token_queue_left, 90, false);
-        AddHole(R.id.input_token_queue_left, 90, true);
-        AddHole(R.id.input_token_queue_right, 270, false);
-        AddHole(R.id.input_token_queue_right, 270, true);
+        AddHole(R.id.input_token_queue_left, 90, PlayerType.HUMAN_PLAYER);
+        AddHole(R.id.input_token_queue_left, 90, PlayerType.AI_PLAYER);
+        AddHole(R.id.input_token_queue_right, 270, PlayerType.HUMAN_PLAYER);
+        AddHole(R.id.input_token_queue_right, 270, PlayerType.AI_PLAYER);
 
         AddHoles(R.id.wheel1, 30, 1);
         AddHoles(R.id.wheel2, 90, 3);
@@ -147,8 +145,8 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         AddHoles(R.id.wheel4, 45, 4);
         AddHoles(R.id.wheel5, 90, 5);
 
-        AddHole(R.id.output, 90, false);
-        AddHole(R.id.output, 90, true);
+        AddHole(R.id.output, 90, PlayerType.HUMAN_PLAYER);
+        AddHole(R.id.output, 90, PlayerType.AI_PLAYER);
 
         m_simple_stupid_ai = new SimpleStupidAI(m_wheels);
         m_smart_ai = new SmartAI(m_wheels);
@@ -244,12 +242,8 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         findViewById(R.id.setting_button).setEnabled(enable);
     }
 
-    public void ShowNumTokenLeft(Boolean is_opposite, int num_token_left) {
-        if (is_opposite) {
-            m_opposite_text_view_token_counter_left.setText(String.valueOf(num_token_left));
-        } else {
-            m_player_text_view_token_counter_left.setText(String.valueOf(num_token_left));
-        }
+    public void ShowNumTokenLeft(PlayerType player_type, int num_token_left) {
+        m_player_text_view_token_counter_left[player_type.getInt()].setText(String.valueOf(num_token_left));
     }
 
     public void onSettingClick(View view) {

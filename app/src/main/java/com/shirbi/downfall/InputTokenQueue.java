@@ -10,14 +10,19 @@ public class InputTokenQueue extends ConnectableImage implements SlideToken {
 
     public static final int MAX_TOKENS = 5;
 
-    private ArrayList<Token> m_tokens;
-    private ArrayList<Token> m_tokens_opposite;
+    private class TokenList extends  ArrayList<Token> {};
+
+    private TokenList[] m_tokens = new TokenList[PlayerType.NUM_PLAYERS];
 
     Token.HORIZONTAL_ALIGNMENT m_horizontal_alignment;
 
     private void Init(Context context) {
-        m_tokens = new ArrayList<Token>();
-        m_tokens_opposite = new ArrayList<Token>();
+        String strings[];
+        strings = new String[2];
+
+        for (int i = 0; i < m_tokens.length; i++) {
+            m_tokens[i] = new TokenList();
+        }
     }
 
     public InputTokenQueue(Context context) {
@@ -33,7 +38,7 @@ public class InputTokenQueue extends ConnectableImage implements SlideToken {
     // Find hole with same player as token.
     private Hole MatchHoleToToke(Token token) {
         for (Hole hole : m_holes) {
-            if (hole.GetOppositeSide() == token.GetOppositeSide()) {
+            if (hole.GetPlayerType() == token.GetPlayerType()) {
                 return hole;
             }
         }
@@ -42,17 +47,17 @@ public class InputTokenQueue extends ConnectableImage implements SlideToken {
     }
 
     // Return token list according token player.
-    private ArrayList<Token> MatchTokenList(Token token) {
-        return token.GetOppositeSide() ? m_tokens_opposite : m_tokens;
+    private TokenList MatchTokenList(Token token) {
+        return m_tokens[token.GetPlayerType().getInt()];
     }
 
-    private ArrayList<Token> MatchHoleToTokenList(Hole hole) {
-        return hole.GetOppositeSide() ? m_tokens_opposite : m_tokens;
+    private TokenList MatchHoleToTokenList(Hole hole) {
+        return m_tokens[hole.GetPlayerType().getInt()];
     }
 
     private void AddToken(Token token) {
         Hole hole = MatchHoleToToke(token);
-        ArrayList<Token> tokens_list = MatchTokenList(token);
+        TokenList tokens_list = MatchTokenList(token);
 
         token.SetDiameter(hole.m_diameter);
 
@@ -81,14 +86,12 @@ public class InputTokenQueue extends ConnectableImage implements SlideToken {
         Token new_token = new Token(m_activity);
 
         new_token.SetType(token.GetColor(), token.GetNumber()+ 1 );
-        if (token.GetOppositeSide()) {
-            new_token.SetOppositeSide();
-        }
+        new_token.SetPlayerType(token.GetPlayerType());
         AddToken(new_token);
     }
 
     public void TokenUsed(Hole hole) {
-        ArrayList<Token> tokens_list = MatchHoleToTokenList(hole);
+        TokenList tokens_list = MatchHoleToTokenList(hole);
 
         if (tokens_list.isEmpty()) {
             return;
@@ -122,16 +125,12 @@ public class InputTokenQueue extends ConnectableImage implements SlideToken {
     public void Reset() {
         super.Reset();
 
-        for (Token token : m_tokens) {
-            ((ViewGroup) (token.getParent())).removeView(token);
+        for (int i = 0; i < m_tokens.length; i++) {
+            for (Token token : m_tokens[i]) {
+                ((ViewGroup) (token.getParent())).removeView(token);
+            }
+            m_tokens[i].clear();
         }
-        m_tokens.clear();
-
-        for (Token token : m_tokens_opposite) {
-            ((ViewGroup) (token.getParent())).removeView(token);
-        }
-        m_tokens_opposite.clear();
-
         Token token = new Token(m_activity);
 
         Token.COLOR color =
@@ -144,15 +143,12 @@ public class InputTokenQueue extends ConnectableImage implements SlideToken {
 
         token = new Token(m_activity);
         token.SetType(color, 1);
-        token.SetOppositeSide();
+        token.SetPlayerType(PlayerType.AI_PLAYER);
         AddToken(token);
     }
 
     // Ignore the one in the hole
-    public int GetNumTokensInQueue() {
-        return m_tokens.size();
-    }
-    public int GetNumTokensInQueueOpposite() {
-        return m_tokens_opposite.size();
+    public int GetNumTokensInQueue(PlayerType player_type) {
+        return m_tokens[player_type.getInt()].size();
     }
 }

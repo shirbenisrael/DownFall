@@ -16,7 +16,7 @@ public class Hole extends RotatableImage {
     private ConnectableImage m_owner_wheel;
     private Token m_resident;
     private MediaPlayer m_media_player;
-    private Boolean m_opposite_side;
+    private PlayerType m_player_type;
 
     private static final float ALPHA_FOR_OPPOSITE = (float)0.2;
 
@@ -26,7 +26,7 @@ public class Hole extends RotatableImage {
 
         setImageResource(R.drawable.hole);
 
-        m_opposite_side = false;
+        m_player_type = PlayerType.HUMAN_PLAYER;
     }
 
     public Hole(Context context) {
@@ -39,13 +39,15 @@ public class Hole extends RotatableImage {
         Init();
     }
 
-    public void SetOppositeSide() {
-        m_opposite_side = true;
-        ((View)this).setAlpha(ALPHA_FOR_OPPOSITE);
+    public void SetPlayerType(PlayerType player_type) {
+        m_player_type = player_type;
+        if (m_player_type == PlayerType.AI_PLAYER) {
+            ((View) this).setAlpha(ALPHA_FOR_OPPOSITE);
+        }
     }
 
-    public Boolean GetOppositeSide() {
-        return m_opposite_side;
+    public PlayerType GetPlayerType() {
+        return m_player_type;
     }
 
     public void SetBaseAngle(ConnectableImage owner_wheel, int angle) {
@@ -141,7 +143,7 @@ public class Hole extends RotatableImage {
         if (bottom_hole.m_resident != null) {
             return;
         }
-        if (m_opposite_side != bottom_hole.m_opposite_side) {
+        if (m_player_type != bottom_hole.m_player_type) {
             return;
         }
 

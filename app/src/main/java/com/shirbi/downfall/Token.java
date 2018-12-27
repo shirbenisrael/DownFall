@@ -24,7 +24,7 @@ public class Token extends RotatableImage {
 
     private int m_number;
     private COLOR m_color;
-    public Boolean m_opposite_side;
+    public PlayerType m_player_type;
     private Context m_context;
     private Timer m_timer;
     private int m_count_down;
@@ -41,7 +41,7 @@ public class Token extends RotatableImage {
     private static final float ALPHA_FOR_OPPOSITE = (float)0.2;
 
     private void Init() {
-        m_opposite_side = false;
+        m_player_type = PlayerType.HUMAN_PLAYER;
         m_this_token = this;
     }
 
@@ -57,13 +57,15 @@ public class Token extends RotatableImage {
         Init();
     }
 
-    public void SetOppositeSide() {
-        m_opposite_side = true;
-        ((View)this).setAlpha(ALPHA_FOR_OPPOSITE);
+    public void SetPlayerType(PlayerType playerType) {
+        m_player_type = playerType;
+        if (m_player_type == PlayerType.AI_PLAYER) {
+            ((View) this).setAlpha(ALPHA_FOR_OPPOSITE);
+        }
     }
 
-    public Boolean GetOppositeSide() {
-        return m_opposite_side;
+    public PlayerType GetPlayerType() {
+        return m_player_type;
     }
 
     public void SetType(COLOR color, int number) {

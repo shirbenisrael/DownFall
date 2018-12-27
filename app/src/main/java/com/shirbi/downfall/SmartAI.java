@@ -188,19 +188,11 @@ public class SmartAI extends OppositePlayer {
                 SimulatedConnection connection = IsHoleConnected(wheel_connections, hole);
                 if (connection != null && connection.IsEfficient()) {
                     if ((!hole.m_has_resident) && (!connection.m_top_connection)) {
-                        if (hole.m_opposite_side) {
-                            rotation_result.m_bottom_empty_hole_count_opposite--;
-                        } else {
-                            rotation_result.m_bottom_empty_hole_count--;
-                        }
+                        rotation_result.m_bottom_empty_hole_count[hole.m_player_type.getInt()]--;
                     }
 
                     if (hole.m_has_resident && connection.m_top_connection) {
-                        if (hole.m_opposite_side) {
-                            rotation_result.m_top_occupied_hole_count_opposite--;
-                        } else {
-                            rotation_result.m_top_occupied_hole_count--;
-                        }
+                        rotation_result.m_top_occupied_hole_count[hole.m_player_type.getInt()]--;
                     }
                 }
 
@@ -211,59 +203,33 @@ public class SmartAI extends OppositePlayer {
                 if (connection != null) {
                     if (connection.m_top_connection) {
                         if (hole.m_has_resident) {
-                            if (hole.m_opposite_side) {
-                                if (connection.m_max_num_tokens_from_wheel_opposite > 0) {
-                                    connection.m_max_num_tokens_from_wheel_opposite--;
-                                    if (connection.IsEfficient()) {
-                                        rotation_result.m_fall_token_opposite++;
-                                    }
-                                    hole.m_has_resident = false;
-                                } else {
-                                    if (connection.IsEfficient()) {
-                                        rotation_result.m_top_occupied_hole_count_opposite++;
-                                    }
+                            if (connection.m_max_num_tokens_from_wheel[hole.m_player_type.getInt()] > 0) {
+                                connection.m_max_num_tokens_from_wheel[hole.m_player_type.getInt()]--;
+                                if (connection.IsEfficient()) {
+                                    rotation_result.m_fall_token[hole.m_player_type.getInt()]++;
                                 }
+                                hole.m_has_resident = false;
                             } else {
-                                if (connection.m_max_num_tokens_from_wheel > 0) {
-                                    connection.m_max_num_tokens_from_wheel--;
-                                    if (connection.IsEfficient()) {
-                                        rotation_result.m_fall_token++;
-                                    }
-                                    hole.m_has_resident = false;
-                                } else {
-                                    if (connection.IsEfficient()) {
-                                        rotation_result.m_top_occupied_hole_count++;
-                                    }
+                                if (connection.IsEfficient()) {
+                                    rotation_result.m_top_occupied_hole_count[hole.m_player_type.getInt()]++;
                                 }
                             }
+
                         }
                     } else { // else: bottom connection.
                         if (!hole.m_has_resident) {
-                            if (hole.m_opposite_side) {
-                                if (connection.m_max_num_tokens_to_wheel_opposite > 0) {
-                                    connection.m_max_num_tokens_to_wheel_opposite--;
-                                    if (connection.IsEfficient()) {
-                                        rotation_result.m_fall_token_opposite++;
-                                    }
-                                    hole.m_has_resident = true;
-                                } else {
-                                    if (connection.IsEfficient()) {
-                                        rotation_result.m_bottom_empty_hole_count_opposite++;
-                                    }
+                            if (connection.m_max_num_tokens_to_wheel[hole.m_player_type.getInt()] > 0) {
+                                connection.m_max_num_tokens_to_wheel[hole.m_player_type.getInt()]--;
+                                if (connection.IsEfficient()) {
+                                    rotation_result.m_fall_token[hole.m_player_type.getInt()]++;
                                 }
+                                hole.m_has_resident = true;
                             } else {
-                                if (connection.m_max_num_tokens_to_wheel > 0) {
-                                    connection.m_max_num_tokens_to_wheel--;
-                                    if (connection.IsEfficient()) {
-                                        rotation_result.m_fall_token++;
-                                    }
-                                    hole.m_has_resident = true;
-                                } else {
-                                    if (connection.IsEfficient()) {
-                                        rotation_result.m_bottom_empty_hole_count++;
-                                    }
+                                if (connection.IsEfficient()) {
+                                    rotation_result.m_bottom_empty_hole_count[hole.m_player_type.getInt()]++;
                                 }
                             }
+
                         } // empty hole
                     } // connection type
                 } // has connection
@@ -298,7 +264,9 @@ public class SmartAI extends OppositePlayer {
 
             for (SmartRotationResult result : wheel_results) {
                 if ((result != null) && result.IsBetterThan(best_result)) {
-                    best_result = result;
+                    if (result.IsBetterThan(best_result)) {
+                        best_result = result;
+                    }
                 }
             }
 

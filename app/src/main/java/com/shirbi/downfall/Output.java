@@ -5,8 +5,7 @@ import android.util.AttributeSet;
 import android.view.ViewGroup;
 
 public class Output extends ConnectableImage implements SlideToken {
-    int m_player_num_tokens_left;
-    int m_opposite_num_tokens_left;
+    int m_player_num_tokens_left[] = new int[PlayerType.NUM_PLAYERS];
 
     public Output(Context context) {
         super(context);
@@ -27,13 +26,9 @@ public class Output extends ConnectableImage implements SlideToken {
         hole.GetResident().QueueAnimation(5, Token.HORIZONTAL_ALIGNMENT.LEFT_EDJE, this);
         hole.SetResident(null);
 
-        if (hole.GetOppositeSide()) {
-            m_opposite_num_tokens_left--;
-            m_activity.ShowNumTokenLeft(true, m_opposite_num_tokens_left);
-        } else {
-            m_player_num_tokens_left--;
-            m_activity.ShowNumTokenLeft(false, m_player_num_tokens_left);
-        }
+        m_player_num_tokens_left[hole.GetPlayerType().getInt()]--;
+        m_activity.ShowNumTokenLeft(hole.GetPlayerType(),
+                m_player_num_tokens_left[hole.GetPlayerType().getInt()]);
     }
 
     public void TokenStoppedMoving(Token token) {
@@ -41,11 +36,9 @@ public class Output extends ConnectableImage implements SlideToken {
     }
 
     public void Reset() {
-        m_opposite_num_tokens_left = 10;
-        m_activity.ShowNumTokenLeft(true, m_opposite_num_tokens_left);
-        m_player_num_tokens_left = 10;
-        m_activity.ShowNumTokenLeft(false, m_player_num_tokens_left);
+        for (int i = 0; i < m_player_num_tokens_left.length; i++) {
+            m_player_num_tokens_left[i] = 10;
+            m_activity.ShowNumTokenLeft(PlayerType.values()[i], m_player_num_tokens_left[i]);
+        }
     }
-
-
 }

@@ -3,31 +3,26 @@ package com.shirbi.downfall;
 public class SimulatedConnection {
     public Boolean m_top_connection;
     public Connection m_original_connection;
-    public int m_max_num_tokens_to_wheel;
-    public int m_max_num_tokens_from_wheel;
-    public int m_max_num_tokens_to_wheel_opposite;
-    public int m_max_num_tokens_from_wheel_opposite;
+    public int m_max_num_tokens_to_wheel[] = new int[PlayerType.NUM_PLAYERS];
+    public int m_max_num_tokens_from_wheel[] = new int[PlayerType.NUM_PLAYERS];
 
     public SimulatedConnection(Connection connection, Wheel wheel) {
-        m_max_num_tokens_to_wheel = 0;
-        m_max_num_tokens_from_wheel = 0;
-        m_max_num_tokens_to_wheel_opposite = 0;
-        m_max_num_tokens_from_wheel_opposite = 0;
+        for (int i = 0 ; i < PlayerType.NUM_PLAYERS; i++) {
+            m_max_num_tokens_to_wheel[i] = 0;
+            m_max_num_tokens_from_wheel[i] = 0;
+        }
 
         if (connection.m_top_wheel == wheel) {
             m_top_connection = true;
 
             if (connection.m_bottom_wheel instanceof Output) {
-                m_max_num_tokens_from_wheel = 10;
-                m_max_num_tokens_from_wheel_opposite = 10;
+                for (int i = 0 ; i < PlayerType.NUM_PLAYERS ; i++) {
+                    m_max_num_tokens_from_wheel[i] = 10;
+                }
             } else {
                 for (Hole hole : connection.m_bottom_holes) {
                     if (hole.GetResident() == null) {
-                        if (hole.GetOppositeSide()) {
-                            m_max_num_tokens_from_wheel_opposite = 1;
-                        } else {
-                            m_max_num_tokens_from_wheel =1;
-                        }
+                        m_max_num_tokens_from_wheel[hole.GetPlayerType().getInt()] = 1;
                     }
                 }
             }
@@ -36,18 +31,15 @@ public class SimulatedConnection {
 
             for (Hole hole : connection.m_top_holes) {
                 if (hole.GetResident() != null) {
-                    if (hole.GetOppositeSide()) {
-                        m_max_num_tokens_to_wheel_opposite = 1;
-                    } else {
-                        m_max_num_tokens_to_wheel =1;
-                    }
+                    m_max_num_tokens_to_wheel[hole.GetPlayerType().getInt()] = 1;
                 }
             }
 
             if (connection.m_top_wheel instanceof InputTokenQueue) {
                 InputTokenQueue input_queue = (InputTokenQueue) connection.m_top_wheel;
-                m_max_num_tokens_to_wheel += input_queue.GetNumTokensInQueue();
-                m_max_num_tokens_to_wheel_opposite += input_queue.GetNumTokensInQueueOpposite();
+                for (int i = 0 ; i < PlayerType.NUM_PLAYERS ; i++) {
+                    m_max_num_tokens_to_wheel[i] += input_queue.GetNumTokensInQueue(PlayerType.values()[i]);
+                }
             }
         }
 
@@ -68,3 +60,4 @@ public class SimulatedConnection {
         return true;
     }
 }
+

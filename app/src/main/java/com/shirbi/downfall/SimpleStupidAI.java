@@ -12,7 +12,7 @@ public class SimpleStupidAI extends OppositePlayer {
                 continue; // This is the bottom wheel for this connection. The token cannot fall any more
             }
             for (Hole bottom_hole : connection.m_bottom_holes) {
-                if ((bottom_hole.GetResident() == null) && bottom_hole.GetOppositeSide()) {
+                if ((bottom_hole.GetResident() == null) && bottom_hole.GetPlayerType() == PlayerType.AI_PLAYER) {
                     // Great, we found a bottom hole that can get this token.
                     int hole_base_angle = hole.GetBaseAngle();
                     int hole_current_angle = hole_base_angle + (int)wheel.GetCurrentAngle();
@@ -40,7 +40,7 @@ public class SimpleStupidAI extends OppositePlayer {
                 continue; // This is the top wheel for this connection. We don't have a token to fall.
             }
             for (Hole top_hole : connection.m_top_holes) {
-                if ((top_hole.GetResident() != null) && top_hole.GetOppositeSide()) {
+                if ((top_hole.GetResident() != null) && top_hole.GetPlayerType() == PlayerType.AI_PLAYER) {
                     // Great, we found a top hole that can give us its token.
                     int hole_base_angle = hole.GetBaseAngle();
                     int hole_current_angle = hole_base_angle + (int)wheel.GetCurrentAngle();
@@ -64,7 +64,7 @@ public class SimpleStupidAI extends OppositePlayer {
 
     private RotationResult RotateWheelResultWithTokenFall(Wheel wheel) {
         for (Hole hole : wheel.m_holes) {
-            if (!hole.GetOppositeSide()) {
+            if (hole.GetPlayerType() != PlayerType.AI_PLAYER) {
                 // Simple stupid AI doesn't care about the human player tokens
                 continue;
             }
@@ -90,7 +90,7 @@ public class SimpleStupidAI extends OppositePlayer {
 
     private Boolean WheelHasTokenInGoodPosition(Wheel wheel) {
         for (Hole hole : wheel.m_holes) {
-            if (!hole.GetOppositeSide()) {
+            if (hole.GetPlayerType() != PlayerType.AI_PLAYER) {
                 // Simple stupid AI doesn't care about the human player tokens
                 continue;
             }
@@ -117,7 +117,7 @@ public class SimpleStupidAI extends OppositePlayer {
 
     private RotationResult RotateWheelResultTokenBetterPosition(Wheel wheel) {
         for (Hole hole : wheel.m_holes) {
-            if (!hole.GetOppositeSide()) {
+            if (hole.GetPlayerType() != PlayerType.AI_PLAYER) {
                 // Simple stupid AI doesn't care about the human player tokens
                 continue;
             }
@@ -150,7 +150,7 @@ public class SimpleStupidAI extends OppositePlayer {
 
     private Boolean WheelHasHoleInGoodPosition(Wheel wheel) {
         for (Hole hole : wheel.m_holes) {
-            if (hole.GetOppositeSide()) {
+            if (hole.GetPlayerType() != PlayerType.AI_PLAYER) {
                 // Simple stupid AI doesn't care about the human player tokens
                 continue;
             }
@@ -172,7 +172,7 @@ public class SimpleStupidAI extends OppositePlayer {
 
     private RotationResult RotateWheelResultHoleBetterPosition(Wheel wheel) {
         for (Hole hole : wheel.m_holes) {
-            if (!hole.GetOppositeSide()) {
+            if (hole.GetPlayerType() != PlayerType.AI_PLAYER) {
                 // Simple stupid AI doesn't care about the human player tokens
                 continue;
             }
