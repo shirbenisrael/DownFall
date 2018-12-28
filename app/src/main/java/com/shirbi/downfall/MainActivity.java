@@ -289,6 +289,16 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         findViewById(R.id.setting_layout).setVisibility(View.INVISIBLE);
     }
 
+    @Override
+    public void onBackPressed() {
+        if (findViewById(R.id.setting_layout).getVisibility() == View.VISIBLE) {
+            onBackFromSettingClick(null);
+            return;
+        }
+
+        super.onBackPressed();
+    }
+
     private void SetSoundEnable(Boolean is_enable) {
         CheckBox enable_sound_check_box = (CheckBox)findViewById(R.id.enable_sound_checkbox);
         enable_sound_check_box.setChecked(is_enable);
