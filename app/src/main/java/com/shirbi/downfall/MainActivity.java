@@ -2,7 +2,9 @@ package com.shirbi.downfall;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.media.MediaPlayer;
 import android.os.Build;
@@ -29,6 +31,26 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         Point size = new Point();
         display.getSize(size);
         return size;
+    }
+
+    private void StoreState() {
+        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putBoolean(getString(R.string.enable_sound), IsSoundEnable());
+        editor.putBoolean(getString(R.string.smart_ai), IsSmartAI());
+        editor.commit();
+    }
+
+    private void RestoreState() {
+        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+        SetSoundEnable(sharedPref.getBoolean(getString(R.string.enable_sound), true));
+        SetSmartAI(sharedPref.getBoolean(getString(R.string.smart_ai), false));
+    }
+
+    @Override
+    protected void onDestroy() {
+        StoreState();
+        super.onDestroy();
     }
 
     private void AddHole(int wheel_id, int angle, PlayerType player_type) {
@@ -154,6 +176,8 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 
         findViewById(R.id.wheels_layout).requestLayout();
 
+        RestoreState();
+
         StartNewGame();
     }
 
@@ -178,6 +202,16 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         return true;
     }
 
+    private Boolean IsSmartAI() {
+        CheckBox smart_ai_checkbox = (CheckBox)findViewById(R.id.smart_ai_checkbox);
+        return smart_ai_checkbox.isChecked();
+    }
+
+    private void SetSmartAI(Boolean is_smart_ai) {
+        CheckBox smart_ai_checkbox = (CheckBox)findViewById(R.id.smart_ai_checkbox);
+        smart_ai_checkbox.setChecked(is_smart_ai);
+    }
+
     public void onFinishTurnButtonClick(View view) {
         EnableButtons(false);
 
@@ -192,9 +226,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 
         m_last_wheel_rotated = m_wheels.length;
 
-        CheckBox smart_ai_checkbox = (CheckBox)findViewById(R.id.smart_ai_checkbox);
-
-        OppositePlayer ai_player = smart_ai_checkbox.isChecked() ? m_smart_ai : m_simple_stupid_ai;
+        OppositePlayer ai_player = IsSmartAI() ? m_smart_ai : m_simple_stupid_ai;
         int rotated_wheel = ai_player.Run();
 
         // Allow the player use all wheels except the one used by the AI.
@@ -257,10 +289,18 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         findViewById(R.id.setting_layout).setVisibility(View.INVISIBLE);
     }
 
-    public void PlaySound(int sound_id) {
+    private void SetSoundEnable(Boolean is_enable) {
         CheckBox enable_sound_check_box = (CheckBox)findViewById(R.id.enable_sound_checkbox);
-        Boolean is_sound_enable = enable_sound_check_box.isChecked();
-        if (!is_sound_enable) {
+        enable_sound_check_box.setChecked(is_enable);
+    }
+
+    private Boolean IsSoundEnable() {
+        CheckBox enable_sound_check_box = (CheckBox)findViewById(R.id.enable_sound_checkbox);
+        return enable_sound_check_box.isChecked();
+    }
+
+    public void PlaySound(int sound_id) {
+        if (!IsSoundEnable()) {
             return;
         }
 
