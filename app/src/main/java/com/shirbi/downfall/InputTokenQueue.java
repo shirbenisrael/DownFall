@@ -1,6 +1,7 @@
 package com.shirbi.downfall;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
 
@@ -55,7 +56,7 @@ public class InputTokenQueue extends ConnectableImage implements SlideToken {
         return m_tokens[hole.GetPlayerType().getInt()];
     }
 
-    private void AddToken(Token token) {
+    private void AddToken(Token token, int num_moves) {
         Hole hole = MatchHoleToToke(token);
         TokenList tokens_list = MatchTokenList(token);
 
@@ -75,19 +76,21 @@ public class InputTokenQueue extends ConnectableImage implements SlideToken {
                         Token.HORIZONTAL_ALIGNMENT.RIGHT_EDJE :
                         Token.HORIZONTAL_ALIGNMENT.LEFT_EDJE;
 
-        token.QueueAnimation(6 - token.GetNumber(),animation_direction, this );
+        token.QueueAnimation(num_moves, animation_direction, this );
     }
 
     public void TokenStoppedMoving(Token token) {
-        if (token.GetNumber() == 5) {
+        if (token.GetNumber() == MAX_TOKENS) {
             return;
         }
 
         Token new_token = new Token(m_activity);
 
+        int tokens_int_queue = m_tokens[token.GetPlayerType().getInt()].size() + 1; // include the hole
+
         new_token.SetType(token.GetColor(), token.GetNumber()+ 1 );
         new_token.SetPlayerType(token.GetPlayerType());
-        AddToken(new_token);
+        AddToken(new_token, MAX_TOKENS - tokens_int_queue);
     }
 
     public void TokenUsed(Hole hole) {
@@ -139,16 +142,53 @@ public class InputTokenQueue extends ConnectableImage implements SlideToken {
                         Token.COLOR.COLOR_2;
 
         token.SetType(color, 1);
-        AddToken(token);
+        AddToken(token, MAX_TOKENS);
 
         token = new Token(m_activity);
         token.SetType(color, 1);
         token.SetPlayerType(PlayerType.AI_PLAYER);
-        AddToken(token);
+        AddToken(token, MAX_TOKENS);
     }
 
     // Ignore the one in the hole
     public int GetNumTokensInQueue(PlayerType player_type) {
         return m_tokens[player_type.getInt()].size();
+    }
+
+    public void StoreState(SharedPreferences.Editor editor) {
+        for (Hole hole : m_holes) {
+            String str = (m_activity.getString(R.string.input_queue_tokens))
+                    + String.valueOf(m_horizontal_alignment) + hole.GetPlayerType().getInt();
+
+            int tokens_int_queue = m_tokens[hole.GetPlayerType().getInt()].size();
+            int token_in_hole = hole.GetResident() == null ? 0 : 1;
+            editor.putInt(str, tokens_int_queue + token_in_hole);
+        }
+    }
+
+    public void RestoreState(SharedPreferences sharedPref) {
+        super.Reset();
+
+        for (Hole hole : m_holes) {
+            String str = (m_activity.getString(R.string.input_queue_tokens))
+                    + String.valueOf(m_horizontal_alignment) + hole.GetPlayerType().getInt();
+
+            int num_tokens_to_add = sharedPref.getInt(str, MAX_TOKENS);
+
+            if (num_tokens_to_add == 0 || num_tokens_to_add > 5) {
+                continue;
+            }
+
+            Token token = new Token(m_activity);
+
+            Token.COLOR color =
+                    (m_horizontal_alignment == Token.HORIZONTAL_ALIGNMENT.LEFT_EDJE) ?
+                            Token.COLOR.COLOR_1 :
+                            Token.COLOR.COLOR_2;
+
+            token.SetType(color, 6 - num_tokens_to_add);
+            token.SetPlayerType(hole.GetPlayerType());
+            AddToken(token, MAX_TOKENS);
+        }
     }
 }

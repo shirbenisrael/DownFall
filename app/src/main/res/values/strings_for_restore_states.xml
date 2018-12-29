@@ -2,5 +2,7 @@
 <resources>
     <string name="enable_sound">enable_sound</string>
     <string name="smart_ai">smart_ai</string>
+    <string name="wheel_angle">wheel_angle</string>
+    <string name="input_queue_tokens">input_queue_tokens</string>
 
 </resources>

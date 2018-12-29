@@ -1,6 +1,7 @@
 package com.shirbi.downfall;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
@@ -109,4 +110,8 @@ public abstract class ConnectableImage extends RotatableImage {
             hole.SetResident(null);
         }
     }
+
+    public void StoreState(SharedPreferences.Editor editor) {}
+
+    public void RestoreState(SharedPreferences sharedPref) {}
 }

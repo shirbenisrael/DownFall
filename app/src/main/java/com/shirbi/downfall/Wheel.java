@@ -1,6 +1,7 @@
 package com.shirbi.downfall;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -166,4 +167,15 @@ public class Wheel extends ConnectableImage {
         m_allow_rotation = true;
         Rotate(m_current_angle);
     }
+
+    public void StoreState(SharedPreferences.Editor editor) {
+        String str = (m_activity.getString(R.string.wheel_angle)) + String.valueOf(m_wheel_num);
+        editor.putInt(str, (int)m_current_angle);
+    }
+
+    public void RestoreState(SharedPreferences sharedPref) {
+        String str = (m_activity.getString(R.string.wheel_angle)) + String.valueOf(m_wheel_num);
+        AddRotation(sharedPref.getInt(str, 0));
+    }
 }
+

@@ -38,6 +38,11 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putBoolean(getString(R.string.enable_sound), IsSoundEnable());
         editor.putBoolean(getString(R.string.smart_ai), IsSmartAI());
+
+        for (int i = 0; i < m_connectable_images.length; i++) {
+            m_connectable_images[i].StoreState(editor);
+        }
+
         editor.commit();
     }
 
@@ -45,6 +50,10 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
         SetSoundEnable(sharedPref.getBoolean(getString(R.string.enable_sound), true));
         SetSmartAI(sharedPref.getBoolean(getString(R.string.smart_ai), false));
+
+        for (int i = 0; i < m_connectable_images.length; i++) {
+            m_connectable_images[i].RestoreState(sharedPref);
+        }
     }
 
     @Override
@@ -176,9 +185,9 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 
         findViewById(R.id.wheels_layout).requestLayout();
 
-        RestoreState();
+        //StartNewGame();
 
-        StartNewGame();
+        RestoreState();
     }
 
     public boolean onTouch(View v, MotionEvent event) {
