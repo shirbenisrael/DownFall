@@ -25,6 +25,8 @@ public class MainActivity extends Activity implements View.OnTouchListener {
     ConnectableImage m_connectable_images[];
     int m_last_wheel_rotated;
     TextView m_player_text_view_token_counter_left[] = new TextView[PlayerType.NUM_PLAYERS];
+    Boolean m_game_starting_now;
+    int m_wheel_finished_rotate_counter;
 
     private Point GetWindowSize() {
         Display display = getWindowManager().getDefaultDisplay();
@@ -53,6 +55,14 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 
         for (int i = 0; i < m_connectable_images.length; i++) {
             m_connectable_images[i].RestoreState(sharedPref);
+        }
+    }
+
+    private void RestoreStatePart2() {
+        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+
+        for (int i = 0; i < m_connectable_images.length; i++) {
+            m_connectable_images[i].RestoreStatePart2(sharedPref);
         }
     }
 
@@ -187,6 +197,9 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 
         //StartNewGame();
 
+        m_game_starting_now = true;
+        m_wheel_finished_rotate_counter = m_wheels.length;
+
         RestoreState();
     }
 
@@ -278,7 +291,20 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         m_last_wheel_rotated = m_wheels.length;
     }
 
-    public void EnableButtons(Boolean enable) {
+    public void WheelFinishedRotating() {
+        if (m_game_starting_now) {
+            m_wheel_finished_rotate_counter--;
+            if (m_wheel_finished_rotate_counter == 0) {
+                m_game_starting_now = false; // shir
+                RestoreStatePart2();
+            } else {
+                return;
+            }
+        }
+        EnableButtons(true);
+    }
+
+    private void EnableButtons(Boolean enable) {
         findViewById(R.id.finish_turn_button).setEnabled(enable);
         findViewById(R.id.new_game_button).setEnabled(enable);
         findViewById(R.id.setting_button).setEnabled(enable);

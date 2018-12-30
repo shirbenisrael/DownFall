@@ -114,4 +114,6 @@ public abstract class ConnectableImage extends RotatableImage {
     public void StoreState(SharedPreferences.Editor editor) {}
 
     public void RestoreState(SharedPreferences sharedPref) {}
+
+    public void RestoreStatePart2(SharedPreferences sharedPref) {}
 }

@@ -166,7 +166,7 @@ public class InputTokenQueue extends ConnectableImage implements SlideToken {
         }
     }
 
-    public void RestoreState(SharedPreferences sharedPref) {
+    public void RestoreStatePart2(SharedPreferences sharedPref) {
         super.Reset();
 
         for (Hole hole : m_holes) {

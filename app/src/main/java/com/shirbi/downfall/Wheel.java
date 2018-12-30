@@ -73,7 +73,7 @@ public class Wheel extends ConnectableImage {
             if (m_auto_rotate_angle  ==0) {
                 m_timer.cancel();
                 m_previous_angle = m_current_angle;
-                m_activity.EnableButtons(true);
+                m_activity.WheelFinishedRotating();
             }
 
             if (m_auto_rotate_angle > 0) {
@@ -181,7 +181,9 @@ public class Wheel extends ConnectableImage {
     public void RestoreState(SharedPreferences sharedPref) {
         String str = (m_activity.getString(R.string.wheel_angle)) + String.valueOf(m_wheel_num);
         AddRotation(sharedPref.getInt(str, 0));
+    }
 
+    public void RestoreStatePart2(SharedPreferences sharedPref) {
         String hole_prefix = (m_activity.getString(R.string.hole_prefix)) + String.valueOf(m_wheel_num);
         for ( Hole hole : m_holes) {
             hole.RestoreState(hole_prefix, sharedPref);
