@@ -1,6 +1,7 @@
 package com.shirbi.downfall;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.util.AttributeSet;
 import android.view.View;
@@ -156,5 +157,33 @@ public class Hole extends RotatableImage {
         bottom_hole.m_owner_wheel.TokenEntered(bottom_hole);
 
         m_activity.PlaySound(R.raw.token_fall);
+    }
+
+    public void StoreState(String prefix, SharedPreferences.Editor editor) {
+        Token token = GetResident();
+        int data = -1;
+        if (token != null) {
+            data = token.GetNumber() * 10 + token.GetColor().getInt();
+        }
+
+        String key = prefix + "_" + m_baseAngle;
+        editor.putInt(key, (int)data);
+    }
+
+    public void RestoreState(String prefix, SharedPreferences sharedPref) {
+        String key = prefix + "_" + m_baseAngle;
+        int data = sharedPref.getInt(key, -1);
+
+        if (data != -1) {
+            Token token = new Token(m_activity);
+            token.SetPlayerType(m_player_type);
+            Token.COLOR color = Token.COLOR.values()[data % 10];
+            int number = data / 10;
+
+            token.SetType(color, number);
+            token.SetDiameter(m_diameter);
+            token.Rotate(0);
+            SetResident(token);
+        }
     }
 }

@@ -33,8 +33,17 @@ public class Token extends RotatableImage {
     private SlideToken m_slider;
 
     enum COLOR {
-        COLOR_1,
-        COLOR_2
+        COLOR_1(0), COLOR_2(1);
+
+        private final int m_color;
+
+        COLOR(int color) {
+            this.m_color = color;
+        }
+
+        public int getInt() {
+            return this.m_color;
+        }
     }
 
     // TODO: We have the same in Hole. Move it to different file.

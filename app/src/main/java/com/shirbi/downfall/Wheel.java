@@ -171,11 +171,21 @@ public class Wheel extends ConnectableImage {
     public void StoreState(SharedPreferences.Editor editor) {
         String str = (m_activity.getString(R.string.wheel_angle)) + String.valueOf(m_wheel_num);
         editor.putInt(str, (int)m_current_angle);
+
+        String hole_prefix = (m_activity.getString(R.string.hole_prefix)) + String.valueOf(m_wheel_num);
+        for ( Hole hole : m_holes) {
+            hole.StoreState(hole_prefix, editor);
+        }
     }
 
     public void RestoreState(SharedPreferences sharedPref) {
         String str = (m_activity.getString(R.string.wheel_angle)) + String.valueOf(m_wheel_num);
         AddRotation(sharedPref.getInt(str, 0));
+
+        String hole_prefix = (m_activity.getString(R.string.hole_prefix)) + String.valueOf(m_wheel_num);
+        for ( Hole hole : m_holes) {
+            hole.RestoreState(hole_prefix, sharedPref);
+        }
     }
 }
 

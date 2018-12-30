@@ -5,5 +5,6 @@
     <string name="wheel_angle">wheel_angle</string>
     <string name="input_queue_tokens">input_queue_tokens</string>
     <string name="output_queue_tokens">output_queue_tokens</string>
+    <string name="hole_prefix">hole_prefix</string>
 
 </resources>
