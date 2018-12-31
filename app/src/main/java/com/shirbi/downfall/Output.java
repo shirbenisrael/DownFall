@@ -24,7 +24,9 @@ public class Output extends ConnectableImage implements SlideToken {
     }
 
     public void TokenEntered(Hole hole) {
-        hole.GetResident().QueueAnimation(5, Token.HORIZONTAL_ALIGNMENT.LEFT_EDJE, this);
+        Token token = hole.GetResident();
+        token.setVisibility(VISIBLE);
+        token.QueueAnimation(5, Token.HORIZONTAL_ALIGNMENT.LEFT_EDJE, this);
         hole.SetResident(null);
 
         m_player_num_tokens_left[hole.GetPlayerType().getInt()]--;

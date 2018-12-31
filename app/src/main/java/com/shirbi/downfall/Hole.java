@@ -18,8 +18,9 @@ public class Hole extends RotatableImage {
     private Token m_resident;
     private MediaPlayer m_media_player;
     private PlayerType m_player_type;
+    private ObjectVisibility m_visibility;
 
-    private static final float ALPHA_FOR_OPPOSITE = (float)0.2;
+    private static final float ALPHA_FOR_OPPOSITE = (float) 0.2;
 
     public void Init() {
         setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -28,6 +29,7 @@ public class Hole extends RotatableImage {
         setImageResource(R.drawable.hole);
 
         m_player_type = PlayerType.HUMAN_PLAYER;
+        m_visibility = ObjectVisibility.ALWAYS_VISIBLE;
     }
 
     public Hole(Context context) {
@@ -68,17 +70,17 @@ public class Hole extends RotatableImage {
         RelativeLayout relativeLayout = (RelativeLayout) this.getParent();
 
         RelativeLayout.LayoutParams params =
-           new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                   ViewGroup.LayoutParams.WRAP_CONTENT);
-        double centerXY = relativeLayout.getLayoutParams().width/2;
+                new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT);
+        double centerXY = relativeLayout.getLayoutParams().width / 2;
         double radius = centerXY * 0.8;
         double angle = wheelAngle + m_baseAngle;
         double angleRadians = Math.toRadians(angle);
         double leftFromCenter = radius * Math.sin(angleRadians);
         double topFromCenter = -radius * Math.cos(angleRadians);
 
-        params.leftMargin = (int)(centerXY + leftFromCenter) - (m_diameter / 2);
-        params.topMargin  = (int)(centerXY + topFromCenter) - (m_diameter / 2);
+        params.leftMargin = (int) (centerXY + leftFromCenter) - (m_diameter / 2);
+        params.topMargin = (int) (centerXY + topFromCenter) - (m_diameter / 2);
         params.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
         params.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
 
@@ -126,6 +128,11 @@ public class Hole extends RotatableImage {
             setImageResource(R.drawable.hole);
         }
 
+        if ((m_visibility == ObjectVisibility.VISIBLE_ON_CONNECT) && (m_player_type == PlayerType.AI_PLAYER))
+        {
+            setVisibility(connected ? VISIBLE : INVISIBLE);
+        }
+
         if (m_resident != null) {
             if (connected_top) {
                 m_resident.SetImageConnected();
@@ -167,7 +174,7 @@ public class Hole extends RotatableImage {
         }
 
         String key = prefix + "_" + m_baseAngle;
-        editor.putInt(key, (int)data);
+        editor.putInt(key, (int) data);
     }
 
     public void RestoreState(String prefix, SharedPreferences sharedPref) {
@@ -185,6 +192,19 @@ public class Hole extends RotatableImage {
             token.Rotate(0); /* This will scale the token image to the correct size */
             SetResident(token);
             SetAngle(m_current_angle - m_baseAngle); /* Will put the token on the hole */
+        }
+    }
+
+    public void SetOppositePlayerObjectsVisibility(ObjectVisibility visibility) {
+        if (m_player_type == PlayerType.HUMAN_PLAYER) {
+            return;
+        }
+
+        m_visibility = visibility;
+        m_visibility.SetOnView(this);
+
+        if (m_resident != null) {
+            m_resident.SetOppositePlayerObjectsVisibility(visibility);
         }
     }
 }

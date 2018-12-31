@@ -13,6 +13,7 @@ import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 public class MainActivity extends Activity implements View.OnTouchListener {
@@ -322,6 +323,20 @@ public class MainActivity extends Activity implements View.OnTouchListener {
     public void onBackFromSettingClick(View view) {
         findViewById(R.id.main_game_layout).setVisibility(View.VISIBLE);
         findViewById(R.id.setting_layout).setVisibility(View.INVISIBLE);
+
+        ObjectVisibility visibility;
+
+        if (((RadioButton)findViewById(R.id.hide_holes_always_radio_button)).isChecked()) {
+            visibility = ObjectVisibility.INVISIBLE;
+        } else if (((RadioButton)findViewById(R.id.show_holes_on_connect_radio_button)).isChecked()) {
+            visibility = ObjectVisibility.VISIBLE_ON_CONNECT;
+        } else {
+            visibility = ObjectVisibility.ALWAYS_VISIBLE;
+        }
+
+        for (ConnectableImage connectableImage : m_connectable_images ) {
+            connectableImage.SetOppositePlayerObjectsVisibility(visibility);
+        }
     }
 
     @Override

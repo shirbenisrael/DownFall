@@ -31,6 +31,7 @@ public class Token extends RotatableImage {
     private Token m_this_token;
     private Token.HORIZONTAL_ALIGNMENT m_move_animation_direction;
     private SlideToken m_slider;
+    private ObjectVisibility m_visibility;
 
     enum COLOR {
         COLOR_1(0), COLOR_2(1);
@@ -52,6 +53,7 @@ public class Token extends RotatableImage {
     private void Init() {
         m_player_type = PlayerType.HUMAN_PLAYER;
         m_this_token = this;
+        m_visibility = ObjectVisibility.ALWAYS_VISIBLE;
     }
 
     public Token(Context context) {
@@ -206,4 +208,13 @@ public class Token extends RotatableImage {
             }
         }
     };
+
+    public void SetOppositePlayerObjectsVisibility(ObjectVisibility visibility) {
+        if (m_player_type == PlayerType.HUMAN_PLAYER) {
+            return;
+        }
+
+        m_visibility = visibility;
+        m_visibility.SetOnView(this);
+    }
 }

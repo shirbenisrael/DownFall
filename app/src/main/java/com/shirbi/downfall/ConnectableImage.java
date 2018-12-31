@@ -116,4 +116,11 @@ public abstract class ConnectableImage extends RotatableImage {
     public void RestoreState(SharedPreferences sharedPref) {}
 
     public void RestoreStatePart2(SharedPreferences sharedPref) {}
+
+    public void SetOppositePlayerObjectsVisibility(ObjectVisibility visibility) {
+        for (Hole hole: m_holes) {
+            hole.SetOppositePlayerObjectsVisibility(visibility);
+        }
+    }
+
 }
