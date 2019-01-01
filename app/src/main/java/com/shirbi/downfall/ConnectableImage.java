@@ -122,5 +122,4 @@ public abstract class ConnectableImage extends RotatableImage {
             hole.SetOppositePlayerObjectsVisibility(visibility);
         }
     }
-
 }

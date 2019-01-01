@@ -20,6 +20,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 
     private Point m_size;
     private int m_wheel_ids[] = {R.id.wheel1, R.id.wheel2, R.id.wheel3, R.id.wheel4, R.id.wheel5};
+    private RadioButton m_objects_visibility_radio_buttons[];
     SimpleStupidAI m_simple_stupid_ai;
     SmartAI m_smart_ai;
     Wheel m_wheels[];
@@ -28,6 +29,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
     TextView m_player_text_view_token_counter_left[] = new TextView[PlayerType.NUM_PLAYERS];
     Boolean m_game_starting_now;
     int m_wheel_finished_rotate_counter;
+    ObjectVisibility m_objects_visibility;
 
     private Point GetWindowSize() {
         Display display = getWindowManager().getDefaultDisplay();
@@ -41,6 +43,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putBoolean(getString(R.string.enable_sound), IsSoundEnable());
         editor.putBoolean(getString(R.string.smart_ai), IsSmartAI());
+        editor.putInt(getString(R.string.objects_visibility), m_objects_visibility.getInt());
 
         for (int i = 0; i < m_connectable_images.length; i++) {
             m_connectable_images[i].StoreState(editor);
@@ -53,6 +56,13 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
         SetSoundEnable(sharedPref.getBoolean(getString(R.string.enable_sound), true));
         SetSmartAI(sharedPref.getBoolean(getString(R.string.smart_ai), false));
+
+        int visibility_int = sharedPref.getInt(getString(R.string.objects_visibility),
+                ObjectVisibility.ALWAYS_VISIBLE.getInt());
+        m_objects_visibility = ObjectVisibility.values()[visibility_int];
+
+        RefreshVisibilityRadioButtons();
+        SetObjectsVisibilityOnConnectableImages();
 
         for (int i = 0; i < m_connectable_images.length; i++) {
             m_connectable_images[i].RestoreState(sharedPref);
@@ -142,6 +152,14 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         m_connectable_images[6] = ((ConnectableImage)findViewById(R.id.input_token_queue_right));
         m_connectable_images[7] = ((ConnectableImage)findViewById(R.id.output));
 
+        m_objects_visibility_radio_buttons = new RadioButton[3];
+        m_objects_visibility_radio_buttons[ObjectVisibility.ALWAYS_VISIBLE.getInt()] =
+                findViewById(R.id.show_holes_always_radio_button);
+        m_objects_visibility_radio_buttons[ObjectVisibility.INVISIBLE.getInt()] =
+                findViewById(R.id.hide_holes_always_radio_button);
+        m_objects_visibility_radio_buttons[ObjectVisibility.VISIBLE_ON_CONNECT.getInt()] =
+                findViewById(R.id.show_holes_on_connect_radio_button);
+
         m_player_text_view_token_counter_left[PlayerType.HUMAN_PLAYER.getInt()] =
                 (TextView)findViewById(R.id.player_token_counter);
         m_player_text_view_token_counter_left[PlayerType.AI_PLAYER.getInt()]
@@ -195,8 +213,6 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         m_smart_ai = new SmartAI(m_wheels);
 
         findViewById(R.id.wheels_layout).requestLayout();
-
-        //StartNewGame();
 
         m_game_starting_now = true;
         m_wheel_finished_rotate_counter = m_wheels.length;
@@ -320,23 +336,30 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         findViewById(R.id.setting_layout).setVisibility(View.VISIBLE);
     }
 
+    private void RefreshVisibilityRadioButtons() {
+        for (int i = 0 ; i < m_objects_visibility_radio_buttons.length; i++) {
+            Boolean is_checked = (m_objects_visibility == ObjectVisibility.values()[i]);
+            m_objects_visibility_radio_buttons[i].setChecked(is_checked);
+        }
+    }
+
+    private void SetObjectsVisibilityOnConnectableImages() {
+        for (ConnectableImage connectableImage : m_connectable_images ) {
+            connectableImage.SetOppositePlayerObjectsVisibility(m_objects_visibility);
+        }
+    }
+
     public void onBackFromSettingClick(View view) {
         findViewById(R.id.main_game_layout).setVisibility(View.VISIBLE);
         findViewById(R.id.setting_layout).setVisibility(View.INVISIBLE);
 
-        ObjectVisibility visibility;
-
-        if (((RadioButton)findViewById(R.id.hide_holes_always_radio_button)).isChecked()) {
-            visibility = ObjectVisibility.INVISIBLE;
-        } else if (((RadioButton)findViewById(R.id.show_holes_on_connect_radio_button)).isChecked()) {
-            visibility = ObjectVisibility.VISIBLE_ON_CONNECT;
-        } else {
-            visibility = ObjectVisibility.ALWAYS_VISIBLE;
+        for (int i = 0 ; i < m_objects_visibility_radio_buttons.length; i++) {
+            if (m_objects_visibility_radio_buttons[i].isChecked()) {
+                m_objects_visibility = ObjectVisibility.values()[i];
+            }
         }
 
-        for (ConnectableImage connectableImage : m_connectable_images ) {
-            connectableImage.SetOppositePlayerObjectsVisibility(visibility);
-        }
+        SetObjectsVisibilityOnConnectableImages();
     }
 
     @Override
