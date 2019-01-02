@@ -6,15 +6,16 @@ public class SmartRotationResult {
 
     int m_fall_token[] = new int[PlayerType.NUM_PLAYERS];
     int m_top_occupied_hole_count[] = new int[PlayerType.NUM_PLAYERS];
+    int m_bottom_empty_hole_with_top_wheel_with_token_count[] = new int[PlayerType.NUM_PLAYERS];
     int m_bottom_empty_hole_count[] = new int[PlayerType.NUM_PLAYERS];
 
     SmartRotationResult(Wheel wheel) {
         m_wheel = wheel;
         m_angle = 0;
         for (int i = 0 ; i < PlayerType.NUM_PLAYERS; i++) {
-            m_top_occupied_hole_count[0] = 0;
-            m_bottom_empty_hole_count[0] = 0;
-            m_fall_token[0] = 0;
+            m_top_occupied_hole_count[i] = 0;
+            m_bottom_empty_hole_count[i] = 0;
+            m_fall_token[i] = 0;
         }
     }
 
@@ -24,6 +25,8 @@ public class SmartRotationResult {
         for (int i = 0 ; i < PlayerType.NUM_PLAYERS; i++) {
             m_top_occupied_hole_count[i] = other.m_top_occupied_hole_count[i];
             m_bottom_empty_hole_count[i] = other.m_bottom_empty_hole_count[i];
+            m_bottom_empty_hole_with_top_wheel_with_token_count[i] =
+                    other.m_bottom_empty_hole_with_top_wheel_with_token_count[i];
             m_fall_token[i] = other.m_fall_token[i];
         }
     }
@@ -53,6 +56,17 @@ public class SmartRotationResult {
             return true;
         }
         if (diff_token_fit < 0) {
+            return false;
+        }
+
+        int diff_hole_fit_to_top_wheel_with_token = diff_ai_human(
+                m_bottom_empty_hole_with_top_wheel_with_token_count,
+                other.m_bottom_empty_hole_with_top_wheel_with_token_count);
+
+        if (diff_hole_fit_to_top_wheel_with_token > 0) {
+            return true;
+        }
+        if (diff_hole_fit_to_top_wheel_with_token < 0) {
             return false;
         }
 

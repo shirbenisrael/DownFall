@@ -185,14 +185,19 @@ public class SmartAI extends OppositePlayer {
             previous_angle = rotation_result.m_angle;
 
             for (SimulatedHole hole : wheel_holes) {
+                int player_index = hole.m_player_type.getInt();
                 SimulatedConnection connection = IsHoleConnected(wheel_connections, hole);
                 if (connection != null && connection.IsEfficient()) {
                     if ((!hole.m_has_resident) && (!connection.m_top_connection)) {
-                        rotation_result.m_bottom_empty_hole_count[hole.m_player_type.getInt()]--;
+                        if (connection.m_max_num_tokens_to_wheel_later[player_index] > 0) {
+                            rotation_result.m_bottom_empty_hole_with_top_wheel_with_token_count[player_index]--;
+                        } else {
+                            rotation_result.m_bottom_empty_hole_count[player_index]--;
+                        }
                     }
 
                     if (hole.m_has_resident && connection.m_top_connection) {
-                        rotation_result.m_top_occupied_hole_count[hole.m_player_type.getInt()]--;
+                        rotation_result.m_top_occupied_hole_count[player_index]--;
                     }
                 }
 
@@ -203,30 +208,34 @@ public class SmartAI extends OppositePlayer {
                 if (connection != null) {
                     if (connection.m_top_connection) {
                         if (hole.m_has_resident) {
-                            if (connection.m_max_num_tokens_from_wheel[hole.m_player_type.getInt()] > 0) {
-                                connection.m_max_num_tokens_from_wheel[hole.m_player_type.getInt()]--;
+                            if (connection.m_max_num_tokens_from_wheel[player_index] > 0) {
+                                connection.m_max_num_tokens_from_wheel[player_index]--;
                                 if (connection.IsEfficient()) {
-                                    rotation_result.m_fall_token[hole.m_player_type.getInt()]++;
+                                    rotation_result.m_fall_token[player_index]++;
                                 }
                                 hole.m_has_resident = false;
                             } else {
                                 if (connection.IsEfficient()) {
-                                    rotation_result.m_top_occupied_hole_count[hole.m_player_type.getInt()]++;
+                                    rotation_result.m_top_occupied_hole_count[player_index]++;
                                 }
                             }
 
                         }
                     } else { // else: bottom connection.
                         if (!hole.m_has_resident) {
-                            if (connection.m_max_num_tokens_to_wheel[hole.m_player_type.getInt()] > 0) {
-                                connection.m_max_num_tokens_to_wheel[hole.m_player_type.getInt()]--;
+                            if (connection.m_max_num_tokens_to_wheel[player_index] > 0) {
+                                connection.m_max_num_tokens_to_wheel[player_index]--;
                                 if (connection.IsEfficient()) {
-                                    rotation_result.m_fall_token[hole.m_player_type.getInt()]++;
+                                    rotation_result.m_fall_token[player_index]++;
                                 }
                                 hole.m_has_resident = true;
                             } else {
                                 if (connection.IsEfficient()) {
-                                    rotation_result.m_bottom_empty_hole_count[hole.m_player_type.getInt()]++;
+                                    if (connection.m_max_num_tokens_to_wheel_later[player_index] > 0) {
+                                        rotation_result.m_bottom_empty_hole_with_top_wheel_with_token_count[player_index]++;
+                                    } else {
+                                        rotation_result.m_bottom_empty_hole_count[player_index]++;
+                                    }
                                 }
                             }
 
