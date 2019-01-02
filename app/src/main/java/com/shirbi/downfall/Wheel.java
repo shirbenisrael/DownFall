@@ -5,6 +5,9 @@ import android.content.SharedPreferences;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewParent;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -16,11 +19,15 @@ public class Wheel extends ConnectableImage {
     private int m_auto_rotate_angle;
     private Boolean m_allow_rotation;
     private int m_wheel_num;
+    private ImageView m_touch_view;
 
     static private final int WHEEL_ROTATION_RATE = 15; // Larger = slower.
 
     private void Init() {
-        m_allow_rotation = true;
+        m_touch_view = new ImageView(m_activity);
+        m_touch_view.setImageResource(R.drawable.forbid_rotate);
+        m_touch_view.setImageAlpha(50);
+        SetAllowRotation(true);
     }
 
     public Wheel(Context context) {
@@ -146,6 +153,7 @@ public class Wheel extends ConnectableImage {
 
     public void SetAllowRotation(Boolean is_allow) {
         m_allow_rotation = is_allow;
+        m_touch_view.setVisibility(m_allow_rotation ? INVISIBLE : VISIBLE);
     }
 
     public Boolean GetAllowRotation() {
@@ -187,6 +195,17 @@ public class Wheel extends ConnectableImage {
         String hole_prefix = (m_activity.getString(R.string.hole_prefix)) + String.valueOf(m_wheel_num);
         for ( Hole hole : m_holes) {
             hole.RestoreState(hole_prefix, sharedPref);
+        }
+    }
+
+    public void SetLocation(int left, int top) {
+        super.SetLocation(left, top);
+
+        RelativeLayout relativeLayout = (RelativeLayout) this.getParent();
+
+        ViewParent oldParent = m_touch_view.getParent();
+        if (oldParent == null) {
+            relativeLayout.addView(m_touch_view, getLayoutParams());
         }
     }
 }
