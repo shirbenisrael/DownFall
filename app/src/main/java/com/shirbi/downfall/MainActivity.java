@@ -28,6 +28,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
     int m_last_wheel_rotated;
     TextView m_player_text_view_token_counter_left[] = new TextView[PlayerType.NUM_PLAYERS];
     Boolean m_game_starting_now;
+    Boolean m_allow_screen_touch = true;
     int m_wheel_finished_rotate_counter;
     ObjectVisibility m_objects_visibility;
 
@@ -63,6 +64,9 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 
         RefreshVisibilityRadioButtons();
         SetObjectsVisibilityOnConnectableImages();
+
+        // When wheel will finish restoring their position, button will be enabled again.
+        EnableButtons(false);
 
         for (int i = 0; i < m_connectable_images.length; i++) {
             m_connectable_images[i].RestoreState(sharedPref);
@@ -227,6 +231,10 @@ public class MainActivity extends Activity implements View.OnTouchListener {
             return true;
         }
 
+        if (!m_allow_screen_touch) {
+            return true;
+        }
+
         int selected_wheel_num = wheel.GetWheelNum();
 
         // New wheel touch - block all other wheels.
@@ -325,6 +333,8 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         findViewById(R.id.finish_turn_button).setEnabled(enable);
         findViewById(R.id.new_game_button).setEnabled(enable);
         findViewById(R.id.setting_button).setEnabled(enable);
+
+        m_allow_screen_touch = enable;
     }
 
     public void ShowNumTokenLeft(PlayerType player_type, int num_token_left) {
@@ -366,6 +376,10 @@ public class MainActivity extends Activity implements View.OnTouchListener {
     public void onBackPressed() {
         if (findViewById(R.id.setting_layout).getVisibility() == View.VISIBLE) {
             onBackFromSettingClick(null);
+            return;
+        }
+
+        if (!m_allow_screen_touch) {
             return;
         }
 
