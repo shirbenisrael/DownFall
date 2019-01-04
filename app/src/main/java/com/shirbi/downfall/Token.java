@@ -3,7 +3,6 @@ package com.shirbi.downfall;
 import android.app.Activity;
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.RelativeLayout;
@@ -13,14 +12,8 @@ import java.util.TimerTask;
 
 public class Token extends RotatableImage {
 
-    static final int color_1_images[] = {R.drawable.token1_1, R.drawable.token1_2,
-            R.drawable.token1_3, R.drawable.token1_4, R.drawable.token1_5};
-    static final int color_2_images[] = {R.drawable.token2_1, R.drawable.token2_2,
-            R.drawable.token2_3, R.drawable.token2_4, R.drawable.token2_5};
-    static final int color_1_connected_images[] = {R.drawable.token1_1_connected, R.drawable.token1_2_connected,
-            R.drawable.token1_3_connected, R.drawable.token1_4_connected, R.drawable.token1_5_connected};
-    static final int color_2_connected_images[] = {R.drawable.token2_1_connected, R.drawable.token2_2_connected,
-            R.drawable.token2_3_connected, R.drawable.token2_4_connected, R.drawable.token2_5_connected};
+    private static final int m_numbers_images[] = {R.drawable.token_1, R.drawable.token_2, R.drawable.token_3, R.drawable.token_4, R.drawable.token_5};
+    private static final int m_color_images[] = {R.drawable.token_red, R.drawable.token_yellow, R.drawable.token_blue, R.drawable.token_green};
 
     private int m_number;
     private COLOR m_color;
@@ -32,6 +25,8 @@ public class Token extends RotatableImage {
     private Token.HORIZONTAL_ALIGNMENT m_move_animation_direction;
     private SlideToken m_slider;
     private ObjectVisibility m_visibility;
+    RotatableImage m_connected_image;
+    RotatableImage m_number_image;
 
     enum COLOR {
         COLOR_1(0), COLOR_2(1);
@@ -53,7 +48,13 @@ public class Token extends RotatableImage {
     private void Init() {
         m_player_type = PlayerType.HUMAN_PLAYER;
         m_this_token = this;
+        m_color = COLOR.COLOR_1;
+        m_number = 1;
         m_visibility = ObjectVisibility.ALWAYS_VISIBLE;
+        m_number_image = new RotatableImage(m_activity);
+        m_connected_image = new RotatableImage(m_activity);
+
+        m_connected_image.setImageResource(R.drawable.token_connected);
     }
 
     public Token(Context context) {
@@ -70,55 +71,61 @@ public class Token extends RotatableImage {
 
     public void SetPlayerType(PlayerType playerType) {
         m_player_type = playerType;
-        if (m_player_type == PlayerType.AI_PLAYER) {
-            ((View) this).setAlpha(ALPHA_FOR_OPPOSITE);
-        }
+        UpdateImage();
     }
 
     public PlayerType GetPlayerType() {
         return m_player_type;
     }
 
+    private void UpdateImage() {
+        setImageResource(m_color_images[m_color.getInt() + m_player_type.getInt() * 2]);
+    }
+
     public void SetType(COLOR color, int number) {
         m_number = number;
         m_color = color;
+
+        m_number_image.setImageResource(m_numbers_images[m_number-1]);
+        UpdateImage();
+
         SetImageDisconnected();
     }
 
     public Token.COLOR GetColor() { return m_color; }
 
     public void SetImageDisconnected() {
-        switch (m_color) {
-            case COLOR_1:
-                setImageResource(color_1_images[m_number-1]);
-                break;
-
-            case COLOR_2:
-                setImageResource(color_2_images[m_number-1]);
-                break;
-        }
+        m_connected_image.setVisibility(INVISIBLE);
     }
 
     public void SetImageConnected() {
-        switch (m_color) {
-            case COLOR_1:
-                setImageResource(color_1_connected_images[m_number-1]);
-                break;
-
-            case COLOR_2:
-                setImageResource(color_2_connected_images[m_number-1]);
-                break;
+        if ((m_player_type == PlayerType.AI_PLAYER) &&
+                (m_visibility == ObjectVisibility.INVISIBLE)) {
+            m_connected_image.setVisibility(INVISIBLE);
+        } else {
+            m_connected_image.setVisibility(VISIBLE);
         }
     }
 
     public void SetParentView(ViewGroup newParent, RelativeLayout.LayoutParams params) {
         ViewParent oldParent = getParent();
-
         if (oldParent != null) {
             ((ViewGroup)oldParent).removeView(this);
         }
 
+        oldParent = m_connected_image.getParent();
+        if (oldParent != null) {
+            ((ViewGroup)oldParent).removeView(m_connected_image);
+        }
+
+        oldParent = m_number_image.getParent();
+        if (oldParent != null) {
+            ((ViewGroup)oldParent).removeView(m_number_image);
+        }
+
         newParent.addView(this, params);
+        newParent.addView(m_connected_image, params);
+        newParent.addView(m_number_image, params);
     }
 
     public enum HORIZONTAL_ALIGNMENT {
@@ -216,5 +223,26 @@ public class Token extends RotatableImage {
 
         m_visibility = visibility;
         m_visibility.SetOnView(this);
+        m_visibility.SetOnView(m_connected_image);
+        m_visibility.SetOnView(m_number_image);
     }
+
+    public void Rotate(double angle) {
+        super.Rotate(angle);
+        m_connected_image.Rotate(angle);
+        m_number_image.Rotate(angle);
+    }
+
+    public void SetDiameter(int diameter) {
+        super.SetDiameter(diameter);
+        m_connected_image.SetDiameter(diameter);
+        m_number_image.SetDiameter(diameter);
+    }
+
+    public void RemoveFromParentView() {
+        ((ViewGroup)(this.getParent())).removeView(this);
+        ((ViewGroup)(m_connected_image.getParent())).removeView(m_connected_image);
+        ((ViewGroup)(m_number_image.getParent())).removeView(m_number_image);
+    }
+
 }

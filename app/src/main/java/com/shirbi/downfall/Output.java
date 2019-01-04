@@ -3,7 +3,6 @@ package com.shirbi.downfall;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.AttributeSet;
-import android.view.ViewGroup;
 
 public class Output extends ConnectableImage implements SlideToken {
     int m_player_num_tokens_left[] = new int[PlayerType.NUM_PLAYERS];
@@ -35,7 +34,7 @@ public class Output extends ConnectableImage implements SlideToken {
     }
 
     public void TokenStoppedMoving(Token token) {
-        ((ViewGroup)(token.getParent())).removeView(token);
+        token.RemoveFromParentView();
     }
 
     public void Reset() {

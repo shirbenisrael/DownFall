@@ -3,7 +3,6 @@ package com.shirbi.downfall;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.AttributeSet;
-import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
@@ -134,7 +133,7 @@ public class InputTokenQueue extends ConnectableImage implements SlideToken {
 
         for (int i = 0; i < m_tokens.length; i++) {
             for (Token token : m_tokens[i]) {
-                ((ViewGroup) (token.getParent())).removeView(token);
+                token.RemoveFromParentView();
             }
             m_tokens[i].clear();
         }
