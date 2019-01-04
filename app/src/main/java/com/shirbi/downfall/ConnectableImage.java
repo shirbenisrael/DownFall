@@ -3,7 +3,6 @@ package com.shirbi.downfall;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.AttributeSet;
-import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import java.util.HashSet;
@@ -106,7 +105,7 @@ public abstract class ConnectableImage extends RotatableImage {
                 continue;
             }
 
-            ((ViewGroup) (token.getParent())).removeView(token);
+            token.RemoveFromParentView();
             hole.SetResident(null);
         }
     }
