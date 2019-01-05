@@ -16,7 +16,9 @@ public class Wheel extends ConnectableImage {
     private double m_previous_angle, m_start_touch_angle, m_current_angle;
     private long m_start_time_milliseconds;
     private Timer m_timer;
+    private TimerTask m_timer_task;
     private int m_auto_rotate_angle;
+    private boolean m_currently_auto_rotating;
     private Boolean m_allow_rotation;
     private int m_wheel_num;
     private ImageView m_touch_view;
@@ -62,25 +64,39 @@ public class Wheel extends ConnectableImage {
     public void AddRotation(int angle) {
         m_auto_rotate_angle = angle;
         m_timer = new Timer();
-        m_timer.schedule(new TimerTask() {
+        m_currently_auto_rotating = true;
+        m_timer_task = (new TimerTask() {
             @Override
             public void run() {
                 TimerMethod();
             }
+        });
 
-        }, 0, WHEEL_ROTATION_RATE);
+        m_timer.schedule(m_timer_task,0, WHEEL_ROTATION_RATE);
     }
 
     private void TimerMethod() {
+        if (m_auto_rotate_angle  ==0) {
+            m_timer.cancel();
+            m_timer_task.cancel();
+            m_timer = null;
+            m_timer_task = null;
+        }
+
         m_activity.runOnUiThread(m_timer_tick);
     }
 
     private Runnable m_timer_tick = new Runnable() {
         public void run() {
-            if (m_auto_rotate_angle  ==0) {
-                m_timer.cancel();
+            if (m_auto_rotate_angle == 0) {
                 m_previous_angle = m_current_angle;
-                m_activity.WheelFinishedRotating();
+
+                // There is a chance that this task was already queued couple of times to ui thread.
+                // make sure it doesn't trigger the m_activity twice.
+                if (m_currently_auto_rotating) {
+                    m_activity.WheelFinishedRotating();
+                }
+                m_currently_auto_rotating = false;
             }
 
             if (m_auto_rotate_angle > 0) {
