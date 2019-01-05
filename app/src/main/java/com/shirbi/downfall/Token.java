@@ -126,6 +126,10 @@ public class Token extends RotatableImage {
         newParent.addView(this, params);
         newParent.addView(m_connected_image, params);
         newParent.addView(m_number_image, params);
+
+        this.setZ(m_player_type == PlayerType.HUMAN_PLAYER ? 4 : 1);
+        m_connected_image.setZ(m_player_type == PlayerType.HUMAN_PLAYER ? 5 : 2);
+        m_number_image.setZ(m_player_type == PlayerType.HUMAN_PLAYER ? 6 : 3);
     }
 
     public enum HORIZONTAL_ALIGNMENT {
