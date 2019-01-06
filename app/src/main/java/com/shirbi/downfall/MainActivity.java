@@ -189,7 +189,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         ConnectWheelToInputQueue(R.id.wheel1, R.id.input_token_queue_right, 90);
 
         SetWheelLocation(R.id.wheel1, base_diameter,30 );
-        ConnectWheels(R.id.wheel2, R.id.wheel1, 20);
+        ConnectWheels(R.id.wheel2, R.id.wheel1, 15);
         ConnectWheels(R.id.wheel3, R.id.wheel2, 315);
         ConnectWheels(R.id.wheel4, R.id.wheel2, 15);
         ConnectWheels(R.id.wheel4, R.id.wheel3, 70);
