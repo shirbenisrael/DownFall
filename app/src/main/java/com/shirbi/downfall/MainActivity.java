@@ -411,4 +411,21 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         });
         media_player.start();
     }
+
+    public void EndGame(String string) {
+        AlertDialog.Builder builder;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+        } else {
+            builder = new AlertDialog.Builder(this);
+        }
+        builder.setTitle("Game is over");
+        builder.setPositiveButton(string, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                StartNewGame();
+            }
+        });
+        //builder.setIcon(R.drawable.new_game_icon); // TODO: Add this
+        builder.show();
+    }
 }

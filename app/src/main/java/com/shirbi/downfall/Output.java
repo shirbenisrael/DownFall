@@ -27,14 +27,25 @@ public class Output extends ConnectableImage implements SlideToken {
         token.setVisibility(VISIBLE);
         token.QueueAnimation(5, Token.HORIZONTAL_ALIGNMENT.LEFT_EDJE, this);
         hole.SetResident(null);
-
-        m_player_num_tokens_left[hole.GetPlayerType().getInt()]--;
-        m_activity.ShowNumTokenLeft(hole.GetPlayerType(),
-                m_player_num_tokens_left[hole.GetPlayerType().getInt()]);
     }
 
     public void TokenStoppedMoving(Token token) {
         token.RemoveFromParentView();
+
+        int player_num = token.GetPlayerType().getInt();
+
+        m_player_num_tokens_left[player_num]--;
+        m_activity.ShowNumTokenLeft(token.GetPlayerType(), m_player_num_tokens_left[player_num]);
+
+        if (m_player_num_tokens_left[player_num] == 0) {
+            String string;
+            if (token.GetPlayerType() == PlayerType.HUMAN_PLAYER) {
+                string = "You won!";
+            } else {
+                string = "You lose!";
+            }
+            m_activity.EndGame(string);
+        }
     }
 
     public void Reset() {
