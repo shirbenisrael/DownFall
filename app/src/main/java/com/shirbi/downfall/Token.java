@@ -27,6 +27,8 @@ public class Token extends RotatableImage {
     private ObjectVisibility m_visibility;
     RotatableImage m_connected_image;
     RotatableImage m_number_image;
+    private float m_alpha;
+    private Timer m_fade_out_timer;
 
     enum COLOR {
         COLOR_1(0), COLOR_2(1);
@@ -99,9 +101,8 @@ public class Token extends RotatableImage {
     }
 
     public void SetImageConnected() {
-        if ((m_player_type == PlayerType.AI_PLAYER) &&
-                (m_visibility == ObjectVisibility.INVISIBLE)) {
-            m_connected_image.setVisibility(INVISIBLE);
+        if (m_player_type == PlayerType.AI_PLAYER) {
+            m_visibility.SetOnView(m_connected_image);
         } else {
             m_connected_image.setVisibility(VISIBLE);
         }
@@ -249,4 +250,49 @@ public class Token extends RotatableImage {
         ((ViewGroup)(m_number_image.getParent())).removeView(m_number_image);
     }
 
+    public void FadeOut() {
+        setVisibility(VISIBLE);
+        m_connected_image.setVisibility(VISIBLE);
+        m_number_image.setVisibility(VISIBLE);
+
+        m_alpha = (float)1.0;
+        m_fade_out_timer = new Timer();
+        m_fade_out_timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                FadeOutTimerMethod();
+            }
+
+        }, 0, 30);
+    }
+
+    private void FadeOutTimerMethod() {
+        if (m_alpha < 0.1) {
+            m_fade_out_timer.cancel();
+            return;
+        }
+
+        ((Activity)m_context).runOnUiThread(m_fade_out_timer_tick);
+    }
+
+    private void SetAlphaOnImages() {
+        setAlpha(m_alpha);
+        m_connected_image.setAlpha(m_alpha);
+        m_number_image.setAlpha(m_alpha);
+    }
+
+    private Runnable m_fade_out_timer_tick = new Runnable() {
+        public void run() {
+            m_alpha -= 0.01;
+            SetAlphaOnImages();
+
+            if (m_alpha < 0.1) {
+                m_alpha = (float)1.0;
+                setVisibility(INVISIBLE);
+                m_connected_image.setVisibility(INVISIBLE);
+                m_number_image.setVisibility(INVISIBLE);
+                SetAlphaOnImages();
+            }
+        }
+    };
 }

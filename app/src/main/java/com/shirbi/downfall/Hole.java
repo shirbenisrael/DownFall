@@ -128,11 +128,6 @@ public class Hole extends RotatableImage {
             setImageResource(R.drawable.hole);
         }
 
-        if ((m_visibility == ObjectVisibility.VISIBLE_ON_CONNECT) && (m_player_type == PlayerType.AI_PLAYER))
-        {
-            setVisibility(connected ? VISIBLE : INVISIBLE);
-        }
-
         if (m_resident != null) {
             if (connected_top) {
                 m_resident.SetImageConnected();
@@ -161,6 +156,11 @@ public class Hole extends RotatableImage {
         bottom_hole.SetAngle(bottom_hole.m_current_angle - bottom_hole.m_baseAngle);
 
         m_owner_wheel.TokenUsed(this);
+
+        if (m_visibility == ObjectVisibility.VISIBLE_ON_CONNECT) {
+            bottom_hole.m_resident.FadeOut();
+        }
+
         bottom_hole.m_owner_wheel.TokenEntered(bottom_hole);
 
         m_activity.PlaySound(R.raw.token_fall);
