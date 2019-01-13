@@ -90,8 +90,8 @@ public class MainActivity extends Activity implements View.OnTouchListener {
     private void AddHole(int wheel_id, int angle, PlayerType player_type) {
         Hole hole = new Hole(this);
         hole.SetDiameter(m_size.x / 18);
-        ((ConnectableImage)findViewById(wheel_id)).AddHole(hole, angle);
         hole.SetPlayerType(player_type);
+        ((ConnectableImage)findViewById(wheel_id)).AddHole(hole, angle);
     }
 
     private void AddHoles(int wheel_id, int first_angle, int num_holes) {

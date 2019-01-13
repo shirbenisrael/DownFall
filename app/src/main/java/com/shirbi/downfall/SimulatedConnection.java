@@ -30,8 +30,10 @@ public class SimulatedConnection {
                 }
             } else {
                 for (Hole hole : connection.m_bottom_holes) {
-                    if (hole.GetResident() == null) {
-                        m_max_num_tokens_from_wheel[hole.GetPlayerType().getInt()] = 1;
+                    if (hole != null) {
+                        if (hole.GetResident() == null) {
+                            m_max_num_tokens_from_wheel[hole.GetPlayerType().getInt()] = 1;
+                        }
                     }
                 }
             }
@@ -39,8 +41,10 @@ public class SimulatedConnection {
             m_top_connection = false;
 
             for (Hole hole : connection.m_top_holes) {
-                if (hole.GetResident() != null) {
-                    m_max_num_tokens_to_wheel[hole.GetPlayerType().getInt()] = 1;
+                if (hole != null) {
+                    if (hole.GetResident() != null) {
+                        m_max_num_tokens_to_wheel[hole.GetPlayerType().getInt()] = 1;
+                    }
                 }
             }
 

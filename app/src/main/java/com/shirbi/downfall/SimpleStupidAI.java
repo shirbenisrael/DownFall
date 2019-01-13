@@ -2,7 +2,7 @@ package com.shirbi.downfall;
 
 public class SimpleStupidAI extends OppositePlayer {
 
-    SimpleStupidAI( Wheel wheels[]) {
+    SimpleStupidAI(Wheel wheels[]) {
         super(wheels);
     }
 
@@ -11,23 +11,26 @@ public class SimpleStupidAI extends OppositePlayer {
             if (connection.m_top_wheel != wheel) {
                 continue; // This is the bottom wheel for this connection. The token cannot fall any more
             }
-            for (Hole bottom_hole : connection.m_bottom_holes) {
-                if ((bottom_hole.GetResident() == null) && bottom_hole.GetPlayerType() == PlayerType.AI_PLAYER) {
-                    // Great, we found a bottom hole that can get this token.
-                    int hole_base_angle = hole.GetBaseAngle();
-                    int hole_current_angle = hole_base_angle + (int)wheel.GetCurrentAngle();
-                    int hole_desired_angle = (int)connection.m_top_angle;
 
-                    RotationResult rotationResult = new RotationResult();
+            Hole bottom_hole = connection.m_bottom_holes[PlayerType.AI_PLAYER.getInt()];
+            if (bottom_hole == null) {
+                continue;
+            }
+            if (bottom_hole.GetResident() == null) {
+                // Great, we found a bottom hole that can get this token.
+                int hole_base_angle = hole.GetBaseAngle();
+                int hole_current_angle = hole_base_angle + (int) wheel.GetCurrentAngle();
+                int hole_desired_angle = (int) connection.m_top_angle;
 
-                    rotationResult.m_wheel = wheel;
-                    rotationResult.m_angle = hole_desired_angle - hole_current_angle;
-                    rotationResult.m_num_token_fall = 1;
-                    rotationResult.m_moved_token_number = hole.GetResident().GetNumber();
-                    rotationResult.m_num_holes_connected = 0;
+                RotationResult rotationResult = new RotationResult();
 
-                    return rotationResult;
-                }
+                rotationResult.m_wheel = wheel;
+                rotationResult.m_angle = hole_desired_angle - hole_current_angle;
+                rotationResult.m_num_token_fall = 1;
+                rotationResult.m_moved_token_number = hole.GetResident().GetNumber();
+                rotationResult.m_num_holes_connected = 0;
+
+                return rotationResult;
             }
         }
 
@@ -39,25 +42,30 @@ public class SimpleStupidAI extends OppositePlayer {
             if (connection.m_bottom_wheel != wheel) {
                 continue; // This is the top wheel for this connection. We don't have a token to fall.
             }
-            for (Hole top_hole : connection.m_top_holes) {
-                if ((top_hole.GetResident() != null) && top_hole.GetPlayerType() == PlayerType.AI_PLAYER) {
-                    // Great, we found a top hole that can give us its token.
-                    int hole_base_angle = hole.GetBaseAngle();
-                    int hole_current_angle = hole_base_angle + (int)wheel.GetCurrentAngle();
-                    int hole_desired_angle = (int)connection.m_bottom_angle;
 
-                    RotationResult rotationResult = new RotationResult();
+            Hole top_hole = connection.m_top_holes[PlayerType.AI_PLAYER.getInt()];
+            if (top_hole == null) {
+                continue;
+            }
 
-                    rotationResult.m_wheel = wheel;
-                    rotationResult.m_angle = hole_desired_angle - hole_current_angle;
-                    rotationResult.m_num_token_fall = 1;
-                    rotationResult.m_moved_token_number = top_hole.GetResident().GetNumber();
-                    rotationResult.m_num_holes_connected = 0;
+            if (top_hole.GetResident() != null) {
+                // Great, we found a top hole that can give us its token.
+                int hole_base_angle = hole.GetBaseAngle();
+                int hole_current_angle = hole_base_angle + (int) wheel.GetCurrentAngle();
+                int hole_desired_angle = (int) connection.m_bottom_angle;
 
-                    return rotationResult;
-                }
+                RotationResult rotationResult = new RotationResult();
+
+                rotationResult.m_wheel = wheel;
+                rotationResult.m_angle = hole_desired_angle - hole_current_angle;
+                rotationResult.m_num_token_fall = 1;
+                rotationResult.m_moved_token_number = top_hole.GetResident().GetNumber();
+                rotationResult.m_num_holes_connected = 0;
+
+                return rotationResult;
             }
         }
+
 
         return null;
     }

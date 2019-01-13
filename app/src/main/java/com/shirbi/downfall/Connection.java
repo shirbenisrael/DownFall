@@ -1,8 +1,5 @@
 package com.shirbi.downfall;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import static java.lang.Math.abs;
 
 public class Connection {
@@ -10,8 +7,9 @@ public class Connection {
     ConnectableImage m_bottom_wheel;
     double m_bottom_angle;
     double m_top_angle;
-    protected Set<Hole> m_bottom_holes;
-    protected Set<Hole> m_top_holes;
+
+    protected Hole m_bottom_holes[];
+    protected Hole m_top_holes[];
 
     public static final int MAX_DIFF_DEGREE = 5;
 
@@ -20,8 +18,8 @@ public class Connection {
         m_bottom_wheel = bottom;
         m_bottom_angle = bottom_angle;
         m_top_angle = (bottom_angle + 180) % 360;
-        m_bottom_holes = new HashSet<Hole>();
-        m_top_holes = new HashSet<Hole>();
+        m_bottom_holes = new Hole[PlayerType.NUM_PLAYERS];
+        m_top_holes = new Hole[PlayerType.NUM_PLAYERS];
 
     }
 
@@ -38,44 +36,39 @@ public class Connection {
     }
 
     public Hole GetBottomConnected(Hole hole) {
-        for (Hole bottom_hole : m_bottom_holes) {
-            if (bottom_hole.GetPlayerType() == hole.GetPlayerType()) {
-                return bottom_hole;
-            }
-        }
-        return null;
+        return m_bottom_holes[hole.GetPlayerType().getInt()];
     }
 
     public Hole GetTopConnected(Hole hole) {
-        for (Hole top_hole : m_top_holes) {
-            if (top_hole.GetPlayerType() == hole.GetPlayerType()) {
-                return top_hole;
-            }
-        }
-        return null;
+        return m_top_holes[hole.GetPlayerType().getInt()];
     }
 
     Boolean CompareHoleAngle(ConnectableImage owner_wheel, Hole hole, double angle) {
+        int player_type_num = hole.GetPlayerType().getInt();
         if (owner_wheel == m_top_wheel) {
             if (angle_diff(angle, m_top_angle) < MAX_DIFF_DEGREE) {
-                m_top_holes.add(hole);
+                m_top_holes[player_type_num] = hole;
                 hole.FallDownToken(GetBottomConnected(hole));
                 return true;
             } else {
-                m_top_holes.remove(hole);
+                if (m_top_holes[player_type_num] == hole) {
+                    m_top_holes[player_type_num] = null;
+                }
             }
         }
 
         if (owner_wheel == m_bottom_wheel) {
             if (angle_diff(angle, m_bottom_angle) < MAX_DIFF_DEGREE) {
-                m_bottom_holes.add(hole);
+                m_bottom_holes[player_type_num] = hole;
                 Hole top_hole = GetTopConnected(hole);
                 if (top_hole != null) {
                     top_hole.FallDownToken(hole);
                 }
                 return true;
             } else {
-                m_bottom_holes.remove(hole);
+                if (m_bottom_holes[player_type_num] == hole) {
+                    m_bottom_holes[player_type_num] = null;
+                }
             }
         }
 
