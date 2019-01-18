@@ -306,6 +306,17 @@ public class Token extends RotatableImage {
         m_token_list[GetPlayerType().getInt()][GetColor().getInt()][GetNumber() - 1] = this;
     }
 
+    public void Unregister() {
+        m_token_list[GetPlayerType().getInt()][GetColor().getInt()][GetNumber() - 1] = null;
+    }
+
+    public Token GetPreviousToken() {
+        if (GetNumber() == 1) {
+            return null;
+        }
+        return m_token_list[GetPlayerType().getInt()][GetColor().getInt()][GetNumber() - 2];
+    }
+
     public void SetOwnerWheel(ConnectableImage owner) {
         m_owner_wheel = owner;
     }

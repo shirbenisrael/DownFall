@@ -32,6 +32,7 @@ public class Output extends ConnectableImage implements SlideToken {
     public void TokenStoppedMoving(Token token) {
         token.RemoveFromParentView();
         token.SetOwnerWheel(null);
+        token.Unregister();
 
         int player_num = token.GetPlayerType().getInt();
 
@@ -44,6 +45,16 @@ public class Output extends ConnectableImage implements SlideToken {
                 string = "You won!";
             } else {
                 string = "You lose!";
+            }
+            m_activity.EndGame(string);
+        }
+
+        if (token.GetPreviousToken() != null) {
+            String string;
+            if (token.GetPlayerType() == PlayerType.HUMAN_PLAYER) {
+                string = "Bad order - You lose!";
+            } else {
+                string = "Bad order - You win!";
             }
             m_activity.EndGame(string);
         }
