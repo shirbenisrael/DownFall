@@ -191,6 +191,7 @@ public class Hole extends RotatableImage {
             token.SetDiameter(m_diameter);
             token.Rotate(0); /* This will scale the token image to the correct size */
             token.SetOppositePlayerObjectsVisibility(m_visibility);
+            token.Register();
 
             SetResident(token);
             SetAngle(m_current_angle - m_baseAngle); /* Will put the token on the hole */

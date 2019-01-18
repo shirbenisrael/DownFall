@@ -62,6 +62,8 @@ public class InputTokenQueue extends ConnectableImage implements SlideToken {
         Hole hole = MatchHoleToToke(token);
         TokenList tokens_list = MatchTokenList(token);
 
+        token.Register();
+
         token.SetDiameter(hole.m_diameter);
         token.SetOppositePlayerObjectsVisibility(m_objects_visibility);
 

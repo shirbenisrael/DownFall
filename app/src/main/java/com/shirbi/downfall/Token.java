@@ -30,8 +30,12 @@ public class Token extends RotatableImage {
     private float m_alpha;
     private Timer m_fade_out_timer;
 
+    static Token m_token_list[][][] = new Token[PlayerType.NUM_PLAYERS][Token.COLOR.NUM_COLORS][5];
+
     enum COLOR {
         COLOR_1(0), COLOR_2(1);
+
+        static public final int NUM_COLORS = 2;
 
         private final int m_color;
 
@@ -295,4 +299,8 @@ public class Token extends RotatableImage {
             }
         }
     };
+
+    public void Register() {
+        m_token_list[GetPlayerType().getInt()][GetColor().getInt()][GetNumber() - 1] = this;
+    }
 }
