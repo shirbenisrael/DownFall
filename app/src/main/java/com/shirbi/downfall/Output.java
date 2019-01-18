@@ -31,6 +31,7 @@ public class Output extends ConnectableImage implements SlideToken {
 
     public void TokenStoppedMoving(Token token) {
         token.RemoveFromParentView();
+        token.SetOwnerWheel(null);
 
         int player_num = token.GetPlayerType().getInt();
 

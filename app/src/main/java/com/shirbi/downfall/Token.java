@@ -29,6 +29,7 @@ public class Token extends RotatableImage {
     RotatableImage m_number_image;
     private float m_alpha;
     private Timer m_fade_out_timer;
+    private ConnectableImage m_owner_wheel;
 
     static Token m_token_list[][][] = new Token[PlayerType.NUM_PLAYERS][Token.COLOR.NUM_COLORS][5];
 
@@ -52,6 +53,7 @@ public class Token extends RotatableImage {
     private static final float ALPHA_FOR_OPPOSITE = (float)0.2;
 
     private void Init() {
+        m_owner_wheel = null;
         m_player_type = PlayerType.HUMAN_PLAYER;
         m_this_token = this;
         m_color = COLOR.COLOR_1;
@@ -302,5 +304,9 @@ public class Token extends RotatableImage {
 
     public void Register() {
         m_token_list[GetPlayerType().getInt()][GetColor().getInt()][GetNumber() - 1] = this;
+    }
+
+    public void SetOwnerWheel(ConnectableImage owner) {
+        m_owner_wheel = owner;
     }
 }

@@ -101,6 +101,9 @@ public class Hole extends RotatableImage {
 
     public void SetResident(Token resident) {
         m_resident = resident;
+        if (m_resident != null) {
+            resident.SetOwnerWheel(m_owner_wheel);
+        }
     }
 
     public Boolean HasResident() {
@@ -150,7 +153,7 @@ public class Hole extends RotatableImage {
             return;
         }
 
-        bottom_hole.m_resident = m_resident;
+        bottom_hole.SetResident(m_resident);
         m_resident = null;
 
         bottom_hole.SetAngle(bottom_hole.m_current_angle - bottom_hole.m_baseAngle);
