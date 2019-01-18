@@ -12,6 +12,8 @@ public class SimulatedConnection {
 
     public int m_max_num_tokens_from_wheel[] = new int[PlayerType.NUM_PLAYERS];
 
+    public Token m_top_tokens[] = new Token[PlayerType.NUM_PLAYERS];
+
     public SimulatedConnection(Connection connection, Wheel wheel) {
         m_original_connection = connection;
 
@@ -19,6 +21,7 @@ public class SimulatedConnection {
             m_max_num_tokens_to_wheel[i] = 0;
             m_max_num_tokens_to_wheel_later[i] = 0;
             m_max_num_tokens_from_wheel[i] = 0;
+            m_top_tokens[i] = null;
         }
 
         if (connection.m_top_wheel == wheel) {
@@ -44,6 +47,7 @@ public class SimulatedConnection {
                 if (hole != null) {
                     if (hole.GetResident() != null) {
                         m_max_num_tokens_to_wheel[hole.GetPlayerType().getInt()] = 1;
+                        m_top_tokens[hole.GetPlayerType().getInt()] = hole.GetResident();
                     }
                 }
             }

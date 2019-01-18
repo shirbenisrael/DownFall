@@ -7,12 +7,14 @@ public class SimulatedHole
 
     public PlayerType m_player_type;
     public Boolean m_has_resident;
+    public Token m_resident;
 
     public SimulatedHole(Hole hole) {
         m_player_type = hole.GetPlayerType();
         m_has_resident = (hole.GetResident() != null);
         m_current_angle = hole.GetCurrentAngle();
         m_base_angle = hole.GetBaseAngle();
+        m_resident = hole.GetResident();
     }
 
     public void SetWheelAngle(int angle) {
