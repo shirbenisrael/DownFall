@@ -4,6 +4,7 @@ public class SmartRotationResult {
     public Wheel m_wheel;
     public int m_angle;
 
+    TokenList[] m_fall_token_list = new TokenList[PlayerType.NUM_PLAYERS];
     int m_fall_token[] = new int[PlayerType.NUM_PLAYERS];
     int m_top_occupied_hole_count[] = new int[PlayerType.NUM_PLAYERS];
     int m_bottom_empty_hole_with_top_wheel_with_token_count[] = new int[PlayerType.NUM_PLAYERS];
@@ -16,6 +17,7 @@ public class SmartRotationResult {
             m_top_occupied_hole_count[i] = 0;
             m_bottom_empty_hole_count[i] = 0;
             m_fall_token[i] = 0;
+            m_fall_token_list[i] = new TokenList();
         }
     }
 
@@ -28,6 +30,8 @@ public class SmartRotationResult {
             m_bottom_empty_hole_with_top_wheel_with_token_count[i] =
                     other.m_bottom_empty_hole_with_top_wheel_with_token_count[i];
             m_fall_token[i] = other.m_fall_token[i];
+            m_fall_token_list[i] = new TokenList();
+            m_fall_token_list[i].addAll(other.m_fall_token_list[i]);
         }
     }
 

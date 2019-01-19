@@ -212,6 +212,7 @@ public class SmartAI extends OppositePlayer {
                                 connection.m_max_num_tokens_from_wheel[player_index]--;
                                 if (connection.IsEfficient()) {
                                     rotation_result.m_fall_token[player_index]++;
+                                    rotation_result.m_fall_token_list[player_index].add(hole.m_resident);
                                 }
                                 hole.m_has_resident = false;
                             } else {
@@ -219,7 +220,6 @@ public class SmartAI extends OppositePlayer {
                                     rotation_result.m_top_occupied_hole_count[player_index]++;
                                 }
                             }
-
                         }
                     } else { // else: bottom connection.
                         if (!hole.m_has_resident) {
@@ -227,6 +227,8 @@ public class SmartAI extends OppositePlayer {
                                 connection.m_max_num_tokens_to_wheel[player_index]--;
                                 if (connection.IsEfficient()) {
                                     rotation_result.m_fall_token[player_index]++;
+                                    Token token = connection.m_top_tokens[player_index];
+                                    rotation_result.m_fall_token_list[player_index].add(token);
                                 }
                                 hole.m_has_resident = true;
                             } else {

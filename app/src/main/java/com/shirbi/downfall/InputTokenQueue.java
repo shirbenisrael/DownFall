@@ -4,13 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.AttributeSet;
 
-import java.util.ArrayList;
-
 public class InputTokenQueue extends ConnectableImage implements SlideToken {
 
     public static final int MAX_TOKENS = 5;
-
-    private class TokenList extends  ArrayList<Token> {};
 
     private TokenList[] m_tokens = new TokenList[PlayerType.NUM_PLAYERS];
 

@@ -11,7 +11,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class Token extends RotatableImage {
-
     private static final int m_numbers_images[] = {R.drawable.token_1, R.drawable.token_2, R.drawable.token_3, R.drawable.token_4, R.drawable.token_5};
     private static final int m_color_images[] = {R.drawable.token_red, R.drawable.token_yellow, R.drawable.token_blue, R.drawable.token_green};
 
