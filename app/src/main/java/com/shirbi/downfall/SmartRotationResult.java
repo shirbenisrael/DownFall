@@ -1,10 +1,20 @@
 package com.shirbi.downfall;
 
+import java.util.ArrayList;
+
 public class SmartRotationResult {
     public Wheel m_wheel;
     public int m_angle;
 
-    TokenList[] m_fall_token_list = new TokenList[PlayerType.NUM_PLAYERS];
+    public class SimulatedToken {
+        Token m_token;
+        int m_target_wheel_num;
+    }
+
+    public class SimulatedTokenList extends ArrayList<SimulatedToken> {};
+
+    SimulatedTokenList[] m_fall_token_list = new SimulatedTokenList[PlayerType.NUM_PLAYERS];
+
     int m_fall_token[] = new int[PlayerType.NUM_PLAYERS];
     int m_top_occupied_hole_count[] = new int[PlayerType.NUM_PLAYERS];
     int m_bottom_empty_hole_with_top_wheel_with_token_count[] = new int[PlayerType.NUM_PLAYERS];
@@ -17,7 +27,7 @@ public class SmartRotationResult {
             m_top_occupied_hole_count[i] = 0;
             m_bottom_empty_hole_count[i] = 0;
             m_fall_token[i] = 0;
-            m_fall_token_list[i] = new TokenList();
+            m_fall_token_list[i] = new SimulatedTokenList();
         }
     }
 
@@ -30,7 +40,7 @@ public class SmartRotationResult {
             m_bottom_empty_hole_with_top_wheel_with_token_count[i] =
                     other.m_bottom_empty_hole_with_top_wheel_with_token_count[i];
             m_fall_token[i] = other.m_fall_token[i];
-            m_fall_token_list[i] = new TokenList();
+            m_fall_token_list[i] = new SimulatedTokenList();
             m_fall_token_list[i].addAll(other.m_fall_token_list[i]);
         }
     }
@@ -42,9 +52,79 @@ public class SmartRotationResult {
         return my_diff - other_diff;
     }
 
+    private Boolean IsBadOrder(PlayerType playerType) {
+        int player_index = playerType.getInt();
+        SimulatedTokenList token_list = m_fall_token_list[player_index];
+
+        for (SimulatedToken simulated_token : token_list) {
+            Token token = simulated_token.m_token;
+
+            if (token == null) {
+                continue;
+            }
+
+            Token previous = token.GetPreviousToken();
+            if (previous == null) {
+                continue;
+            }
+
+            int wheel_num = simulated_token.m_target_wheel_num;
+
+            boolean previous_token_falls_too = false;
+            SimulatedToken previous_simulated_token = null;
+            int index_of_previous = -1;
+            for (SimulatedToken other_simulated_token : token_list) {
+                if (other_simulated_token.m_token == previous) {
+                    index_of_previous = token_list.indexOf(other_simulated_token);
+                    previous_simulated_token = other_simulated_token;
+                    previous_token_falls_too = true;
+                    break;
+                }
+            }
+
+            if (previous_token_falls_too) {
+                if (previous_simulated_token.m_target_wheel_num > simulated_token.m_target_wheel_num) {
+                    continue;
+                }
+
+                if (previous_simulated_token.m_target_wheel_num < simulated_token.m_target_wheel_num) {
+                    return true;
+                }
+
+                int index_of_this_token = token_list.indexOf(token);
+                if (index_of_previous > index_of_this_token) {
+                    return true;
+                }
+            }
+
+            // If we got here, previous token doesn't move in this turn.
+            int previous_wheel_num = previous.GetOwnerWheel().GetWheelNum();
+
+            if (previous_wheel_num > wheel_num) {
+                continue;
+            }
+
+            if (previous_wheel_num < wheel_num) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     Boolean IsBetterThan(SmartRotationResult other) {
         if (other == null) {
             return true;
+        }
+
+        boolean ai_bad_order = IsBadOrder(PlayerType.AI_PLAYER) != other.IsBadOrder(PlayerType.AI_PLAYER);
+        if (ai_bad_order) {
+            return other.IsBadOrder(PlayerType.AI_PLAYER);
+        }
+
+        boolean human_bad_order = IsBadOrder(PlayerType.HUMAN_PLAYER) != other.IsBadOrder(PlayerType.HUMAN_PLAYER);
+        if (human_bad_order) {
+            return  IsBadOrder(PlayerType.HUMAN_PLAYER);
         }
 
         int diff_fall_token = diff_ai_human(m_fall_token, other.m_fall_token);
@@ -89,4 +169,18 @@ public class SmartRotationResult {
         return false;
     }
 
+    public void AddFallToken(int player_index, Token token, int target_wheel_num) {
+        m_fall_token[player_index]++;
+
+        // Second token from input queue.
+        if (token == null) {
+            return;
+        }
+
+        SimulatedToken simulated_token = new SimulatedToken();
+        simulated_token.m_token = token;
+        simulated_token.m_target_wheel_num = target_wheel_num;
+
+        m_fall_token_list[player_index].add(simulated_token);
+    }
 }

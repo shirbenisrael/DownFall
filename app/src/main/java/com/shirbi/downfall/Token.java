@@ -319,4 +319,8 @@ public class Token extends RotatableImage {
     public void SetOwnerWheel(ConnectableImage owner) {
         m_owner_wheel = owner;
     }
+
+    public ConnectableImage GetOwnerWheel() {
+        return m_owner_wheel;
+    }
 }

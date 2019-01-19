@@ -88,4 +88,8 @@ public class Output extends ConnectableImage implements SlideToken {
             m_activity.ShowNumTokenLeft(hole.GetPlayerType(),  m_player_num_tokens_left[player_num]);
         }
     }
+
+    public int GetWheelNum() {
+        return 5;
+    }
 }
