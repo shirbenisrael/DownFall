@@ -224,11 +224,12 @@ public class SmartAI extends OppositePlayer {
                         if (!hole.m_has_resident) {
                             if (connection.m_max_num_tokens_to_wheel[player_index] > 0) {
                                 connection.m_max_num_tokens_to_wheel[player_index]--;
+                                Token token = connection.m_top_tokens[player_index];
                                 if (connection.IsEfficient()) {
-                                    Token token = connection.m_top_tokens[player_index];
                                     rotation_result.AddFallToken(player_index, token, connection.m_original_connection.m_bottom_wheel.GetWheelNum());
                                 }
                                 hole.m_has_resident = true;
+                                hole.m_resident = token;
                             } else {
                                 if (connection.IsEfficient()) {
                                     if (connection.m_max_num_tokens_to_wheel_later[player_index] > 0) {
