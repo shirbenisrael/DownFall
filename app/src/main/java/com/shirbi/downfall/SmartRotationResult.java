@@ -14,6 +14,7 @@ public class SmartRotationResult {
     public class SimulatedTokenList extends ArrayList<SimulatedToken> {};
 
     SimulatedTokenList[] m_fall_token_list = new SimulatedTokenList[PlayerType.NUM_PLAYERS];
+    Token[] m_top_occupied_token = new Token[PlayerType.NUM_PLAYERS];
 
     int m_fall_token[] = new int[PlayerType.NUM_PLAYERS];
     int m_top_occupied_hole_count[] = new int[PlayerType.NUM_PLAYERS];
@@ -28,6 +29,7 @@ public class SmartRotationResult {
             m_bottom_empty_hole_count[i] = 0;
             m_fall_token[i] = 0;
             m_fall_token_list[i] = new SimulatedTokenList();
+            m_top_occupied_token[i] = null;
         }
     }
 
@@ -42,6 +44,7 @@ public class SmartRotationResult {
             m_fall_token[i] = other.m_fall_token[i];
             m_fall_token_list[i] = new SimulatedTokenList();
             m_fall_token_list[i].addAll(other.m_fall_token_list[i]);
+            m_top_occupied_token[i] = other.m_top_occupied_token[i];
         }
     }
 
@@ -50,6 +53,18 @@ public class SmartRotationResult {
         int other_diff = other_array[PlayerType.AI_PLAYER.getInt()] - other_array[PlayerType.HUMAN_PLAYER.getInt()];
 
         return my_diff - other_diff;
+    }
+
+    private SimulatedToken GetPreviousSimulatedFallToken(Token token) {
+        SimulatedTokenList token_list = m_fall_token_list[token.GetPlayerType().getInt()];
+
+        for (SimulatedToken other_simulated_token : token_list) {
+            if (other_simulated_token.m_token == token.GetPreviousToken()) {
+                return other_simulated_token;
+            }
+        }
+
+        return null;
     }
 
     private int BadOrderCount(PlayerType playerType) {
@@ -117,6 +132,35 @@ public class SmartRotationResult {
         return bad_order_count;
     }
 
+    private int BadOrderTokenReadyToFall(PlayerType playerType) {
+        int bad_order_count = 0;
+
+        if (m_wheel.GetWheelNum() == 0) {
+            return 0;
+        }
+
+        Token token = m_top_occupied_token[playerType.getInt()];
+        if (token == null) {
+            return 0;
+        }
+
+        Token previous = token.GetPreviousToken();
+        if (previous == null) {
+            return 0;
+        }
+
+        SimulatedToken previous_simulated = GetPreviousSimulatedFallToken(token);
+
+        int previous_wheel_num =(previous_simulated == null) ? previous.GetOwnerWheel().GetWheelNum() :
+                previous_simulated.m_target_wheel_num;
+
+        if (previous_wheel_num <= m_wheel.GetWheelNum()) {
+            return 1;
+        }
+
+        return 0;
+    }
+
     Boolean IsBetterThan(SmartRotationResult other) {
         if (other == null) {
             return true;
@@ -138,6 +182,16 @@ public class SmartRotationResult {
         }
         if (diff_fall_token < 0) {
             return false;
+        }
+
+        int ai_bad_order_ready_to_fall = BadOrderTokenReadyToFall(PlayerType.AI_PLAYER) - other.BadOrderTokenReadyToFall(PlayerType.AI_PLAYER);
+        if (ai_bad_order_ready_to_fall != 0) {
+            return (ai_bad_order_ready_to_fall < 0);
+        }
+
+        int human_bad_order_ready_to_fall = BadOrderTokenReadyToFall(PlayerType.HUMAN_PLAYER) - other.BadOrderTokenReadyToFall(PlayerType.HUMAN_PLAYER);
+        if (human_bad_order_ready_to_fall != 0) {
+            return (human_bad_order_ready_to_fall > 0);
         }
 
         int diff_token_fit = diff_ai_human(m_top_occupied_hole_count, other.m_top_occupied_hole_count);

@@ -198,6 +198,7 @@ public class SmartAI extends OppositePlayer {
 
                     if (hole.m_has_resident && connection.m_top_connection) {
                         rotation_result.m_top_occupied_hole_count[player_index]--;
+                        rotation_result.m_top_occupied_token[player_index] = null;
                     }
                 }
 
@@ -217,6 +218,7 @@ public class SmartAI extends OppositePlayer {
                             } else {
                                 if (connection.IsEfficient()) {
                                     rotation_result.m_top_occupied_hole_count[player_index]++;
+                                    rotation_result.m_top_occupied_token[player_index] = hole.m_resident;
                                 }
                             }
                         }
