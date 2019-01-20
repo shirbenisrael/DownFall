@@ -95,7 +95,8 @@ public class SmartRotationResult {
                     index_of_previous = token_list.indexOf(other_simulated_token);
                     previous_simulated_token = other_simulated_token;
                     previous_token_falls_too = true;
-                    break;
+                    // don't break. Maybe previous token falls twice, and then we want to
+                    // check the last wheel it reaches.
                 }
             }
 
