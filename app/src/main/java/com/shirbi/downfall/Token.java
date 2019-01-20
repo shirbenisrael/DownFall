@@ -293,6 +293,7 @@ public class Token extends RotatableImage {
 
             if (m_alpha < 0.1) {
                 m_alpha = (float)1.0;
+                m_fade_out_timer.cancel();
                 setVisibility(INVISIBLE);
                 m_connected_image.setVisibility(INVISIBLE);
                 m_number_image.setVisibility(INVISIBLE);
