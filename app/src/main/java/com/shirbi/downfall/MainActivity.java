@@ -293,13 +293,13 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         } else {
             builder = new AlertDialog.Builder(this);
         }
-        builder.setTitle("Start new game?");
-        builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+        builder.setTitle(getString(R.string.start_new_game));
+        builder.setPositiveButton(getString(R.string.confirm), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 StartNewGame();
             }
         });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 // do nothing
             }
@@ -419,7 +419,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         } else {
             builder = new AlertDialog.Builder(this);
         }
-        builder.setTitle("Game is over");
+        builder.setTitle(getString(R.string.game_over));
         builder.setPositiveButton(string, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 StartNewGame();

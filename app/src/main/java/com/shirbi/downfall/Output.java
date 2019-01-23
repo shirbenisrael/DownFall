@@ -42,9 +42,9 @@ public class Output extends ConnectableImage implements SlideToken {
         if (m_player_num_tokens_left[player_num] == 0) {
             String string;
             if (token.GetPlayerType() == PlayerType.HUMAN_PLAYER) {
-                string = "You won!";
+                string = m_activity.getString(R.string.win);
             } else {
-                string = "You lose!";
+                string = m_activity.getString(R.string.lose);
             }
             m_activity.EndGame(string);
         }
@@ -52,9 +52,9 @@ public class Output extends ConnectableImage implements SlideToken {
         if (token.GetPreviousToken() != null) {
             String string;
             if (token.GetPlayerType() == PlayerType.HUMAN_PLAYER) {
-                string = "Bad order - You lose!";
+                string = m_activity.getString(R.string.lose_order);
             } else {
-                string = "Bad order - You win!";
+                string = m_activity.getString(R.string.win_order);
             }
             m_activity.EndGame(string);
         }
