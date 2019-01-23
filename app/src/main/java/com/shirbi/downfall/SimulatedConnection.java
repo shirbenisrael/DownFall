@@ -54,10 +54,14 @@ public class SimulatedConnection {
 
             // Top wheel has token that is not connected now.
             for (Hole hole : m_original_connection.m_top_wheel.m_holes) {
-                if ((hole.GetResident() != null) &&
-                        (m_max_num_tokens_to_wheel[hole.GetPlayerType().getInt()] == 0)) {
-                    m_max_num_tokens_to_wheel_later[hole.GetPlayerType().getInt()] = 1;
+                if (hole.GetResident() != null) {
+                    m_max_num_tokens_to_wheel_later[hole.GetPlayerType().getInt()]++;
                 }
+            }
+
+            // Don't count the top token twice.
+            for (int i = 0; i< PlayerType.NUM_PLAYERS; i++) {
+                m_max_num_tokens_to_wheel_later[i] -= m_max_num_tokens_to_wheel[i];
             }
 
             if (connection.m_top_wheel instanceof InputTokenQueue) {
