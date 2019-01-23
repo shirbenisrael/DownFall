@@ -13,35 +13,35 @@
         <RadioButton android:id="@+id/hide_holes_always_radio_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="hide_holes_always"/>
+            android:text="@string/hide_all" />
         <RadioButton android:id="@+id/show_holes_on_connect_radio_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="show_holes_on_connect"/>
+            android:text="@string/show_on_connect" />
         <RadioButton android:id="@+id/show_holes_always_radio_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
-            android:text="show_holes_always"/>
+            android:text="@string/show_all" />
     </RadioGroup>
 
     <CheckBox
         android:id="@+id/smart_ai_checkbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="smart_ai" />
+        android:text="@string/smart_ai_string" />
 
     <CheckBox
         android:id="@+id/enable_sound_checkbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="enable_sound" />
+        android:text="@string/enable_sounds" />
 
     <Button
         android:id="@+id/back_from_setting_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="onBackFromSettingClick"
-        android:text="back" />
+        android:text="@string/back_string" />
 
 </LinearLayout>
