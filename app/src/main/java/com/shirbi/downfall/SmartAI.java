@@ -253,12 +253,11 @@ public class SmartAI extends OppositePlayer {
     }
 
     private ArrayList<SmartRotationResult> m_last_wheel_result;
+    SmartRotationResult m_best_result;
 
     @Override
     public int Run() {
-
-        SmartRotationResult best_result = null;
-
+        m_best_result = null;
         m_last_wheel_result = new ArrayList<>();
 
         for (int i = 0; i < m_wheels.length; i++) {
@@ -275,19 +274,17 @@ public class SmartAI extends OppositePlayer {
             wheel_results.addAll(RotateWheelResult(i, ROTATION_DIRECTION.ROTATE_LEFT));
 
             for (SmartRotationResult result : wheel_results) {
-                if ((result != null) && result.IsBetterThan(best_result)) {
-                    if (result.IsBetterThan(best_result)) {
-                        best_result = result;
-                    }
+                if ((result != null) && result.IsBetterThan(m_best_result)) {
+                    m_best_result = result;
                 }
             }
 
             m_last_wheel_result.addAll(wheel_results);
         }
 
-        if (best_result != null) {
-            best_result.m_wheel.AddRotation(best_result.m_angle);
-            return best_result.m_wheel.GetWheelNum();
+        if (m_best_result != null) {
+            m_best_result.m_wheel.AddRotation(m_best_result.m_angle);
+            return m_best_result.m_wheel.GetWheelNum();
         } else {
             return m_wheels.length;
         }
