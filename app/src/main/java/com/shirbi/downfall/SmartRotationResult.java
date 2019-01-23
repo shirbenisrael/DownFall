@@ -11,7 +11,10 @@ public class SmartRotationResult {
         int m_target_wheel_num;
     }
 
-    public class SimulatedTokenList extends ArrayList<SimulatedToken> {};
+    public class SimulatedTokenList extends ArrayList<SimulatedToken> {
+    }
+
+    ;
 
     SimulatedTokenList[] m_fall_token_list = new SimulatedTokenList[PlayerType.NUM_PLAYERS];
     Token[] m_top_occupied_token = new Token[PlayerType.NUM_PLAYERS];
@@ -24,7 +27,7 @@ public class SmartRotationResult {
     SmartRotationResult(Wheel wheel) {
         m_wheel = wheel;
         m_angle = 0;
-        for (int i = 0 ; i < PlayerType.NUM_PLAYERS; i++) {
+        for (int i = 0; i < PlayerType.NUM_PLAYERS; i++) {
             m_top_occupied_hole_count[i] = 0;
             m_bottom_empty_hole_count[i] = 0;
             m_fall_token[i] = 0;
@@ -36,7 +39,7 @@ public class SmartRotationResult {
     SmartRotationResult(SmartRotationResult other) {
         m_wheel = other.m_wheel;
         m_angle = other.m_angle;
-        for (int i = 0 ; i < PlayerType.NUM_PLAYERS; i++) {
+        for (int i = 0; i < PlayerType.NUM_PLAYERS; i++) {
             m_top_occupied_hole_count[i] = other.m_top_occupied_hole_count[i];
             m_bottom_empty_hole_count[i] = other.m_bottom_empty_hole_count[i];
             m_bottom_empty_hole_with_top_wheel_with_token_count[i] =
@@ -110,23 +113,23 @@ public class SmartRotationResult {
                     continue;
                 }
 
-                int index_of_this_token = token_list.indexOf(token);
+                int index_of_this_token = token_list.indexOf(simulated_token);
                 if (index_of_previous > index_of_this_token) {
                     bad_order_count++;
                     continue;
                 }
-            }
+            } else {
+                // If we got here, previous token doesn't move in this turn.
+                int previous_wheel_num = previous.GetOwnerWheel().GetWheelNum();
 
-            // If we got here, previous token doesn't move in this turn.
-            int previous_wheel_num = previous.GetOwnerWheel().GetWheelNum();
+                if (previous_wheel_num > wheel_num) {
+                    continue;
+                }
 
-            if (previous_wheel_num > wheel_num) {
-                continue;
-            }
-
-            if (previous_wheel_num < wheel_num) {
-                bad_order_count++;
-                continue;
+                if (previous_wheel_num < wheel_num) {
+                    bad_order_count++;
+                    continue;
+                }
             }
         }
 
@@ -152,7 +155,7 @@ public class SmartRotationResult {
 
         SimulatedToken previous_simulated = GetPreviousSimulatedFallToken(token);
 
-        int previous_wheel_num =(previous_simulated == null) ? previous.GetOwnerWheel().GetWheelNum() :
+        int previous_wheel_num = (previous_simulated == null) ? previous.GetOwnerWheel().GetWheelNum() :
                 previous_simulated.m_target_wheel_num;
 
         if (previous_wheel_num <= m_wheel.GetWheelNum()) {
