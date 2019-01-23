@@ -157,14 +157,15 @@
                 android:layout_height="wrap_content"
                 android:text="New Game" />
 
+            <Button
+                android:id="@+id/setting_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onSettingClick"
+                android:text="setting" />
         </LinearLayout>
 
-        <Button
-            android:id="@+id/setting_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="onSettingClick"
-            android:text="setting" />
+
     </LinearLayout>
 
     <include
