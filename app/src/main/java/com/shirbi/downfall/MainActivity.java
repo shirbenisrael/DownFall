@@ -14,6 +14,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.RadioButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class MainActivity extends Activity implements View.OnTouchListener {
@@ -116,6 +117,28 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         ((ConnectableImage)findViewById(wheel_id)).UpdateDisplay((int)diameter);
     }
 
+    public void SetTurnDoneButtonLocation(int wheel_id_anchor, int left, int top) {
+        RotatableImage anchor = (RotatableImage)findViewById(wheel_id_anchor);
+        RelativeLayout anchorRelativeLayout = (RelativeLayout) anchor.getParent();
+
+        int top_anchor = ((RelativeLayout.LayoutParams)anchorRelativeLayout.getLayoutParams()).topMargin;
+        int left_anchor = ((RelativeLayout.LayoutParams)anchorRelativeLayout.getLayoutParams()).leftMargin;
+
+        View turn_done_button = findViewById(R.id.finish_turn_button);
+        RelativeLayout boardLayout = (RelativeLayout) turn_done_button.getParent();
+
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(anchor.m_diameter, anchor.m_diameter / 2);
+
+        params.leftMargin = left + left_anchor + anchor.m_diameter;
+        params.topMargin = top + top_anchor + anchor.m_diameter / 6;
+
+        params.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
+        params.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
+
+        boardLayout.removeView(turn_done_button);
+        boardLayout.addView(turn_done_button, params);
+    }
+
     private void SetWheelLocation(int wheel_id, double left, double top) {
         ((ConnectableImage)findViewById(wheel_id)).SetLocation((int)left, (int)top);
     }
@@ -197,6 +220,8 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         ConnectWheels(R.id.wheel5, R.id.wheel3, 358);
 
         ConnectWheels(R.id.output, R.id.wheel5, 90);
+
+        SetTurnDoneButtonLocation(R.id.wheel2, (int)0, (int)0);
 
         AddHole(R.id.input_token_queue_left, 90, PlayerType.HUMAN_PLAYER);
         AddHole(R.id.input_token_queue_left, 90, PlayerType.AI_PLAYER);

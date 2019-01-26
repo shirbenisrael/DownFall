@@ -10,8 +10,8 @@
         android:id="@+id/main_game_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
         android:background="@drawable/background"
+        android:gravity="center"
         android:orientation="vertical">
 
         <RelativeLayout
@@ -122,6 +122,13 @@
 
             </RelativeLayout>
 
+            <Button
+                android:id="@+id/finish_turn_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onFinishTurnButtonClick"
+                android:text="@string/turn_done" />
+
         </RelativeLayout>
 
         <LinearLayout
@@ -134,7 +141,7 @@
             <TextView
                 android:id="@+id/player_token_counter"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
 
             <Button
                 android:id="@+id/new_game_button"
@@ -143,17 +150,10 @@
                 android:onClick="onNewGameButtonClick"
                 android:text="@string/new_game" />
 
-            <Button
-                android:id="@+id/finish_turn_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="onFinishTurnButtonClick"
-                android:text="@string/turn_done" />
-
             <TextView
                 android:id="@+id/opposite_token_counter"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
 
             <Button
                 android:id="@+id/setting_button"
@@ -168,7 +168,7 @@
 
     <include
         android:id="@+id/setting_layout"
-        layout="@layout/settings"/>
+        layout="@layout/settings" />
 
 
 </android.support.constraint.ConstraintLayout>
