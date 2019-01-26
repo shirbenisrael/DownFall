@@ -73,7 +73,7 @@ public class Hole extends RotatableImage {
                 new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                         ViewGroup.LayoutParams.WRAP_CONTENT);
         double centerXY = relativeLayout.getLayoutParams().width / 2;
-        double radius = centerXY * 0.8;
+        double radius = (centerXY - (m_diameter / 2)) *0.95;
         double angle = wheelAngle + m_baseAngle;
         double angleRadians = Math.toRadians(angle);
         double leftFromCenter = radius * Math.sin(angleRadians);
