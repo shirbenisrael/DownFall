@@ -22,4 +22,20 @@
     <string name="cancel">Cancel</string>
 
     <string name="game_over">Game Over</string>
+
+    <string name="title_paired_devices">Paired Devices</string>
+    <string name="title_other_devices">Other Devices</string>
+    <string name="button_scan">Scan</string>
+    <string name="none_paired">Not Paired</string>
+    <string name="scanning">Scanning</string>
+    <string name="select_device">Select Device</string>
+    <string name="none_found">None Found</string>
+
+    <string name="bluetooth">Bluetooth</string>
+    <string name="connect">Connect</string>
+    <string name="discoverable">Discoverable</string>
+    connect
+
+
+
 </resources>

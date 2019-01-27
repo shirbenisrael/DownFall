@@ -2,8 +2,10 @@ package com.shirbi.downfall;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.media.MediaPlayer;
@@ -246,7 +248,20 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         m_game_starting_now = true;
         m_wheel_finished_rotate_counter = m_wheels.length;
 
+        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+
         RestoreState();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (!mBluetoothAdapter.isEnabled()) {
+            Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
+        } else {
+            //if (mChatService == null) setupChat();
+        }
     }
 
     public boolean onTouch(View v, MotionEvent event) {
@@ -452,5 +467,29 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         });
         //builder.setIcon(R.drawable.new_game_icon); // TODO: Add this
         builder.show();
+    }
+
+    private BluetoothAdapter mBluetoothAdapter = null;
+
+    // Intent request codes
+    private static final int REQUEST_CONNECT_DEVICE = 1;
+    private static final int REQUEST_ENABLE_BT = 2;
+
+    private void ensureDiscoverable() {
+        if (mBluetoothAdapter.getScanMode() !=
+                BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
+            Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
+            discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 300);
+            startActivity(discoverableIntent);
+        }
+    }
+
+    public void connect(View v) {
+        Intent serverIntent = new Intent(this, DeviceListActivity.class);
+        startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE);
+    }
+
+    public void discoverable(View v) {
+        ensureDiscoverable();
     }
 }
