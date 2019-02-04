@@ -13,7 +13,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class Wheel extends ConnectableImage {
-    private double m_previous_angle, m_start_touch_angle, m_current_angle;
+    private double m_start_touch_angle; //angle of finger touch with respect to center.
+    private double m_previous_angle, m_current_angle; //angles of wheel with respect to its base rotation.
+    private double m_turn_rotation, m_max_turn_rotation; // number of degrees in this turn
     private long m_start_time_milliseconds;
     private Timer m_timer;
     private TimerTask m_timer_task;
@@ -24,6 +26,24 @@ public class Wheel extends ConnectableImage {
     private ImageView m_touch_view;
 
     static private final int WHEEL_ROTATION_RATE = 15; // Larger = slower.
+
+    enum ROTATION_DIRECTION {
+        POSITIVE(0), NEGATIVE(1), UNDEFINED(2);
+
+        static final int LOCK_DEGREES = 10;
+
+        private final int m_direction;
+
+        ROTATION_DIRECTION(int direction) {
+            this.m_direction = direction;
+        }
+
+        public int getInt() {
+            return this.m_direction;
+        }
+    }
+
+    ROTATION_DIRECTION m_rotation_direction;
 
     private void Init() {
         m_touch_view = new ImageView(m_activity);
@@ -144,6 +164,33 @@ public class Wheel extends ConnectableImage {
                     rotation_angle -= 360;
                 }
 
+                if (rotation_angle == 0) {
+                    break;
+                }
+
+                double abs_rotation = Math.abs(m_turn_rotation + rotation_angle);
+                if (abs_rotation > m_max_turn_rotation) {
+                    m_max_turn_rotation = abs_rotation;
+                }
+
+                ROTATION_DIRECTION direction = (rotation_angle > 0) ?
+                        ROTATION_DIRECTION.POSITIVE : ROTATION_DIRECTION.NEGATIVE;
+
+                if (m_rotation_direction == ROTATION_DIRECTION.UNDEFINED) {
+                    if (ROTATION_DIRECTION.LOCK_DEGREES < abs_rotation) {
+                        m_rotation_direction = direction;
+                    }
+                } else {
+                    if (m_rotation_direction != direction) {
+                        if (ROTATION_DIRECTION.LOCK_DEGREES < m_max_turn_rotation - abs_rotation) {
+                            m_start_touch_angle = new_angle;
+                            break;
+                        }
+                    }
+                }
+
+                m_turn_rotation += rotation_angle;
+
                 m_start_time_milliseconds = current_time_milliseconds;
                 if (Math.abs(rotation_angle / (delta_time_milliseconds)) < 0.5) {
                     m_current_angle = (m_previous_angle + rotation_angle);
@@ -170,6 +217,11 @@ public class Wheel extends ConnectableImage {
     public void SetAllowRotation(Boolean is_allow) {
         m_allow_rotation = is_allow;
         m_touch_view.setVisibility(m_allow_rotation ? INVISIBLE : VISIBLE);
+        if (is_allow) {
+            m_rotation_direction = ROTATION_DIRECTION.UNDEFINED;
+            m_turn_rotation = 0;
+            m_max_turn_rotation = 0;
+        }
     }
 
     public Boolean GetAllowRotation() {
@@ -199,6 +251,9 @@ public class Wheel extends ConnectableImage {
         str = (m_activity.getString(R.string.wheel_allow_rotation)) + String.valueOf(m_wheel_num);
         editor.putBoolean(str, m_allow_rotation);
 
+        str = (m_activity.getString(R.string.wheel_rotation_direction)) + String.valueOf(m_wheel_num);
+        editor.putInt(str, m_rotation_direction.getInt());
+
         String hole_prefix = (m_activity.getString(R.string.hole_prefix)) + String.valueOf(m_wheel_num);
         for ( Hole hole : m_holes) {
             hole.StoreState(hole_prefix, editor);
@@ -211,6 +266,11 @@ public class Wheel extends ConnectableImage {
 
         str = (m_activity.getString(R.string.wheel_allow_rotation)) + String.valueOf(m_wheel_num);
         SetAllowRotation(sharedPref.getBoolean(str, true));
+        if (GetAllowRotation()) {
+            str = (m_activity.getString(R.string.wheel_rotation_direction)) + String.valueOf(m_wheel_num);
+            int direction = sharedPref.getInt(str, 2);
+            m_rotation_direction = ROTATION_DIRECTION.values()[direction];
+        }
     }
 
     public void RestoreStatePart2(SharedPreferences sharedPref) {
