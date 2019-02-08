@@ -28,7 +28,7 @@ public class Hole extends RotatableImage {
 
         setImageResource(R.drawable.hole);
 
-        m_player_type = PlayerType.HUMAN_PLAYER;
+        m_player_type = PlayerType.PLAYER_0;
         m_visibility = ObjectVisibility.ALWAYS_VISIBLE;
     }
 
@@ -44,7 +44,7 @@ public class Hole extends RotatableImage {
 
     public void SetPlayerType(PlayerType player_type) {
         m_player_type = player_type;
-        if (m_player_type == PlayerType.AI_PLAYER) {
+        if (m_player_type == m_activity.GetPlayerType().GetOpposite()) {
             ((View) this).setAlpha(ALPHA_FOR_OPPOSITE);
         }
     }
@@ -202,7 +202,7 @@ public class Hole extends RotatableImage {
     }
 
     public void SetOppositePlayerObjectsVisibility(ObjectVisibility visibility) {
-        if (m_player_type == PlayerType.HUMAN_PLAYER) {
+        if (m_player_type == m_activity.GetPlayerType())  {
             return;
         }
 

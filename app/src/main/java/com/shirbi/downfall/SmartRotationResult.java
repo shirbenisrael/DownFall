@@ -14,8 +14,6 @@ public class SmartRotationResult {
     public class SimulatedTokenList extends ArrayList<SimulatedToken> {
     }
 
-    ;
-
     SimulatedTokenList[] m_fall_token_list = new SimulatedTokenList[PlayerType.NUM_PLAYERS];
     Token[] m_top_occupied_token = new Token[PlayerType.NUM_PLAYERS];
 
@@ -51,9 +49,9 @@ public class SmartRotationResult {
         }
     }
 
-    private int diff_ai_human(int my_array[], int other_array[]) {
-        int my_diff = my_array[PlayerType.AI_PLAYER.getInt()] - my_array[PlayerType.HUMAN_PLAYER.getInt()];
-        int other_diff = other_array[PlayerType.AI_PLAYER.getInt()] - other_array[PlayerType.HUMAN_PLAYER.getInt()];
+    private int diff_ai_human(int my_array[], int other_array[], PlayerType player_type) {
+        int my_diff = my_array[player_type.getInt()] - my_array[player_type.getOppositeInt()];
+        int other_diff = other_array[player_type.getInt()] - other_array[player_type.getOppositeInt()];
 
         return my_diff - other_diff;
     }
@@ -165,22 +163,22 @@ public class SmartRotationResult {
         return 0;
     }
 
-    Boolean IsBetterThan(SmartRotationResult other) {
+    Boolean IsBetterThan(SmartRotationResult other, PlayerType player_type) {
         if (other == null) {
             return true;
         }
 
-        int ai_bad_order = BadOrderCount(PlayerType.AI_PLAYER) - other.BadOrderCount(PlayerType.AI_PLAYER);
+        int ai_bad_order = BadOrderCount(player_type) - other.BadOrderCount(player_type);
         if (ai_bad_order != 0) {
             return (ai_bad_order < 0);
         }
 
-        int human_bad_order = BadOrderCount(PlayerType.HUMAN_PLAYER) - other.BadOrderCount(PlayerType.HUMAN_PLAYER);
+        int human_bad_order = BadOrderCount(player_type.GetOpposite()) - other.BadOrderCount(player_type.GetOpposite());
         if (human_bad_order != 0) {
             return (human_bad_order > 0);
         }
 
-        int diff_fall_token = diff_ai_human(m_fall_token, other.m_fall_token);
+        int diff_fall_token = diff_ai_human(m_fall_token, other.m_fall_token, player_type);
         if (diff_fall_token > 0) {
             return true;
         }
@@ -188,17 +186,17 @@ public class SmartRotationResult {
             return false;
         }
 
-        int ai_bad_order_ready_to_fall = BadOrderTokenReadyToFall(PlayerType.AI_PLAYER) - other.BadOrderTokenReadyToFall(PlayerType.AI_PLAYER);
+        int ai_bad_order_ready_to_fall = BadOrderTokenReadyToFall(player_type) - other.BadOrderTokenReadyToFall(player_type);
         if (ai_bad_order_ready_to_fall != 0) {
             return (ai_bad_order_ready_to_fall < 0);
         }
 
-        int human_bad_order_ready_to_fall = BadOrderTokenReadyToFall(PlayerType.HUMAN_PLAYER) - other.BadOrderTokenReadyToFall(PlayerType.HUMAN_PLAYER);
+        int human_bad_order_ready_to_fall = BadOrderTokenReadyToFall(player_type.GetOpposite()) - other.BadOrderTokenReadyToFall(player_type.GetOpposite());
         if (human_bad_order_ready_to_fall != 0) {
             return (human_bad_order_ready_to_fall > 0);
         }
 
-        int diff_token_fit = diff_ai_human(m_top_occupied_hole_count, other.m_top_occupied_hole_count);
+        int diff_token_fit = diff_ai_human(m_top_occupied_hole_count, other.m_top_occupied_hole_count, player_type);
         if (diff_token_fit > 0) {
             return true;
         }
@@ -208,7 +206,7 @@ public class SmartRotationResult {
 
         int diff_hole_fit_to_top_wheel_with_token = diff_ai_human(
                 m_bottom_empty_hole_with_top_wheel_with_token_count,
-                other.m_bottom_empty_hole_with_top_wheel_with_token_count);
+                other.m_bottom_empty_hole_with_top_wheel_with_token_count, player_type);
 
         if (diff_hole_fit_to_top_wheel_with_token > 0) {
             return true;
@@ -217,7 +215,7 @@ public class SmartRotationResult {
             return false;
         }
 
-        int diff_hole_fit = diff_ai_human(m_bottom_empty_hole_count, other.m_bottom_empty_hole_count);
+        int diff_hole_fit = diff_ai_human(m_bottom_empty_hole_count, other.m_bottom_empty_hole_count, player_type);
         if (diff_hole_fit > 0) {
             return true;
         }

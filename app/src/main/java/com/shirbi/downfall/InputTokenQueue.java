@@ -147,7 +147,7 @@ public class InputTokenQueue extends ConnectableImage implements SlideToken {
 
         token = new Token(m_activity);
         token.SetType(color, 1);
-        token.SetPlayerType(PlayerType.AI_PLAYER);
+        token.SetPlayerType(PlayerType.PLAYER_1);
         AddToken(token, MAX_TOKENS);
     }
 
@@ -196,7 +196,7 @@ public class InputTokenQueue extends ConnectableImage implements SlideToken {
     public void SetOppositePlayerObjectsVisibility(ObjectVisibility visibility) {
         super.SetOppositePlayerObjectsVisibility(visibility);
 
-        for (Token token : m_tokens[PlayerType.AI_PLAYER.getInt()]) {
+        for (Token token : m_tokens[m_activity.GetPlayerType().getOppositeInt()]) {
             token.SetOppositePlayerObjectsVisibility(visibility);
         }
 

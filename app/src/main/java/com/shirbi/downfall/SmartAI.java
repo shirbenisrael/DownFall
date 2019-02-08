@@ -80,8 +80,8 @@ public class SmartAI extends OppositePlayer {
         }
     }
 
-    SmartAI(Wheel[] wheels) {
-        super(wheels);
+    SmartAI(Wheel[] wheels, MainActivity activity) {
+        super(wheels, activity);
 
         m_interesting_angles = new int[wheels.length][];
         m_simulated_wheel_holes = new SimulatedHole[wheels.length][];
@@ -274,7 +274,8 @@ public class SmartAI extends OppositePlayer {
             wheel_results.addAll(RotateWheelResult(i, ROTATION_DIRECTION.ROTATE_LEFT));
 
             for (SmartRotationResult result : wheel_results) {
-                if ((result != null) && result.IsBetterThan(m_best_result)) {
+                if ((result != null) &&
+                        result.IsBetterThan(m_best_result, m_activity.GetPlayerType().GetOpposite())) {
                     m_best_result = result;
                 }
             }

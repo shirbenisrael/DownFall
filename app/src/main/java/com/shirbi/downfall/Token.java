@@ -53,7 +53,7 @@ public class Token extends RotatableImage {
 
     private void Init() {
         m_owner_wheel = null;
-        m_player_type = PlayerType.HUMAN_PLAYER;
+        m_player_type = PlayerType.PLAYER_0;
         m_this_token = this;
         m_color = COLOR.COLOR_1;
         m_number = 1;
@@ -106,7 +106,7 @@ public class Token extends RotatableImage {
     }
 
     public void SetImageConnected() {
-        if (m_player_type == PlayerType.AI_PLAYER) {
+        if (m_player_type == m_activity.GetPlayerType().GetOpposite()) {
             m_visibility.SetOnView(m_connected_image);
         } else {
             m_connected_image.setVisibility(VISIBLE);
@@ -133,9 +133,9 @@ public class Token extends RotatableImage {
         newParent.addView(m_connected_image, params);
         newParent.addView(m_number_image, params);
 
-        this.setZ(m_player_type == PlayerType.HUMAN_PLAYER ? 4 : 1);
-        m_connected_image.setZ(m_player_type == PlayerType.HUMAN_PLAYER ? 5 : 2);
-        m_number_image.setZ(m_player_type == PlayerType.HUMAN_PLAYER ? 6 : 3);
+        this.setZ(m_player_type == PlayerType.PLAYER_0 ? 4 : 1);
+        m_connected_image.setZ(m_player_type == PlayerType.PLAYER_0 ? 5 : 2);
+        m_number_image.setZ(m_player_type == PlayerType.PLAYER_0 ? 6 : 3);
     }
 
     public enum HORIZONTAL_ALIGNMENT {
@@ -227,7 +227,7 @@ public class Token extends RotatableImage {
     };
 
     public void SetOppositePlayerObjectsVisibility(ObjectVisibility visibility) {
-        if (m_player_type == PlayerType.HUMAN_PLAYER) {
+        if (m_player_type == m_activity.GetPlayerType()) {
             return;
         }
 

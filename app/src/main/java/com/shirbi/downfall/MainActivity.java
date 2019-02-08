@@ -34,6 +34,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
     Boolean m_allow_screen_touch = true;
     int m_wheel_finished_rotate_counter;
     ObjectVisibility m_objects_visibility;
+    private PlayerType m_player_type;
 
     private Point GetWindowSize() {
         Display display = getWindowManager().getDefaultDisplay();
@@ -48,6 +49,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         editor.putBoolean(getString(R.string.enable_sound), IsSoundEnable());
         editor.putBoolean(getString(R.string.smart_ai), IsSmartAI());
         editor.putInt(getString(R.string.objects_visibility), m_objects_visibility.getInt());
+        editor.putInt(getString(R.string.player_type), m_player_type.getInt());
 
         for (int i = 0; i < m_connectable_images.length; i++) {
             m_connectable_images[i].StoreState(editor);
@@ -64,6 +66,10 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         int visibility_int = sharedPref.getInt(getString(R.string.objects_visibility),
                 ObjectVisibility.ALWAYS_VISIBLE.getInt());
         m_objects_visibility = ObjectVisibility.values()[visibility_int];
+
+        int player_type = sharedPref.getInt(getString(R.string.player_type),
+            PlayerType.PLAYER_0.getInt());
+        m_player_type = PlayerType.values()[player_type];
 
         RefreshVisibilityRadioButtons();
         SetObjectsVisibilityOnConnectableImages();
@@ -100,13 +106,13 @@ public class MainActivity extends Activity implements View.OnTouchListener {
     private void AddHoles(int wheel_id, int first_angle, int num_holes) {
         int angle = first_angle;
         for (int i = 0; i < num_holes; i++) {
-            AddHole(wheel_id, angle, PlayerType.HUMAN_PLAYER);
+            AddHole(wheel_id, angle, PlayerType.PLAYER_0);
             angle += 360 / num_holes;
         }
 
         angle = first_angle + (180 / num_holes);
         for (int i = 0; i < num_holes; i++) {
-            AddHole(wheel_id, angle, PlayerType.AI_PLAYER);
+            AddHole(wheel_id, angle, PlayerType.PLAYER_1);
             angle += 360 / num_holes;
         }
     }
@@ -160,6 +166,8 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        m_player_type = PlayerType.PLAYER_0;
+
         m_size = GetWindowSize();
 
         m_wheels = new Wheel[5];
@@ -189,9 +197,9 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         m_objects_visibility_radio_buttons[ObjectVisibility.VISIBLE_ON_CONNECT.getInt()] =
                 findViewById(R.id.show_holes_on_connect_radio_button);
 
-        m_player_text_view_token_counter_left[PlayerType.HUMAN_PLAYER.getInt()] =
+        m_player_text_view_token_counter_left[PlayerType.PLAYER_0.getInt()] =
                 (TextView)findViewById(R.id.player_token_counter);
-        m_player_text_view_token_counter_left[PlayerType.AI_PLAYER.getInt()]
+        m_player_text_view_token_counter_left[PlayerType.PLAYER_1.getInt()]
                 = (TextView)findViewById(R.id.opposite_token_counter);
 
         double base_diameter = m_size.x / 3;
@@ -225,23 +233,23 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 
         SetTurnDoneButtonLocation(R.id.wheel2, (int)0, (int)0);
 
-        AddHole(R.id.input_token_queue_left, 90, PlayerType.HUMAN_PLAYER);
-        AddHole(R.id.input_token_queue_left, 90, PlayerType.AI_PLAYER);
-        AddHole(R.id.input_token_queue_right, 270, PlayerType.HUMAN_PLAYER);
-        AddHole(R.id.input_token_queue_right, 270, PlayerType.AI_PLAYER);
+        AddHole(R.id.input_token_queue_left, 90, PlayerType.PLAYER_0);
+        AddHole(R.id.input_token_queue_left, 90, PlayerType.PLAYER_1);
+        AddHole(R.id.input_token_queue_right, 270, PlayerType.PLAYER_0);
+        AddHole(R.id.input_token_queue_right, 270, PlayerType.PLAYER_1);
 
-        AddHole(R.id.wheel1, 30, PlayerType.HUMAN_PLAYER);
-        AddHole(R.id.wheel1, 330, PlayerType.AI_PLAYER);
+        AddHole(R.id.wheel1, 30, PlayerType.PLAYER_0);
+        AddHole(R.id.wheel1, 330, PlayerType.PLAYER_1);
         AddHoles(R.id.wheel2, 90, 3);
         AddHoles(R.id.wheel3, 90, 2);
         AddHoles(R.id.wheel4, 45, 4);
         AddHoles(R.id.wheel5, 90, 5);
 
-        AddHole(R.id.output, 90, PlayerType.HUMAN_PLAYER);
-        AddHole(R.id.output, 90, PlayerType.AI_PLAYER);
+        AddHole(R.id.output, 90, PlayerType.PLAYER_0);
+        AddHole(R.id.output, 90, PlayerType.PLAYER_1);
 
-        m_simple_stupid_ai = new SimpleStupidAI(m_wheels);
-        m_smart_ai = new SmartAI(m_wheels);
+        m_simple_stupid_ai = new SimpleStupidAI(m_wheels, this);
+        m_smart_ai = new SmartAI(m_wheels, this);
 
         findViewById(R.id.wheels_layout).requestLayout();
 
@@ -468,6 +476,8 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         //builder.setIcon(R.drawable.new_game_icon); // TODO: Add this
         builder.show();
     }
+
+    public PlayerType GetPlayerType() {return m_player_type; }
 
     private BluetoothAdapter mBluetoothAdapter = null;
 

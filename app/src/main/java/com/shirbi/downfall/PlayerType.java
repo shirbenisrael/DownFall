@@ -1,7 +1,7 @@
 package com.shirbi.downfall;
 
 public enum PlayerType {
-    HUMAN_PLAYER(0), AI_PLAYER(1);
+    PLAYER_0(0), PLAYER_1(1);
 
     static public final int NUM_PLAYERS = 2;
 
@@ -14,4 +14,6 @@ public enum PlayerType {
     public int getInt() {
         return this.m_player_type;
     }
+    public int getOppositeInt(){ return 1 - getInt();}
+    public PlayerType GetOpposite() { return PlayerType.values()[getOppositeInt()]; }
 }
