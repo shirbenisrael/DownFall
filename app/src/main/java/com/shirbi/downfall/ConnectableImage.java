@@ -99,6 +99,8 @@ public abstract class ConnectableImage extends RotatableImage {
 
     public void Reset() {
         for (Hole hole : m_holes) {
+            hole.RulesChanged();
+
             Token token = hole.GetResident();
 
             if (token == null) {
@@ -116,9 +118,9 @@ public abstract class ConnectableImage extends RotatableImage {
 
     public void RestoreStatePart2(SharedPreferences sharedPref) {}
 
-    public void SetOppositePlayerObjectsVisibility(ObjectVisibility visibility) {
+    public void RulesChanged() {
         for (Hole hole: m_holes) {
-            hole.SetOppositePlayerObjectsVisibility(visibility);
+            hole.RulesChanged();
         }
     }
 

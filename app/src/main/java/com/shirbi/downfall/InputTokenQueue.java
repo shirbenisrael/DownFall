@@ -11,7 +11,6 @@ public class InputTokenQueue extends ConnectableImage implements SlideToken {
     private TokenList[] m_tokens = new TokenList[PlayerType.NUM_PLAYERS];
 
     Token.HORIZONTAL_ALIGNMENT m_horizontal_alignment;
-    ObjectVisibility m_objects_visibility;
 
     private void Init(Context context) {
         String strings[];
@@ -20,8 +19,6 @@ public class InputTokenQueue extends ConnectableImage implements SlideToken {
         for (int i = 0; i < m_tokens.length; i++) {
             m_tokens[i] = new TokenList();
         }
-
-        m_objects_visibility = ObjectVisibility.ALWAYS_VISIBLE;
     }
 
     public InputTokenQueue(Context context) {
@@ -61,7 +58,7 @@ public class InputTokenQueue extends ConnectableImage implements SlideToken {
         token.Register();
 
         token.SetDiameter(hole.m_diameter);
-        token.SetOppositePlayerObjectsVisibility(m_objects_visibility);
+        token.RulesChanged();
 
         if (hole.HasResident()) {
             tokens_list.add(token);
@@ -193,13 +190,11 @@ public class InputTokenQueue extends ConnectableImage implements SlideToken {
         }
     }
 
-    public void SetOppositePlayerObjectsVisibility(ObjectVisibility visibility) {
-        super.SetOppositePlayerObjectsVisibility(visibility);
+    public void RulesChanged() {
+        super.RulesChanged();
 
         for (Token token : m_tokens[m_activity.GetPlayerType().getOppositeInt()]) {
-            token.SetOppositePlayerObjectsVisibility(visibility);
+            token.RulesChanged();
         }
-
-        m_objects_visibility = visibility;
     }
 }

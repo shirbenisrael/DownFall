@@ -18,7 +18,6 @@ public class Hole extends RotatableImage {
     private Token m_resident;
     private MediaPlayer m_media_player;
     private PlayerType m_player_type;
-    private ObjectVisibility m_visibility;
 
     private static final float ALPHA_FOR_OPPOSITE = (float) 0.2;
 
@@ -29,7 +28,6 @@ public class Hole extends RotatableImage {
         setImageResource(R.drawable.hole);
 
         m_player_type = PlayerType.PLAYER_0;
-        m_visibility = ObjectVisibility.ALWAYS_VISIBLE;
     }
 
     public Hole(Context context) {
@@ -42,11 +40,23 @@ public class Hole extends RotatableImage {
         Init();
     }
 
+    public void RulesChanged() {
+        if (m_player_type == m_activity.GetPlayerType()) {
+            ((View) this).setAlpha((float)1.0);
+            ObjectVisibility.ALWAYS_VISIBLE.SetOnView(this);
+        } else {
+            ((View) this).setAlpha(ALPHA_FOR_OPPOSITE);
+            m_activity.GetObjectVisibility().SetOnView(this);
+        }
+
+        if (m_resident != null) {
+            m_resident.RulesChanged();
+        }
+    }
+
     public void SetPlayerType(PlayerType player_type) {
         m_player_type = player_type;
-        if (m_player_type == m_activity.GetPlayerType().GetOpposite()) {
-            ((View) this).setAlpha(ALPHA_FOR_OPPOSITE);
-        }
+        RulesChanged();
     }
 
     public PlayerType GetPlayerType() {
@@ -160,7 +170,8 @@ public class Hole extends RotatableImage {
 
         m_owner_wheel.TokenUsed(this);
 
-        if (m_visibility == ObjectVisibility.VISIBLE_ON_CONNECT) {
+        if (m_activity.GetObjectVisibility() == ObjectVisibility.VISIBLE_ON_CONNECT) {
+            if (m_player_type != m_activity.GetPlayerType())
             bottom_hole.m_resident.FadeOut();
         }
 
@@ -193,24 +204,10 @@ public class Hole extends RotatableImage {
             token.SetType(color, number);
             token.SetDiameter(m_diameter);
             token.Rotate(0); /* This will scale the token image to the correct size */
-            token.SetOppositePlayerObjectsVisibility(m_visibility);
             token.Register();
 
             SetResident(token);
             SetAngle(m_current_angle - m_baseAngle); /* Will put the token on the hole */
-        }
-    }
-
-    public void SetOppositePlayerObjectsVisibility(ObjectVisibility visibility) {
-        if (m_player_type == m_activity.GetPlayerType())  {
-            return;
-        }
-
-        m_visibility = visibility;
-        m_visibility.SetOnView(this);
-
-        if (m_resident != null) {
-            m_resident.SetOppositePlayerObjectsVisibility(visibility);
         }
     }
 }

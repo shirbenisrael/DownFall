@@ -23,7 +23,6 @@ public class Token extends RotatableImage {
     private Token m_this_token;
     private Token.HORIZONTAL_ALIGNMENT m_move_animation_direction;
     private SlideToken m_slider;
-    private ObjectVisibility m_visibility;
     RotatableImage m_connected_image;
     RotatableImage m_number_image;
     private float m_alpha;
@@ -57,7 +56,6 @@ public class Token extends RotatableImage {
         m_this_token = this;
         m_color = COLOR.COLOR_1;
         m_number = 1;
-        m_visibility = ObjectVisibility.ALWAYS_VISIBLE;
         m_number_image = new RotatableImage(m_activity);
         m_connected_image = new RotatableImage(m_activity);
 
@@ -79,6 +77,7 @@ public class Token extends RotatableImage {
     public void SetPlayerType(PlayerType playerType) {
         m_player_type = playerType;
         UpdateImage();
+        RulesChanged();
     }
 
     public PlayerType GetPlayerType() {
@@ -107,7 +106,7 @@ public class Token extends RotatableImage {
 
     public void SetImageConnected() {
         if (m_player_type == m_activity.GetPlayerType().GetOpposite()) {
-            m_visibility.SetOnView(m_connected_image);
+            m_activity.GetObjectVisibility().SetOnView(m_connected_image);
         } else {
             m_connected_image.setVisibility(VISIBLE);
         }
@@ -133,9 +132,11 @@ public class Token extends RotatableImage {
         newParent.addView(m_connected_image, params);
         newParent.addView(m_number_image, params);
 
-        this.setZ(m_player_type == PlayerType.PLAYER_0 ? 4 : 1);
-        m_connected_image.setZ(m_player_type == PlayerType.PLAYER_0 ? 5 : 2);
-        m_number_image.setZ(m_player_type == PlayerType.PLAYER_0 ? 6 : 3);
+        /* Make sure than tokens of player hide opponent's tokens on input queue. */
+        PlayerType player_type = m_activity.GetPlayerType();
+        this.setZ(m_player_type == player_type ? 4 : 1);
+        m_connected_image.setZ(m_player_type == player_type ? 5 : 2);
+        m_number_image.setZ(m_player_type == player_type ? 6 : 3);
     }
 
     public enum HORIZONTAL_ALIGNMENT {
@@ -226,15 +227,13 @@ public class Token extends RotatableImage {
         }
     };
 
-    public void SetOppositePlayerObjectsVisibility(ObjectVisibility visibility) {
-        if (m_player_type == m_activity.GetPlayerType()) {
-            return;
-        }
+    public void RulesChanged() {
+        ObjectVisibility visibility = (m_player_type == m_activity.GetPlayerType()) ?
+                ObjectVisibility.ALWAYS_VISIBLE : m_activity.GetObjectVisibility();
 
-        m_visibility = visibility;
-        m_visibility.SetOnView(this);
-        m_visibility.SetOnView(m_connected_image);
-        m_visibility.SetOnView(m_number_image);
+        visibility.SetOnView(this);
+        visibility.SetOnView(m_connected_image);
+        visibility.SetOnView(m_number_image);
     }
 
     public void Rotate(double angle) {

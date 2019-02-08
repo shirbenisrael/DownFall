@@ -19,6 +19,8 @@
 
     <string name="start_new_game">Start new game?</string>
     <string name="confirm">Confirm</string>
+    <string name="confirm_player_0">Play yellow-red</string>
+    <string name="confirm_player_1">Play green-blue</string>
     <string name="cancel">Cancel</string>
 
     <string name="game_over">Game Over</string>

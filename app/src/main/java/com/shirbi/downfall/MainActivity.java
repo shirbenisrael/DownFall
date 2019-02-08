@@ -72,7 +72,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         m_player_type = PlayerType.values()[player_type];
 
         RefreshVisibilityRadioButtons();
-        SetObjectsVisibilityOnConnectableImages();
+        RulesChanged();
 
         // When wheel will finish restoring their position, button will be enabled again.
         EnableButtons(false);
@@ -166,6 +166,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        m_objects_visibility = ObjectVisibility.ALWAYS_VISIBLE;
         m_player_type = PlayerType.PLAYER_0;
 
         m_size = GetWindowSize();
@@ -342,12 +343,19 @@ public class MainActivity extends Activity implements View.OnTouchListener {
             builder = new AlertDialog.Builder(this);
         }
         builder.setTitle(getString(R.string.start_new_game));
-        builder.setPositiveButton(getString(R.string.confirm), new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(getString(R.string.confirm_player_0), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
+                m_player_type = PlayerType.PLAYER_0;
                 StartNewGame();
             }
         });
-        builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(getString(R.string.confirm_player_1), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                m_player_type = PlayerType.PLAYER_1;
+                StartNewGame();
+            }
+        });
+        builder.setNeutralButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 // do nothing
             }
@@ -401,9 +409,11 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         }
     }
 
-    private void SetObjectsVisibilityOnConnectableImages() {
+    public ObjectVisibility GetObjectVisibility() { return m_objects_visibility; }
+
+    private void RulesChanged() {
         for (ConnectableImage connectableImage : m_connectable_images ) {
-            connectableImage.SetOppositePlayerObjectsVisibility(m_objects_visibility);
+            connectableImage.RulesChanged();
         }
     }
 
@@ -417,7 +427,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
             }
         }
 
-        SetObjectsVisibilityOnConnectableImages();
+        RulesChanged();
     }
 
     @Override
