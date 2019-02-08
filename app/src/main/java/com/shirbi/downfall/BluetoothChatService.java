@@ -26,7 +26,7 @@ public class BluetoothChatService {
     private static final String NAME = "BluetoothChat";
 
     // Unique UUID for this application
-    private static final UUID MY_UUID = UUID.fromString("down-fall-shir-ben-israel");
+    private static final UUID MY_UUID = UUID.fromString("da8356a3-f339-4f53-aad2-5b9e47289831");
 
     // Member fields
     private final BluetoothAdapter mAdapter;

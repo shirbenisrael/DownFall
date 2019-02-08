@@ -64,6 +64,13 @@
             android:layout_height="wrap_content"
             android:onClick="discoverable"
             android:text="@string/discoverable" />
+
+        <Button
+            android:id="@+id/start_two_player_game"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="StartTwoPlayerGame"
+            android:text="@string/start_two_player_game" />
     </LinearLayout>
 
     <Button
