@@ -37,12 +37,20 @@ public class MainActivity extends Activity implements View.OnTouchListener {
     Wheel m_wheels[];
     ConnectableImage m_connectable_images[];
     int m_last_wheel_rotated;
+    int m_last_angle_rotated;
     TextView m_player_text_view_token_counter_left[] = new TextView[PlayerType.NUM_PLAYERS];
     Boolean m_game_starting_now;
+    Boolean m_two_players_game_runnig;
     Boolean m_allow_screen_touch = true;
     int m_wheel_finished_rotate_counter;
     ObjectVisibility m_objects_visibility;
     private PlayerType m_player_type;
+
+    class BLUETOOTH_MESSAGES {
+        static final int START_GAME = 0;
+        static final int WHEEL_ROTATE = 1;
+        static final int TURN_DONE = 2;
+    }
 
     private Point GetWindowSize() {
         Display display = getWindowManager().getDefaultDisplay();
@@ -174,6 +182,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        m_two_players_game_runnig = false;
         m_objects_visibility = ObjectVisibility.ALWAYS_VISIBLE;
         m_player_type = PlayerType.PLAYER_0;
 
@@ -319,6 +328,11 @@ public class MainActivity extends Activity implements View.OnTouchListener {
     public void onFinishTurnButtonClick(View view) {
         EnableButtons(false);
 
+        if (m_two_players_game_runnig) {
+            sendMessage(String.valueOf(BLUETOOTH_MESSAGES.TURN_DONE));
+            return;
+        }
+
         if (m_last_wheel_rotated != m_wheels.length) {
             // If player touch a wheel,
             // allow AI to use all wheels expect the one which rotated by the human player.
@@ -373,11 +387,14 @@ public class MainActivity extends Activity implements View.OnTouchListener {
     }
 
     public void StartNewGame() {
+        m_two_players_game_runnig = false;
+
         for (int i = 0; i < m_connectable_images.length; i++) {
             m_connectable_images[i].Reset();
         }
 
         m_last_wheel_rotated = m_wheels.length;
+        m_last_angle_rotated = 0;
     }
 
     public void WheelFinishedRotating() {
@@ -527,6 +544,35 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         ensureDiscoverable();
     }
 
+    private void ParseMessage(String message) {
+        String[] strArray = message.split(",");
+        int[] intArray = new int[strArray.length];
+        for(int i = 0; i < strArray.length; i++) {
+            intArray[i] = Integer.parseInt(strArray[i]);
+        }
+
+        switch (intArray[0]) {
+            case BLUETOOTH_MESSAGES.START_GAME:
+                Toast.makeText(getApplicationContext(), "Game started!", Toast.LENGTH_SHORT).show();
+                break;
+            case BLUETOOTH_MESSAGES.WHEEL_ROTATE:
+                int wheel_num = intArray[1];
+                int angle = intArray[2];
+                m_wheels[wheel_num].SetAngleByOtherPlayer(angle);
+                m_last_wheel_rotated = wheel_num;
+                break;
+            case BLUETOOTH_MESSAGES.TURN_DONE:
+                // Allow the player use all wheels except the one used by the AI.
+                if (m_last_wheel_rotated < m_wheels.length) {
+                    for (int i = 0; i < m_wheels.length; i++) {
+                        m_wheels[i].SetAllowRotation(i != m_last_wheel_rotated);
+                    }
+                }
+
+                EnableButtons(true);
+        }
+    }
+
     public void handleMessage(Message msg) {
         switch (msg.what) {
             case BluetoothChatService.MESSAGE_WRITE:
@@ -538,8 +584,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
                 byte[] readBuf = (byte[]) msg.obj;
                 // construct a string from the valid bytes in the buffer
                 String readMessage = new String(readBuf, 0, msg.arg1);
-
-                Toast.makeText(getApplicationContext(), readMessage, Toast.LENGTH_SHORT).show();
+                ParseMessage(readMessage);
                 break;
             case BluetoothChatService.MESSAGE_DEVICE_NAME:
                 // save the connected device's name
@@ -630,6 +675,26 @@ public class MainActivity extends Activity implements View.OnTouchListener {
             setupChat();
         }
 
-        sendMessage("Hello!");
+        sendMessage(String.valueOf(BLUETOOTH_MESSAGES.START_GAME));
+
+        StartNewGame();
+
+        m_two_players_game_runnig = true;
+    }
+
+    public void SendWheelMoveMessage(int wheel_num, int angle) {
+        if (!m_two_players_game_runnig) {
+            return;
+        }
+
+        if (m_last_wheel_rotated == wheel_num && m_last_angle_rotated == angle) {
+            return;
+        }
+
+        m_last_wheel_rotated = wheel_num;
+        m_last_angle_rotated = angle;
+
+        String message = String.valueOf(BLUETOOTH_MESSAGES.WHEEL_ROTATE) + "," + String.valueOf(wheel_num) + "," + String.valueOf(angle);
+        sendMessage(message);
     }
 }

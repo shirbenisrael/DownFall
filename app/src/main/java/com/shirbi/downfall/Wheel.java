@@ -71,6 +71,10 @@ public class Wheel extends ConnectableImage {
     }
 
 
+    public void SetAngleByOtherPlayer(int angle) {
+        m_current_angle = angle;
+        Rotate(angle);
+    }
 
     public void Rotate(double angle) {
         super.Rotate(angle);
@@ -201,6 +205,8 @@ public class Wheel extends ConnectableImage {
                     m_start_touch_angle = new_angle;
 
                     Rotate(m_current_angle);
+
+                    m_activity.SendWheelMoveMessage(m_wheel_num, (int)m_current_angle);
                 }
 
                 break;
