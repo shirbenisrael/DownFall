@@ -206,7 +206,7 @@ public class Wheel extends ConnectableImage {
 
                     Rotate(m_current_angle);
 
-                    m_activity.SendWheelMoveMessage(m_wheel_num, (int)m_current_angle);
+                    m_activity.SendWheelMoveMessage(m_wheel_num, (int)rotation_angle);
                 }
 
                 break;

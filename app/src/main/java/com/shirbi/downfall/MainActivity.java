@@ -38,6 +38,11 @@ public class MainActivity extends Activity implements View.OnTouchListener {
     ConnectableImage m_connectable_images[];
     int m_last_wheel_rotated;
     int m_last_angle_rotated;
+    int m_last_angle_rotated_min;
+    int m_last_angle_rotated_max;
+    int m_last_angle_rotation_array[];
+    int m_last_angle_rotation_index;
+
     TextView m_player_text_view_token_counter_left[] = new TextView[PlayerType.NUM_PLAYERS];
     Boolean m_game_starting_now;
     Boolean m_two_players_game_runnig;
@@ -48,7 +53,6 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 
     class BLUETOOTH_MESSAGES {
         static final int START_GAME = 0;
-        static final int WHEEL_ROTATE = 1;
         static final int TURN_DONE = 2;
     }
 
@@ -329,7 +333,25 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         EnableButtons(false);
 
         if (m_two_players_game_runnig) {
-            sendMessage(String.valueOf(BLUETOOTH_MESSAGES.TURN_DONE));
+            String message = String.valueOf(BLUETOOTH_MESSAGES.TURN_DONE) + "," + m_last_wheel_rotated;
+            if (m_last_angle_rotated > 0 ) {
+                if (m_last_angle_rotated_min < 0 ) {
+                    message = message +","+String.valueOf(m_last_angle_rotated_min);
+                }
+                if (m_last_angle_rotated_max > m_last_angle_rotated ) {
+                    message = message +","+String.valueOf(m_last_angle_rotated_max);
+                }
+            } else {
+                if (m_last_angle_rotated_max > 0 ) {
+                    message = message +","+String.valueOf(m_last_angle_rotated_max);
+                }
+                if (m_last_angle_rotated_min < m_last_angle_rotated ) {
+                    message = message +","+String.valueOf(m_last_angle_rotated_min);
+                }
+            }
+            message = message +","+String.valueOf(m_last_angle_rotated);
+
+            sendMessage(message);
             return;
         }
 
@@ -395,19 +417,27 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 
         m_last_wheel_rotated = m_wheels.length;
         m_last_angle_rotated = 0;
+        m_last_angle_rotated_min = 0;
+        m_last_angle_rotated_max= 0;
     }
 
     public void WheelFinishedRotating() {
         if (m_game_starting_now) {
             m_wheel_finished_rotate_counter--;
             if (m_wheel_finished_rotate_counter == 0) {
-                m_game_starting_now = false; // shir
+                m_game_starting_now = false;
                 RestoreStatePart2();
             } else {
                 return;
             }
         }
-        EnableButtons(true);
+
+        if (m_two_players_game_runnig) {
+            m_last_angle_rotation_index++;
+            RotateByOtherPlayer();
+        } else {
+            EnableButtons(true);
+        }
     }
 
     private void EnableButtons(Boolean enable) {
@@ -544,6 +574,29 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         ensureDiscoverable();
     }
 
+    private void RotateByOtherPlayer() {
+        if (m_last_angle_rotation_index < m_last_angle_rotation_array.length) {
+            int angle = m_last_angle_rotation_array[m_last_angle_rotation_index];
+            if (m_last_angle_rotation_index != 0) {
+                int prev_angle = m_last_angle_rotation_array[m_last_angle_rotation_index - 1];
+                angle -= prev_angle;
+            }
+            m_wheels[m_last_wheel_rotated].AddRotation(angle);
+        } else {
+            m_last_angle_rotated = 0;
+            m_last_angle_rotated_min = 0;
+            m_last_angle_rotated_max = 0;
+            //Allow the player use all wheels except the one used by the AI.
+            if (m_last_wheel_rotated < m_wheels.length) {
+                for (int i = 0; i < m_wheels.length; i++) {
+                    m_wheels[i].SetAllowRotation(i != m_last_wheel_rotated);
+                }
+            }
+
+            EnableButtons(true);
+        }
+    }
+
     private void ParseMessage(String message) {
         String[] strArray = message.split(",");
         int[] intArray = new int[strArray.length];
@@ -555,21 +608,13 @@ public class MainActivity extends Activity implements View.OnTouchListener {
             case BLUETOOTH_MESSAGES.START_GAME:
                 Toast.makeText(getApplicationContext(), "Game started!", Toast.LENGTH_SHORT).show();
                 break;
-            case BLUETOOTH_MESSAGES.WHEEL_ROTATE:
-                int wheel_num = intArray[1];
-                int angle = intArray[2];
-                m_wheels[wheel_num].SetAngleByOtherPlayer(angle);
-                m_last_wheel_rotated = wheel_num;
-                break;
             case BLUETOOTH_MESSAGES.TURN_DONE:
-                // Allow the player use all wheels except the one used by the AI.
-                if (m_last_wheel_rotated < m_wheels.length) {
-                    for (int i = 0; i < m_wheels.length; i++) {
-                        m_wheels[i].SetAllowRotation(i != m_last_wheel_rotated);
-                    }
-                }
-
-                EnableButtons(true);
+                m_last_wheel_rotated = intArray[1];
+                // ignore message type and wheel num.
+                m_last_angle_rotation_array = new int[intArray.length - 2];
+                System.arraycopy(intArray, 2, m_last_angle_rotation_array, 0, m_last_angle_rotation_array.length);
+                m_last_angle_rotation_index = 0;
+                RotateByOtherPlayer();
         }
     }
 
@@ -692,9 +737,12 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         }
 
         m_last_wheel_rotated = wheel_num;
-        m_last_angle_rotated = angle;
-
-        String message = String.valueOf(BLUETOOTH_MESSAGES.WHEEL_ROTATE) + "," + String.valueOf(wheel_num) + "," + String.valueOf(angle);
-        sendMessage(message);
+        m_last_angle_rotated += angle;
+        if (m_last_angle_rotated < m_last_angle_rotated_min) {
+            m_last_angle_rotated_min = m_last_angle_rotated;
+        }
+        if (m_last_angle_rotated > m_last_angle_rotated_max) {
+            m_last_angle_rotated_max = m_last_angle_rotated;
+        }
     }
 }
