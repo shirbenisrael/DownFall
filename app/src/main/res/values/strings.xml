@@ -17,6 +17,7 @@
     <string name="lose">You lose!</string>
     <string name="lose_order">Bad Order - You lose!</string>
 
+    <string name="start_two_player_game_title">Start two player game?</string>
     <string name="start_new_game">Start new game?</string>
     <string name="confirm">Confirm</string>
     <string name="confirm_player_0">Play yellow-red</string>

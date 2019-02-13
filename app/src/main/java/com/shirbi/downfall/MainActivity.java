@@ -597,6 +597,13 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         }
     }
 
+    public void HandleStartGameMessageFromOtherDevice() {
+        Toast.makeText(getApplicationContext(), "Game started!", Toast.LENGTH_SHORT).show();
+        onBackFromSettingClick(null);
+        StartNewGame();
+        m_two_players_game_runnig = true;
+    }
+
     private void ParseMessage(String message) {
         String[] strArray = message.split(",");
         int[] intArray = new int[strArray.length];
@@ -606,7 +613,8 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 
         switch (intArray[0]) {
             case BLUETOOTH_MESSAGES.START_GAME:
-                Toast.makeText(getApplicationContext(), "Game started!", Toast.LENGTH_SHORT).show();
+                m_player_type = PlayerType.values()[1-intArray[1]];
+                HandleStartGameMessageFromOtherDevice();
                 break;
             case BLUETOOTH_MESSAGES.TURN_DONE:
                 m_last_wheel_rotated = intArray[1];
@@ -715,16 +723,47 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         }
     }
 
+    public void SendTwoPlayerGameMessage() {
+        String message = String.valueOf(BLUETOOTH_MESSAGES.START_GAME) + ",";
+        message += String.valueOf(m_player_type.getInt());
+        sendMessage(message);
+        StartNewGame();
+        m_two_players_game_runnig = true;
+
+        onBackFromSettingClick(null);
+    }
+
     public void StartTwoPlayerGame(View v) {
         if (mChatService == null) {
             setupChat();
         }
 
-        sendMessage(String.valueOf(BLUETOOTH_MESSAGES.START_GAME));
-
-        StartNewGame();
-
-        m_two_players_game_runnig = true;
+        AlertDialog.Builder builder;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+        } else {
+            builder = new AlertDialog.Builder(this);
+        }
+        builder.setTitle(getString(R.string.start_two_player_game_title));
+        builder.setPositiveButton(getString(R.string.confirm_player_0), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                m_player_type = PlayerType.PLAYER_0;
+                SendTwoPlayerGameMessage();
+            }
+        });
+        builder.setNegativeButton(getString(R.string.confirm_player_1), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                m_player_type = PlayerType.PLAYER_1;
+                SendTwoPlayerGameMessage();
+            }
+        });
+        builder.setNeutralButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                // do nothing
+            }
+        });
+        //builder.setIcon(R.drawable.new_game_icon); // TODO: Add this
+        builder.show();
     }
 
     public void SendWheelMoveMessage(int wheel_num, int angle) {
