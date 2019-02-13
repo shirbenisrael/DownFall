@@ -141,8 +141,8 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         ((ConnectableImage)findViewById(bottom_id)).ConnectAsBottom(((Wheel)findViewById(top_id)), bottom_angle);
     }
 
-    private void SetConnectableImageDiameter(int wheel_id, double diameter) {
-        ((ConnectableImage)findViewById(wheel_id)).UpdateDisplay((int)diameter);
+    private void SetConnectableImageDiameter(int wheel_id, int diameter) {
+        ((ConnectableImage)findViewById(wheel_id)).UpdateDisplay(diameter);
     }
 
     public void SetTurnDoneButtonLocation(int wheel_id_anchor, int left, int top) {
@@ -167,15 +167,15 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         boardLayout.addView(turn_done_button, params);
     }
 
-    private void SetWheelLocation(int wheel_id, double left, double top) {
-        ((ConnectableImage)findViewById(wheel_id)).SetLocation((int)left, (int)top);
+    private void SetWheelLocation(int wheel_id, int left, int top) {
+        ((ConnectableImage)findViewById(wheel_id)).SetLocation(left, top);
     }
 
-    private void SetTokenQueueLocation(int queue_id, double left, double top) {
-        ((ConnectableImage)findViewById(queue_id)).SetLocation((int)left, (int)top);
+    private void SetTokenQueueLocation(int queue_id, int left, int top) {
+        ((ConnectableImage)findViewById(queue_id)).SetLocation(left, top);
     }
 
-    private void ConnectWheelToInputQueue(int wheel_id, int queue_id, double bottom_angle) {
+    private void ConnectWheelToInputQueue(int wheel_id, int queue_id, int bottom_angle) {
         Wheel wheel = ((Wheel)findViewById(wheel_id));
         wheel.ConnectToInputQueue(((InputTokenQueue)findViewById(queue_id)), bottom_angle);
     }
@@ -224,7 +224,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         m_player_text_view_token_counter_left[PlayerType.PLAYER_1.getInt()]
                 = (TextView)findViewById(R.id.opposite_token_counter);
 
-        double base_diameter = m_size.x / 3;
+        int base_diameter = m_size.x / 3;
 
         SetConnectableImageDiameter(R.id.input_token_queue_left, base_diameter * 1);
         SetConnectableImageDiameter(R.id.input_token_queue_right, base_diameter * 1);
@@ -598,7 +598,6 @@ public class MainActivity extends Activity implements View.OnTouchListener {
     }
 
     public void HandleStartGameMessageFromOtherDevice() {
-        Toast.makeText(getApplicationContext(), "Game started!", Toast.LENGTH_SHORT).show();
         onBackFromSettingClick(null);
         StartNewGame();
         m_two_players_game_runnig = true;
@@ -610,6 +609,8 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         for(int i = 0; i < strArray.length; i++) {
             intArray[i] = Integer.parseInt(strArray[i]);
         }
+
+        //Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
         switch (intArray[0]) {
             case BLUETOOTH_MESSAGES.START_GAME:
@@ -720,6 +721,8 @@ public class MainActivity extends Activity implements View.OnTouchListener {
             // Get the message bytes and tell the BluetoothChatService to write
             byte[] send = message.getBytes();
             mChatService.write(send);
+
+            //Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
         }
     }
 

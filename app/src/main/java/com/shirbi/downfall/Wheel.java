@@ -13,9 +13,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class Wheel extends ConnectableImage {
-    private double m_start_touch_angle; //angle of finger touch with respect to center.
-    private double m_previous_angle, m_current_angle; //angles of wheel with respect to its base rotation.
-    private double m_turn_rotation, m_max_turn_rotation; // number of degrees in this turn
+    private int m_start_touch_angle; //angle of finger touch with respect to center.
+    private int m_previous_angle, m_current_angle; //angles of wheel with respect to its base rotation.
+    private int m_turn_rotation, m_max_turn_rotation; // number of degrees in this turn
     private long m_start_time_milliseconds;
     private Timer m_timer;
     private TimerTask m_timer_task;
@@ -62,9 +62,9 @@ public class Wheel extends ConnectableImage {
         Init();
     }
 
-    public double GetCurrentAngle() { return m_current_angle; }
+    public int GetCurrentAngle() { return m_current_angle; }
 
-    public void ConnectToInputQueue(InputTokenQueue input_queue, double bottom_angle)  {
+    public void ConnectToInputQueue(InputTokenQueue input_queue, int bottom_angle)  {
         Connection connection = new Connection(input_queue, this, bottom_angle);
         m_connections.add(connection);
         input_queue.m_connections.add(connection);
@@ -76,7 +76,7 @@ public class Wheel extends ConnectableImage {
         Rotate(angle);
     }
 
-    public void Rotate(double angle) {
+    public void Rotate(int angle) {
         super.Rotate(angle);
 
         for (Hole hole : m_holes) {
@@ -151,16 +151,16 @@ public class Wheel extends ConnectableImage {
 
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN: {
-                m_start_touch_angle = Math.toDegrees(Math.atan2(x - xc, yc - y));
+                m_start_touch_angle = (int)Math.toDegrees(Math.atan2(x - xc, yc - y));
                 m_start_time_milliseconds = System.currentTimeMillis();
                 break;
             }
             case MotionEvent.ACTION_MOVE: {
-                double new_angle = Math.toDegrees(Math.atan2(x - xc, yc - y));
+                int new_angle = (int)Math.toDegrees(Math.atan2(x - xc, yc - y));
 
                 long current_time_milliseconds = System.currentTimeMillis();
                 long delta_time_milliseconds = current_time_milliseconds - m_start_time_milliseconds;
-                double rotation_angle = new_angle - m_start_touch_angle;
+                int rotation_angle = new_angle - m_start_touch_angle;
                 while (rotation_angle < -180) {
                     rotation_angle += 360;
                 }
@@ -172,7 +172,7 @@ public class Wheel extends ConnectableImage {
                     break;
                 }
 
-                double abs_rotation = Math.abs(m_turn_rotation + rotation_angle);
+                int abs_rotation = (int)Math.abs(m_turn_rotation + rotation_angle);
                 if (abs_rotation > m_max_turn_rotation) {
                     m_max_turn_rotation = abs_rotation;
                 }
