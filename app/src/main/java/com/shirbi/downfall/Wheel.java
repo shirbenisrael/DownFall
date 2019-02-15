@@ -118,9 +118,10 @@ public class Wheel extends ConnectableImage {
                 // There is a chance that this task was already queued couple of times to ui thread.
                 // make sure it doesn't trigger the m_activity twice.
                 if (m_currently_auto_rotating) {
+                    m_currently_auto_rotating = false;
                     m_activity.WheelFinishedRotating();
                 }
-                m_currently_auto_rotating = false;
+                return;
             }
 
             if (m_auto_rotate_angle > 0) {
