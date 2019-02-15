@@ -601,6 +601,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         onBackFromSettingClick(null);
         StartNewGame();
         m_two_players_game_runnig = true;
+        EnableButtons(m_player_type == PlayerType.PLAYER_0);
     }
 
     private void ParseMessage(String message) {
@@ -732,6 +733,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         sendMessage(message);
         StartNewGame();
         m_two_players_game_runnig = true;
+        EnableButtons(m_player_type == PlayerType.PLAYER_0);
 
         onBackFromSettingClick(null);
     }
