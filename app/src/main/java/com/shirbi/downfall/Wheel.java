@@ -87,8 +87,16 @@ public class Wheel extends ConnectableImage {
 
     public void AddRotation(int angle) {
         m_auto_rotate_angle = angle;
+        if (m_timer != null) {
+            m_timer.cancel();
+        }
         m_timer = new Timer();
         m_currently_auto_rotating = true;
+
+        if (m_timer_task != null) {
+            m_timer_task.cancel();
+        }
+
         m_timer_task = (new TimerTask() {
             @Override
             public void run() {
