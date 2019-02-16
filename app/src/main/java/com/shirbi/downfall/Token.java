@@ -194,6 +194,11 @@ public class Token extends RotatableImage {
 
     public int GetNumber() { return m_number; }
 
+    public void ShowOnExit() {
+        setVisibility(VISIBLE);
+        m_number_image.setVisibility(VISIBLE);
+    }
+
     public void QueueAnimation(int num_moves, Token.HORIZONTAL_ALIGNMENT direction, SlideToken slider) {
         m_count_down = num_moves;
         m_move_animation_direction = direction;
