@@ -472,10 +472,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         }
     }
 
-    public void onBackFromSettingClick(View view) {
-        findViewById(R.id.main_game_layout).setVisibility(View.VISIBLE);
-        findViewById(R.id.setting_layout).setVisibility(View.INVISIBLE);
-
+    private void ReadObjectVisibilityFromRadioButtons() {
         for (int i = 0 ; i < m_objects_visibility_radio_buttons.length; i++) {
             if (m_objects_visibility_radio_buttons[i].isChecked()) {
                 m_objects_visibility = ObjectVisibility.values()[i];
@@ -483,6 +480,13 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         }
 
         RulesChanged();
+    }
+
+    public void onBackFromSettingClick(View view) {
+        findViewById(R.id.main_game_layout).setVisibility(View.VISIBLE);
+        findViewById(R.id.setting_layout).setVisibility(View.INVISIBLE);
+
+        ReadObjectVisibilityFromRadioButtons();
     }
 
     @Override
@@ -598,6 +602,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
     }
 
     public void HandleStartGameMessageFromOtherDevice() {
+        RefreshVisibilityRadioButtons();
         onBackFromSettingClick(null);
         StartNewGame();
         m_two_players_game_runnig = true;
@@ -616,6 +621,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         switch (intArray[0]) {
             case BLUETOOTH_MESSAGES.START_GAME:
                 m_player_type = PlayerType.values()[1-intArray[1]];
+                m_objects_visibility = ObjectVisibility.values()[intArray[2]];
                 HandleStartGameMessageFromOtherDevice();
                 break;
             case BLUETOOTH_MESSAGES.TURN_DONE:
@@ -728,8 +734,11 @@ public class MainActivity extends Activity implements View.OnTouchListener {
     }
 
     public void SendTwoPlayerGameMessage() {
+        ReadObjectVisibilityFromRadioButtons();
+
         String message = String.valueOf(BLUETOOTH_MESSAGES.START_GAME) + ",";
-        message += String.valueOf(m_player_type.getInt());
+        message += String.valueOf(m_player_type.getInt()) + ",";
+        message += String.valueOf(m_objects_visibility.getInt());
         sendMessage(message);
         StartNewGame();
         m_two_players_game_runnig = true;
