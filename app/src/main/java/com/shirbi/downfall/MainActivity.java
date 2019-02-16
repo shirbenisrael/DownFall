@@ -776,10 +776,6 @@ public class MainActivity extends Activity implements View.OnTouchListener {
             return;
         }
 
-        if (m_last_wheel_rotated == wheel_num && m_last_angle_rotated == angle) {
-            return;
-        }
-
         m_last_wheel_rotated = wheel_num;
         m_last_angle_rotated += angle;
         if (m_last_angle_rotated < m_last_angle_rotated_min) {
