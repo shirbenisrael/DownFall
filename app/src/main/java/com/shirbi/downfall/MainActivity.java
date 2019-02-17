@@ -379,6 +379,11 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         }
     }
 
+    private void ConfigureTwoPlayersGame(Boolean is_two_players) {
+        m_two_players_game_runnig = is_two_players;
+        SetVisibilityRadioButtonsEnable(!m_two_players_game_runnig);
+    }
+
     public void onNewGameButtonClick(View view) {
         AlertDialog.Builder builder;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -390,12 +395,14 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         builder.setPositiveButton(getString(R.string.confirm_player_0), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 m_player_type = PlayerType.PLAYER_0;
+                ConfigureTwoPlayersGame(false);
                 StartNewGame();
             }
         });
         builder.setNegativeButton(getString(R.string.confirm_player_1), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 m_player_type = PlayerType.PLAYER_1;
+                ConfigureTwoPlayersGame(false);
                 StartNewGame();
             }
         });
@@ -409,8 +416,6 @@ public class MainActivity extends Activity implements View.OnTouchListener {
     }
 
     public void StartNewGame() {
-        m_two_players_game_runnig = false;
-
         for (int i = 0; i < m_connectable_images.length; i++) {
             m_connectable_images[i].Reset();
         }
@@ -455,6 +460,12 @@ public class MainActivity extends Activity implements View.OnTouchListener {
     public void onSettingClick(View view) {
         findViewById(R.id.main_game_layout).setVisibility(View.INVISIBLE);
         findViewById(R.id.setting_layout).setVisibility(View.VISIBLE);
+    }
+
+    private void SetVisibilityRadioButtonsEnable(Boolean enable) {
+        for (int i = 0 ; i < m_objects_visibility_radio_buttons.length; i++) {
+            m_objects_visibility_radio_buttons[i].setEnabled(enable);
+        }
     }
 
     private void RefreshVisibilityRadioButtons() {
@@ -605,7 +616,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         RefreshVisibilityRadioButtons();
         onBackFromSettingClick(null);
         StartNewGame();
-        m_two_players_game_runnig = true;
+        ConfigureTwoPlayersGame(true);
         EnableButtons(m_player_type == PlayerType.PLAYER_0);
     }
 
@@ -741,7 +752,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         message += String.valueOf(m_objects_visibility.getInt());
         sendMessage(message);
         StartNewGame();
-        m_two_players_game_runnig = true;
+        ConfigureTwoPlayersGame(true);
         EnableButtons(m_player_type == PlayerType.PLAYER_0);
 
         onBackFromSettingClick(null);
