@@ -500,6 +500,32 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         ReadObjectVisibilityFromRadioButtons();
     }
 
+    private void Exit() {
+        super.onBackPressed();
+    }
+
+    private void ShowExitDialog() {
+        AlertDialog.Builder builder;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+        } else {
+            builder = new AlertDialog.Builder(this);
+        }
+        builder.setTitle(getString(R.string.exit_game));
+        builder.setPositiveButton(getString(R.string.confirm), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                Exit();
+            }
+        });
+        builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                // Do nothing
+            }
+        });
+        //builder.setIcon(R.drawable.new_game_icon); // TODO: Add this
+        builder.show();
+    }
+
     @Override
     public void onBackPressed() {
         if (findViewById(R.id.setting_layout).getVisibility() == View.VISIBLE) {
@@ -507,11 +533,9 @@ public class MainActivity extends Activity implements View.OnTouchListener {
             return;
         }
 
-        if (!m_allow_screen_touch) {
-            return;
+        if (m_allow_screen_touch || m_two_players_game_runnig) {
+            ShowExitDialog();
         }
-
-        super.onBackPressed();
     }
 
     private void SetSoundEnable(Boolean is_enable) {
