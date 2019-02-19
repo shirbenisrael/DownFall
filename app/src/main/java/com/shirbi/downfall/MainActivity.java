@@ -328,29 +328,33 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         smart_ai_checkbox.setChecked(is_smart_ai);
     }
 
+    private void sendTurnDoneMessage() {
+        String message = String.valueOf(BLUETOOTH_MESSAGES.TURN_DONE) + "," + m_last_wheel_rotated;
+        if (m_last_angle_rotated > 0 ) {
+            if (m_last_angle_rotated_min < 0 ) {
+                message = message +","+String.valueOf(m_last_angle_rotated_min);
+            }
+            if (m_last_angle_rotated_max > m_last_angle_rotated ) {
+                message = message +","+String.valueOf(m_last_angle_rotated_max);
+            }
+        } else {
+            if (m_last_angle_rotated_max > 0 ) {
+                message = message +","+String.valueOf(m_last_angle_rotated_max);
+            }
+            if (m_last_angle_rotated_min < m_last_angle_rotated ) {
+                message = message +","+String.valueOf(m_last_angle_rotated_min);
+            }
+        }
+        message = message +","+String.valueOf(m_last_angle_rotated);
+
+        sendMessage(message);
+    }
+
     public void onFinishTurnButtonClick(View view) {
         EnableButtons(false);
 
         if (m_two_players_game_runnig) {
-            String message = String.valueOf(BLUETOOTH_MESSAGES.TURN_DONE) + "," + m_last_wheel_rotated;
-            if (m_last_angle_rotated > 0 ) {
-                if (m_last_angle_rotated_min < 0 ) {
-                    message = message +","+String.valueOf(m_last_angle_rotated_min);
-                }
-                if (m_last_angle_rotated_max > m_last_angle_rotated ) {
-                    message = message +","+String.valueOf(m_last_angle_rotated_max);
-                }
-            } else {
-                if (m_last_angle_rotated_max > 0 ) {
-                    message = message +","+String.valueOf(m_last_angle_rotated_max);
-                }
-                if (m_last_angle_rotated_min < m_last_angle_rotated ) {
-                    message = message +","+String.valueOf(m_last_angle_rotated_min);
-                }
-            }
-            message = message +","+String.valueOf(m_last_angle_rotated);
-
-            sendMessage(message);
+            sendTurnDoneMessage();
             return;
         }
 
@@ -564,6 +568,11 @@ public class MainActivity extends Activity implements View.OnTouchListener {
     }
 
     public void EndGame(String string) {
+
+        if (m_two_players_game_runnig) {
+            sendTurnDoneMessage();
+        }
+
         AlertDialog.Builder builder;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
