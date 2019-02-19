@@ -283,14 +283,13 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         RestoreState();
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
+    private Boolean VerifyBlueToothEnabled() {
         if (!mBluetoothAdapter.isEnabled()) {
             Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
+            return false;
         } else {
-            //if (mChatService == null) setupChat();
+            return true;
         }
     }
 
@@ -604,9 +603,15 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         }
     }
 
-    public void connect(View v) {
+    private void RunConnectActivity() {
         Intent serverIntent = new Intent(this, DeviceListActivity.class);
         startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE);
+    }
+
+    public void onConnectClick(View v) {
+        if (VerifyBlueToothEnabled()) {
+            RunConnectActivity();
+        }
     }
 
     public void discoverable(View v) {
@@ -742,11 +747,10 @@ public class MainActivity extends Activity implements View.OnTouchListener {
                 // When the request to enable Bluetooth returns
                 if (resultCode == Activity.RESULT_OK) {
                     // Bluetooth is now enabled, so set up a chat session
-                    setupChat();
+                    RunConnectActivity();
                 } else {
                     // User did not enable Bluetooth or an error occured
                     Toast.makeText(this, R.string.bt_not_enabled_leaving, Toast.LENGTH_SHORT).show();
-                    finish();
                 }
         }
     }

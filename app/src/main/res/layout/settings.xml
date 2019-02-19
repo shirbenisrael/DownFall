@@ -55,7 +55,7 @@
             android:id="@+id/scan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="connect"
+            android:onClick="onConnectClick"
             android:text="@string/connect" />
 
         <Button
