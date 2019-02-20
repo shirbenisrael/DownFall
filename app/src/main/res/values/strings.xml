@@ -11,6 +11,7 @@
     <string name="settings">Settings</string>
     <string name="new_game">New Game</string>
     <string name="end_game">End Game</string>
+    <string name="help">Help</string>
     <string name="turn_done">Turn Done</string>
 
     <string name="win">You win!</string>
@@ -45,9 +46,23 @@
     <string name="not_connected">not_connected</string>
     <string name="two_player_game_ended">Game ended by other player</string>
 
-    bt_not_enabled_leaving
-    connect
+    <string name="help_text">Welcome to Down-Fall. \n\n
 
+        This is a two players game (or one against artificial intelligence).\n\n
+
+        Each player is owner 2 sets of tokens. The Yellow and Red sets or the Green and Blue sets. \n\n
+
+        The mission is to fall down all your tokens from the input queues via the wheels down to
+        the output queue before the opponent does this with his tokens. \n\n
+
+        In each turn a player select one wheel and rotate it as much as they want in one direction.
+        After that the turn is over and the opponent can rotate any wheel, with one exception: they
+        cannot rotate the same wheel that was rotated just now.\n\n
+
+        The tokens of each color must fall to output queue in order. That means: token 1 before token 2 and so on.
+        If players tokens fall to output queue out of order, they immediately lose the game.\n\n
+
+    </string>
 
 
 </resources>

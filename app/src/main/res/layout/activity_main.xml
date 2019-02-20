@@ -169,6 +169,13 @@
                 android:layout_height="wrap_content"
                 android:onClick="onSettingClick"
                 android:text="@string/settings" />
+
+            <Button
+                android:id="@+id/help_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onHelpButtonClick"
+                android:text="@string/help" />
         </LinearLayout>
 
 
@@ -177,6 +184,10 @@
     <include
         android:id="@+id/setting_layout"
         layout="@layout/settings" />
+
+    <include
+        android:id="@+id/help_layout"
+        layout="@layout/help" />
 
 
 </android.support.constraint.ConstraintLayout>

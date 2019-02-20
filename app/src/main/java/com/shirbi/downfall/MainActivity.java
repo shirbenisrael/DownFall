@@ -500,6 +500,11 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         findViewById(R.id.setting_layout).setVisibility(View.VISIBLE);
     }
 
+    public void onHelpButtonClick(View view) {
+        findViewById(R.id.main_game_layout).setVisibility(View.INVISIBLE);
+        findViewById(R.id.help_layout).setVisibility(View.VISIBLE);
+    }
+
     private void SetVisibilityRadioButtonsEnable(Boolean enable) {
         for (int i = 0 ; i < m_objects_visibility_radio_buttons.length; i++) {
             m_objects_visibility_radio_buttons[i].setEnabled(enable);
@@ -538,6 +543,11 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         ReadObjectVisibilityFromRadioButtons();
     }
 
+    public void onBackFromHelpClick(View view) {
+        findViewById(R.id.main_game_layout).setVisibility(View.VISIBLE);
+        findViewById(R.id.help_layout).setVisibility(View.INVISIBLE);
+    }
+
     private void Exit() {
         super.onBackPressed();
     }
@@ -568,6 +578,11 @@ public class MainActivity extends Activity implements View.OnTouchListener {
     public void onBackPressed() {
         if (findViewById(R.id.setting_layout).getVisibility() == View.VISIBLE) {
             onBackFromSettingClick(null);
+            return;
+        }
+
+        if (findViewById(R.id.help_layout).getVisibility() == View.VISIBLE) {
+            onBackFromHelpClick(null);
             return;
         }
 
