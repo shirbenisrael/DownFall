@@ -709,10 +709,16 @@ public class MainActivity extends Activity implements View.OnTouchListener {
                 HandleStartGameMessageFromOtherDevice();
                 break;
             case BLUETOOTH_MESSAGES.END_GAME:
+                if (!m_two_players_game_runnig) {
+                    break;
+                }
                 Toast.makeText(getApplicationContext(), R.string.two_player_game_ended, Toast.LENGTH_SHORT).show();
                 ConfigureTwoPlayersGame(false);
                 break;
             case BLUETOOTH_MESSAGES.TURN_DONE:
+                if (!m_two_players_game_runnig) {
+                    break;
+                }
                 m_last_wheel_rotated = intArray[1];
                 // ignore message type and wheel num.
                 m_last_angle_rotation_array = new int[intArray.length - 2];
