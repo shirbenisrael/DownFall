@@ -53,6 +53,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 
     class BLUETOOTH_MESSAGES {
         static final int START_GAME = 0;
+        static final int END_GAME = 1;
         static final int TURN_DONE = 2;
     }
 
@@ -385,6 +386,16 @@ public class MainActivity extends Activity implements View.OnTouchListener {
     private void ConfigureTwoPlayersGame(Boolean is_two_players) {
         m_two_players_game_runnig = is_two_players;
         SetVisibilityRadioButtonsEnable(!m_two_players_game_runnig);
+
+        EnableButtons(!is_two_players);
+
+        if (is_two_players) {
+            findViewById(R.id.end_2_player_game_button).setVisibility(View.VISIBLE);
+            findViewById(R.id.new_game_button).setVisibility(View.GONE);
+        } else {
+            findViewById(R.id.end_2_player_game_button).setVisibility(View.GONE);
+            findViewById(R.id.new_game_button).setVisibility(View.VISIBLE);
+        }
     }
 
     public void onNewGameButtonClick(View view) {
@@ -410,6 +421,30 @@ public class MainActivity extends Activity implements View.OnTouchListener {
             }
         });
         builder.setNeutralButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                // do nothing
+            }
+        });
+        //builder.setIcon(R.drawable.new_game_icon); // TODO: Add this
+        builder.show();
+    }
+
+    public void onEnd2PlayerGameButtonClick(View view) {
+        AlertDialog.Builder builder;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+        } else {
+            builder = new AlertDialog.Builder(this);
+        }
+        builder.setTitle(getString(R.string.end_two_player_game_title));
+        builder.setPositiveButton(getString(R.string.confirm), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                String message = String.valueOf(BLUETOOTH_MESSAGES.END_GAME);
+                sendMessage(message);
+                ConfigureTwoPlayersGame(false);
+            }
+        });
+        builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 // do nothing
             }
@@ -672,6 +707,10 @@ public class MainActivity extends Activity implements View.OnTouchListener {
                 m_player_type = PlayerType.values()[1-intArray[1]];
                 m_objects_visibility = ObjectVisibility.values()[intArray[2]];
                 HandleStartGameMessageFromOtherDevice();
+                break;
+            case BLUETOOTH_MESSAGES.END_GAME:
+                Toast.makeText(getApplicationContext(), R.string.two_player_game_ended, Toast.LENGTH_SHORT).show();
+                ConfigureTwoPlayersGame(false);
                 break;
             case BLUETOOTH_MESSAGES.TURN_DONE:
                 m_last_wheel_rotated = intArray[1];
