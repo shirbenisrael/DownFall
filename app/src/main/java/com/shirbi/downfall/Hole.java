@@ -202,7 +202,6 @@ public class Hole extends RotatableImage {
             int number = data / 10;
 
             token.SetType(color, number);
-            token.SetDiameter(m_diameter);
             token.Rotate(0); /* This will scale the token image to the correct size */
             token.Register();
 

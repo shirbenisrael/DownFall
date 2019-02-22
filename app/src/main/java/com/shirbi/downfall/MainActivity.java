@@ -117,6 +117,10 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         super.onDestroy();
     }
 
+    public int GetTokenDiameter() {
+        return m_size.x / GameConstants.TOKEN_SIZE_DIVISOR;
+    }
+
     private void AddHole(int wheel_id, int angle, PlayerType player_type) {
         Hole hole = new Hole(this);
         hole.SetDiameter(m_size.x / GameConstants.HOLE_SIZE_DIVISOR);

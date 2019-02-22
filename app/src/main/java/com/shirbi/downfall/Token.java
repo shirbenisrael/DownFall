@@ -1,6 +1,5 @@
 package com.shirbi.downfall;
 
-import android.app.Activity;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
@@ -17,7 +16,7 @@ public class Token extends RotatableImage {
     private int m_number;
     private COLOR m_color;
     public PlayerType m_player_type;
-    private Context m_context;
+    protected MainActivity m_activity;
     private Timer m_timer;
     private int m_count_down;
     private Token m_this_token;
@@ -60,17 +59,18 @@ public class Token extends RotatableImage {
         m_connected_image = new RotatableImage(m_activity);
 
         m_connected_image.setImageResource(R.drawable.token_connected);
+        SetDiameter(m_activity.GetTokenDiameter());
     }
 
     public Token(Context context) {
         super(context);
-        m_context = context;
+        m_activity = (MainActivity)context;
         Init();
     }
 
     public Token(Context context, AttributeSet attrs) {
         super(context, attrs);
-        m_context = context;
+        m_activity = (MainActivity)context;
         Init();
     }
 
@@ -214,7 +214,7 @@ public class Token extends RotatableImage {
     }
 
     private void TimerMethod() {
-        ((Activity)m_context).runOnUiThread(m_timer_tick);
+        m_activity.runOnUiThread(m_timer_tick);
     }
 
     private Runnable m_timer_tick = new Runnable() {
@@ -281,7 +281,7 @@ public class Token extends RotatableImage {
             return;
         }
 
-        ((Activity)m_context).runOnUiThread(m_fade_out_timer_tick);
+        m_activity.runOnUiThread(m_fade_out_timer_tick);
     }
 
     private void SetAlphaOnImages() {

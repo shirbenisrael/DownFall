@@ -57,7 +57,6 @@ public class InputTokenQueue extends ConnectableImage implements SlideToken {
 
         token.Register();
 
-        token.SetDiameter(hole.m_diameter);
         token.RulesChanged();
 
         if (hole.HasResident()) {
