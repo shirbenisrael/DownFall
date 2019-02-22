@@ -492,7 +492,14 @@ public class MainActivity extends Activity implements View.OnTouchListener {
     }
 
     public void ShowNumTokenLeft(PlayerType player_type, int num_token_left) {
-        m_player_text_view_token_counter_left[player_type.getInt()].setText(String.valueOf(num_token_left));
+        String text;
+        if (num_token_left > 9) {
+            text = String.valueOf(num_token_left);
+        } else {
+            text = " "+ String.valueOf(num_token_left);
+        }
+
+        m_player_text_view_token_counter_left[player_type.getInt()].setText(String.valueOf(text));
     }
 
     public void onSettingClick(View view) {

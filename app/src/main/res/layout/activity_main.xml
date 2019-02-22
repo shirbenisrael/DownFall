@@ -138,10 +138,27 @@
             android:gravity="center"
             android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/player_token_counter"
+            <RelativeLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/player_token_counter"
+                    android:layout_alignTop="@+id/player_token_counter"
+                    android:layout_alignRight="@+id/player_token_counter"
+                    android:layout_alignBottom="@+id/player_token_counter"
+                    android:background="@drawable/player_0_theme"
+                    android:scaleType="fitXY" />
+
+                <TextView
+                    android:id="@+id/player_token_counter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:typeface="monospace"/>
+            </RelativeLayout>
+
 
             <Button
                 android:id="@+id/new_game_button"
@@ -155,13 +172,31 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="onEnd2PlayerGameButtonClick"
-                android:visibility="gone"
-                android:text="@string/end_game" />
+                android:text="@string/end_game"
+                android:visibility="gone" />
 
-            <TextView
-                android:id="@+id/opposite_token_counter"
+            <RelativeLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/opposite_token_counter"
+                    android:layout_alignTop="@+id/opposite_token_counter"
+                    android:layout_alignRight="@+id/opposite_token_counter"
+                    android:layout_alignBottom="@+id/opposite_token_counter"
+                    android:background="@drawable/player_1_theme"
+                    android:scaleType="fitXY" />
+
+                <TextView
+                    android:id="@+id/opposite_token_counter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:typeface="monospace"
+                    />
+
+            </RelativeLayout>
 
             <Button
                 android:id="@+id/setting_button"
