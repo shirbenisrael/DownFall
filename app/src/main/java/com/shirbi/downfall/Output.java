@@ -38,6 +38,7 @@ public class Output extends ConnectableImage implements SlideToken {
 
         m_player_num_tokens_left[player_num]--;
         m_activity.ShowNumTokenLeft(token.GetPlayerType(), m_player_num_tokens_left[player_num]);
+        m_activity.TokenExit(token);
 
         if (m_player_num_tokens_left[player_num] == 0) {
             String string;

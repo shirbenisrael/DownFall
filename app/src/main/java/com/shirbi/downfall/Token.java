@@ -27,6 +27,9 @@ public class Token extends RotatableImage {
     private float m_alpha;
     private Timer m_fade_out_timer;
     private ConnectableImage m_owner_wheel;
+    private Boolean m_is_inflate;
+    private int m_inflate_center_x;
+    private int m_inflate_center_y;
 
     static Token m_token_list[][][] = new Token[PlayerType.NUM_PLAYERS][Token.COLOR.NUM_COLORS][5];
 
@@ -50,6 +53,7 @@ public class Token extends RotatableImage {
     private static final float ALPHA_FOR_OPPOSITE = (float)0.2;
 
     private void Init() {
+        m_is_inflate = false;
         m_owner_wheel = null;
         m_player_type = PlayerType.PLAYER_0;
         m_this_token = this;
@@ -110,6 +114,31 @@ public class Token extends RotatableImage {
         } else {
             m_connected_image.setVisibility(VISIBLE);
         }
+    }
+
+
+    private void UpdateLocationWhenInflate(ViewGroup new_parent) {
+        RelativeLayout.LayoutParams token_params =
+                new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        token_params.leftMargin = m_inflate_center_x - m_diameter / 2;
+        token_params.topMargin = m_inflate_center_y - m_diameter / 2;
+
+        SetParentView(new_parent, token_params);
+
+        /* Actually this is resize */
+        Rotate(0);
+    }
+
+    public void Inflate(ViewGroup new_parent, int token_center_x, int token_center_y) {
+        m_inflate_center_x = token_center_x;
+        m_inflate_center_y = token_center_y;
+        m_is_inflate = true;
+
+        UpdateLocationWhenInflate(new_parent);
+
+        FadeOut();
     }
 
     public void SetParentView(ViewGroup newParent, RelativeLayout.LayoutParams params) {
@@ -295,6 +324,13 @@ public class Token extends RotatableImage {
             m_alpha -= 0.01;
             SetAlphaOnImages();
 
+            if (m_is_inflate) {
+                m_diameter += GameConstants.TOKEN_INFLATE_SPEED;
+                m_connected_image.m_diameter += GameConstants.TOKEN_INFLATE_SPEED;;
+                m_number_image.m_diameter += GameConstants.TOKEN_INFLATE_SPEED;;
+                UpdateLocationWhenInflate((ViewGroup)getParent());
+            }
+
             if (m_alpha < 0.1) {
                 m_alpha = (float)1.0;
                 m_fade_out_timer.cancel();
@@ -302,6 +338,10 @@ public class Token extends RotatableImage {
                 m_connected_image.setVisibility(INVISIBLE);
                 m_number_image.setVisibility(INVISIBLE);
                 SetAlphaOnImages();
+
+                if (m_is_inflate) {
+                    RemoveFromParentView();
+                }
             }
         }
     };

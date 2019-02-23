@@ -542,6 +542,26 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         m_allow_screen_touch = enable;
     }
 
+    public void TokenExit(Token token) {
+        PlayerType player_type = token.GetPlayerType();
+        View view_to_attach = m_player_text_view_token_counter_left[player_type.getInt()];
+
+        RelativeLayout text_view_layout = (RelativeLayout) view_to_attach.getParent();
+        RelativeLayout.LayoutParams text_params = (RelativeLayout.LayoutParams)text_view_layout.getLayoutParams();
+
+        RelativeLayout board_layout = (RelativeLayout) text_view_layout.getParent();
+
+        int view_location[] = new int[2];
+        view_to_attach.getLocationInWindow(view_location);
+        int board_location[] = new int[2];
+        board_layout.getLocationInWindow(board_location);
+
+        int token_center_x = view_location[0] - board_location[0] + view_to_attach.getWidth() / 2;
+        int token_center_y = view_location[1] - board_location[1] + view_to_attach.getHeight() / 2;
+
+        token.Inflate(board_layout, token_center_x, token_center_y);
+    }
+
     public void ShowNumTokenLeft(PlayerType player_type, int num_token_left) {
         String text = String.valueOf(num_token_left);
         m_player_text_view_token_counter_left[player_type.getInt()].setText(String.valueOf(text));
