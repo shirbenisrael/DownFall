@@ -40,6 +40,8 @@ public class Output extends ConnectableImage implements SlideToken {
         m_activity.ShowNumTokenLeft(token.GetPlayerType(), m_player_num_tokens_left[player_num]);
         m_activity.TokenExit(token);
 
+        Boolean game_end = false;
+
         if (m_player_num_tokens_left[player_num] == 0) {
             String string;
             if (token.GetPlayerType() == m_activity.GetPlayerType()) {
@@ -48,6 +50,7 @@ public class Output extends ConnectableImage implements SlideToken {
                 string = m_activity.getString(R.string.lose);
             }
             m_activity.EndGame(string);
+            game_end = true;
         }
 
         if (token.GetPreviousToken() != null) {
@@ -58,6 +61,11 @@ public class Output extends ConnectableImage implements SlideToken {
                 string = m_activity.getString(R.string.win_order);
             }
             m_activity.EndGame(string);
+            game_end = true;
+        }
+
+        if(!game_end) {
+            m_activity.PlaySound(R.raw.token_exit);
         }
     }
 
