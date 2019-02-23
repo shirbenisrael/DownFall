@@ -100,10 +100,17 @@ public class Hole extends RotatableImage {
         super.Rotate(angle);
 
         if (m_resident != null) {
-            // Use same parameters for hole and resident.
-            // Remember that if we want to change this, we need to use copy constructor to
-            // create new params for the resident.
-            m_resident.SetParentView(relativeLayout, params);
+            RelativeLayout.LayoutParams token_params =
+                    new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                            ViewGroup.LayoutParams.WRAP_CONTENT);
+
+            token_params.leftMargin = params.leftMargin + ((m_diameter - m_resident.m_diameter) / 2);
+            token_params.topMargin = params.topMargin + ((m_diameter - m_resident.m_diameter) / 2);
+
+            token_params.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
+            token_params.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
+
+            m_resident.SetParentView(relativeLayout, token_params);
         }
 
         m_current_angle = angle;
