@@ -175,6 +175,46 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         boardLayout.addView(turn_done_button, params);
     }
 
+    private void SetTokenCountersLocation() {
+        View anchor = findViewById(R.id.finish_turn_button);
+        RelativeLayout boardLayout = (RelativeLayout) anchor.getParent();
+
+        RelativeLayout.LayoutParams anchor_params = ((RelativeLayout.LayoutParams)anchor.getLayoutParams());
+        int left_anchor = anchor_params.leftMargin;
+        int top_anchor = anchor_params.topMargin;
+        int width_anchor = anchor_params.width;
+        int height_anchor = anchor_params.height;
+
+        View player_token_counter_layout = findViewById(R.id.player_token_counter_layout);
+
+        RelativeLayout.LayoutParams player_token_counter_params =
+                (RelativeLayout.LayoutParams)player_token_counter_layout.getLayoutParams();
+
+        player_token_counter_params.leftMargin = left_anchor + width_anchor / 2;
+        player_token_counter_params.topMargin = top_anchor - height_anchor;
+
+        player_token_counter_params.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
+        player_token_counter_params.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
+
+        boardLayout.removeView(player_token_counter_layout);
+        boardLayout.addView(player_token_counter_layout, player_token_counter_params);
+
+        View opposite_token_counter_layout = findViewById(R.id.opposite_token_counter_layout);
+        View opposite_token_counter = findViewById(R.id.opposite_token_counter);
+
+        RelativeLayout.LayoutParams opposite_token_counter_params =
+                (RelativeLayout.LayoutParams)opposite_token_counter_layout.getLayoutParams();
+
+        opposite_token_counter_params.rightMargin = player_token_counter_params.leftMargin;
+        opposite_token_counter_params.topMargin = top_anchor - height_anchor;
+
+        opposite_token_counter_params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
+        opposite_token_counter_params.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
+
+        boardLayout.removeView(opposite_token_counter_layout);
+        boardLayout.addView(opposite_token_counter_layout, opposite_token_counter_params);
+    }
+
     private void SetWheelLocation(int wheel_id, int left, int top) {
         ((ConnectableImage)findViewById(wheel_id)).SetLocation(left, top);
     }
@@ -262,6 +302,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         ConnectWheels(R.id.output, R.id.wheel5, 90);
 
         SetTurnDoneButtonLocation(R.id.wheel2, (int)0, (int)0);
+        SetTokenCountersLocation();
 
         AddHole(R.id.input_token_queue_left, 90, PlayerType.PLAYER_0);
         AddHole(R.id.input_token_queue_left, 90, PlayerType.PLAYER_1);
@@ -502,13 +543,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
     }
 
     public void ShowNumTokenLeft(PlayerType player_type, int num_token_left) {
-        String text;
-        if (num_token_left > 9) {
-            text = String.valueOf(num_token_left);
-        } else {
-            text = " "+ String.valueOf(num_token_left);
-        }
-
+        String text = String.valueOf(num_token_left);
         m_player_text_view_token_counter_left[player_type.getInt()].setText(String.valueOf(text));
     }
 
