@@ -36,6 +36,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
     SmartAI m_smart_ai;
     Wheel m_wheels[];
     ConnectableImage m_connectable_images[];
+    boolean m_player_selected_wheel;
     int m_last_wheel_rotated;
     int m_last_angle_rotated;
     int m_last_angle_rotated_min;
@@ -69,6 +70,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putBoolean(getString(R.string.enable_sound), IsSoundEnable());
         editor.putBoolean(getString(R.string.smart_ai), IsSmartAI());
+        editor.putBoolean(getString(R.string.m_player_selected_wheel), m_player_selected_wheel);
         editor.putInt(getString(R.string.objects_visibility), m_objects_visibility.getInt());
         editor.putInt(getString(R.string.player_type), m_player_type.getInt());
 
@@ -83,6 +85,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
         SetSoundEnable(sharedPref.getBoolean(getString(R.string.enable_sound), true));
         SetSmartAI(sharedPref.getBoolean(getString(R.string.smart_ai), false));
+        m_player_selected_wheel = sharedPref.getBoolean(getString(R.string.m_player_selected_wheel), false);
 
         int visibility_int = sharedPref.getInt(getString(R.string.objects_visibility),
                 ObjectVisibility.ALWAYS_VISIBLE.getInt());
@@ -312,11 +315,12 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         int selected_wheel_num = wheel.GetWheelNum();
 
         // New wheel touch - block all other wheels.
-        if (m_last_wheel_rotated == m_wheels.length) {
+        if (m_player_selected_wheel == false) {
             m_last_wheel_rotated = selected_wheel_num;
             for (int i = 0 ; i < m_wheels.length; i++) {
                 m_wheels[i].SetAllowRotation(i == m_last_wheel_rotated);
             }
+            m_player_selected_wheel = true;
         }
 
         wheel.onTouch(v, event);
@@ -356,6 +360,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
     }
 
     public void onFinishTurnButtonClick(View view) {
+        m_player_selected_wheel = false;
         EnableButtons(false);
 
         if (m_two_players_game_runnig) {
@@ -466,6 +471,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         m_last_angle_rotated = 0;
         m_last_angle_rotated_min = 0;
         m_last_angle_rotated_max= 0;
+        m_player_selected_wheel = false;
     }
 
     public void WheelFinishedRotating() {

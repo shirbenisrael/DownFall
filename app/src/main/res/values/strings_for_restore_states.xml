@@ -10,5 +10,7 @@
     <string name="output_queue_tokens">output_queue_tokens</string>
     <string name="hole_prefix">hole_prefix</string>
     <string name="player_type">player_type</string>
+    <string name="m_player_selected_wheel">m_player_selected_wheel</string>
+
 
 </resources>
