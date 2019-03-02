@@ -12,6 +12,7 @@ import java.util.TimerTask;
 public class Token extends RotatableImage {
     private static final int m_numbers_images[] = {R.drawable.token_1, R.drawable.token_2, R.drawable.token_3, R.drawable.token_4, R.drawable.token_5};
     private static final int m_color_images[] = {R.drawable.token_red, R.drawable.token_yellow, R.drawable.token_blue, R.drawable.token_green};
+    private static final int m_connected_images[] = {R.drawable.token_red_connected, R.drawable.token_yellow_connected, R.drawable.token_blue_connected, R.drawable.token_green_connected};
 
     private int m_number;
     private COLOR m_color;
@@ -22,7 +23,6 @@ public class Token extends RotatableImage {
     private Token m_this_token;
     private Token.HORIZONTAL_ALIGNMENT m_move_animation_direction;
     private SlideToken m_slider;
-    RotatableImage m_connected_image;
     RotatableImage m_number_image;
     private float m_alpha;
     private Timer m_fade_out_timer;
@@ -30,6 +30,7 @@ public class Token extends RotatableImage {
     private Boolean m_is_inflate;
     private int m_inflate_center_x;
     private int m_inflate_center_y;
+    private Boolean m_is_connected;
 
     static Token m_token_list[][][] = new Token[PlayerType.NUM_PLAYERS][Token.COLOR.NUM_COLORS][5];
 
@@ -60,9 +61,8 @@ public class Token extends RotatableImage {
         m_color = COLOR.COLOR_1;
         m_number = 1;
         m_number_image = new RotatableImage(m_activity);
-        m_connected_image = new RotatableImage(m_activity);
+        m_is_connected = false;
 
-        m_connected_image.setImageResource(R.drawable.token_connected);
         SetDiameter(m_activity.GetTokenDiameter());
     }
 
@@ -88,8 +88,15 @@ public class Token extends RotatableImage {
         return m_player_type;
     }
 
+    private int GetImageIndex() {
+        return m_color.getInt() + m_player_type.getInt() * 2;
+    }
+
     private void UpdateImage() {
-        setImageResource(m_color_images[m_color.getInt() + m_player_type.getInt() * 2]);
+        int image_index = GetImageIndex();
+        int images_array[] = m_is_connected ? m_connected_images : m_color_images;
+
+        setImageResource(images_array[image_index]);
     }
 
     public void SetType(COLOR color, int number) {
@@ -105,17 +112,14 @@ public class Token extends RotatableImage {
     public Token.COLOR GetColor() { return m_color; }
 
     public void SetImageDisconnected() {
-        m_connected_image.setVisibility(INVISIBLE);
+        m_is_connected = false;
+        UpdateImage();
     }
 
     public void SetImageConnected() {
-        if (m_player_type == m_activity.GetPlayerType().GetOpposite()) {
-            m_activity.GetObjectVisibility().SetOnView(m_connected_image);
-        } else {
-            m_connected_image.setVisibility(VISIBLE);
-        }
+        m_is_connected = true;
+        UpdateImage();
     }
-
 
     private void UpdateLocationWhenInflate(ViewGroup new_parent) {
         RelativeLayout.LayoutParams token_params =
@@ -147,24 +151,17 @@ public class Token extends RotatableImage {
             ((ViewGroup)oldParent).removeView(this);
         }
 
-        oldParent = m_connected_image.getParent();
-        if (oldParent != null) {
-            ((ViewGroup)oldParent).removeView(m_connected_image);
-        }
-
         oldParent = m_number_image.getParent();
         if (oldParent != null) {
             ((ViewGroup)oldParent).removeView(m_number_image);
         }
 
         newParent.addView(this, params);
-        newParent.addView(m_connected_image, params);
         newParent.addView(m_number_image, params);
 
         /* Make sure than tokens of player hide opponent's tokens on input queue. */
         PlayerType player_type = m_activity.GetPlayerType();
         this.setZ(m_player_type == player_type ? 4 : 1);
-        m_connected_image.setZ(m_player_type == player_type ? 5 : 2);
         m_number_image.setZ(m_player_type == player_type ? 6 : 3);
     }
 
@@ -266,31 +263,26 @@ public class Token extends RotatableImage {
                 ObjectVisibility.ALWAYS_VISIBLE : m_activity.GetObjectVisibility();
 
         visibility.SetOnView(this);
-        visibility.SetOnView(m_connected_image);
         visibility.SetOnView(m_number_image);
     }
 
     public void Rotate(double angle) {
         super.Rotate(angle);
-        m_connected_image.Rotate(angle);
         m_number_image.Rotate(angle);
     }
 
     public void SetDiameter(int diameter) {
         super.SetDiameter(diameter);
-        m_connected_image.SetDiameter(diameter);
         m_number_image.SetDiameter(diameter);
     }
 
     public void RemoveFromParentView() {
         ((ViewGroup)(this.getParent())).removeView(this);
-        ((ViewGroup)(m_connected_image.getParent())).removeView(m_connected_image);
         ((ViewGroup)(m_number_image.getParent())).removeView(m_number_image);
     }
 
     public void FadeOut() {
         setVisibility(VISIBLE);
-        m_connected_image.setVisibility(VISIBLE);
         m_number_image.setVisibility(VISIBLE);
 
         m_alpha = (float)1.0;
@@ -315,7 +307,6 @@ public class Token extends RotatableImage {
 
     private void SetAlphaOnImages() {
         setAlpha(m_alpha);
-        m_connected_image.setAlpha(m_alpha);
         m_number_image.setAlpha(m_alpha);
     }
 
@@ -326,7 +317,6 @@ public class Token extends RotatableImage {
 
             if (m_is_inflate) {
                 m_diameter += GameConstants.TOKEN_INFLATE_SPEED;
-                m_connected_image.m_diameter += GameConstants.TOKEN_INFLATE_SPEED;;
                 m_number_image.m_diameter += GameConstants.TOKEN_INFLATE_SPEED;;
                 UpdateLocationWhenInflate((ViewGroup)getParent());
             }
@@ -335,7 +325,6 @@ public class Token extends RotatableImage {
                 m_alpha = (float)1.0;
                 m_fade_out_timer.cancel();
                 setVisibility(INVISIBLE);
-                m_connected_image.setVisibility(INVISIBLE);
                 m_number_image.setVisibility(INVISIBLE);
                 SetAlphaOnImages();
 
