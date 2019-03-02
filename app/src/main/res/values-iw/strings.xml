@@ -1,0 +1,64 @@
+﻿<resources>
+    <string name="app_name">נפילה חופשית</string>
+
+    <string name="hide_all">הסתר חורים ואסימונים של היריב (קשה)</string>
+    <string name="show_on_connect">הצג אסימוני יריב רק כשהם נופלים (בינוני)</string>
+    <string name="show_all">הצג חורים ואסימונים של היריב (קל)</string>
+    <string name="smart_ai_string">אינטלגנציה מלאכותית חכמה (קשה)</string>
+    <string name="enable_sounds">השמע קולות</string>
+    <string name="back_string">חזרה</string>
+
+    <string name="settings">הגדרות</string>
+    <string name="new_game">משחק חדש</string>
+    <string name="end_game">סיום המשחק</string>
+    <string name="help">עזרה</string>
+    <string name="turn_done">סיום תור</string>
+
+    <string name="win">ניצחת!</string>
+    <string name="win_order">סדר שגוי - ניצחת!</string>
+    <string name="lose">הפסדת!</string>
+    <string name="lose_order">סדר שגוי -הפסדת!</string>
+
+    <string name="start_two_player_game_title">התחל משחק לשני שחקנים?</string>
+    <string name="end_two_player_game_title">סיים משחק?</string>
+    <string name="start_new_game">התחל משחק חדש?</string>
+    <string name="exit_game">צא מהמשחק?</string>
+    <string name="confirm">אישור</string>
+    <string name="confirm_player_0">שחק צהוב-אדום</string>
+    <string name="confirm_player_1">שחק ירוק-כחול</string>
+    <string name="cancel">ביטול</string>
+
+    <string name="game_over">המשחק נגמר</string>
+
+    <string name="title_paired_devices">התקנים מצומדים</string>
+    <string name="title_other_devices">התקנים אחרים</string>
+    <string name="button_scan">סרוק</string>
+    <string name="none_paired">לא מצומד</string>
+    <string name="scanning">סורק</string>
+    <string name="select_device">בחירת התקן</string>
+    <string name="none_found">כלום לא נמצא</string>
+
+    <string name="connect">מחובר</string>
+    <string name="discoverable">גלוי</string>
+    <string name="start_two_player_game">התחל משחק</string>
+    <string name="bt_not_enabled_leaving">bt_not_enabled_leaving</string>
+    <string name="not_connected">not_connected</string>
+    <string name="two_player_game_ended">השחקן השני יצא מהמשחק</string>
+
+    <string name="help_text">ברוך הבא לנפילה חופשית. \n\n
+
+       זהו משחק לשני שחקנים (או לאחד נגד שחקן ממוחשב).\n\n
+
+        כל שחקן הוא הבעלים של שתי סדרות אסימונים. הסדרה הצהובה והסדרה האדומה או הסדרה הירוקה והסדרה הכחולה. \n\n
+
+המשימה היא להפיל למטה את כל אסימוניך מתורי הכניסה דרך הגלגלים עד לתור היציאה לפני שהשחקן היריב יפיל את כל אסימוניו. \n\n
+
+בכל תור שחקן בוחר גלגל אחד ומסובב אותו כמה שהוא רוצה בכיוון אחד. לאחר מכן התור מסתיים ומגיע תור היריב, אשר רשאי לסובב איזה גלגל שירצה מלבד הגלגל כשרגע סובב.\n\n
+
+חובה על האסימונים בכל אחד מהצבעים ליפול לתור היציאה על פי הסדר. כלומר: אסימון 1 לפני אסימון 2 וכן הלאה.  אם האסימונים של שחקן נופלים אל תור היציאה בסדר שגוי, השחקן מפסיד מיידית במשחקן.
+\n\n
+
+    </string>
+
+
+</resources>
