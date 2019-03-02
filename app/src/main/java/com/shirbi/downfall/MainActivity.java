@@ -17,6 +17,7 @@ import android.os.Message;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
@@ -163,7 +164,9 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         View turn_done_button = findViewById(R.id.finish_turn_button);
         RelativeLayout boardLayout = (RelativeLayout) turn_done_button.getParent();
 
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(anchor.m_diameter, anchor.m_diameter / 2);
+        int width = anchor.m_diameter;
+        int height = anchor.m_diameter / 2;
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(width, height);
 
         params.leftMargin = left + left_anchor + anchor.m_diameter;
         params.topMargin = top + top_anchor + anchor.m_diameter / 6;
@@ -173,6 +176,10 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 
         boardLayout.removeView(turn_done_button);
         boardLayout.addView(turn_done_button, params);
+
+        Button turn_done_button_in_help = (Button)findViewById(R.id.finish_turn_button_in_help);
+        turn_done_button_in_help.setWidth(width);
+        turn_done_button_in_help.setHeight(height);
     }
 
     private void SetTokenCountersLocation() {

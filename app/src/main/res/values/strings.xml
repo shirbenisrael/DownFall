@@ -46,16 +46,26 @@
     <string name="not_connected">not_connected</string>
     <string name="two_player_game_ended">Game ended by other player</string>
 
-    <string name="help_text">Welcome to Down-Fall. \n\n
+    <string name="help_text_0">Down-Fall</string>
 
-        This is a two players game (or one against artificial intelligence).\n\n
+    <string name="help_text_1">This is a two players game\n
+        (or one against artificial intelligence).\n\n
+        Each player is owner 2 sets of tokens. \n\n The Yellow and Red sets:
+    </string>
 
-        Each player is owner 2 sets of tokens. The Yellow and Red sets or the Green and Blue sets. \n\n
+    <string name="help_text_2">
+        \nOr the Green and Blue sets:
+    </string>
 
+    <string name="help_text_3">
+        \n\n
         The mission is to fall down all your tokens from the input queues via the wheels down to
         the output queue before the opponent does this with his tokens. \n\n
 
-        In each turn a player select one wheel and rotate it as much as they want in one direction.
+        In each turn a player select one wheel and rotate it as much as they want in one direction. Then press on the turn done button:
+    </string>
+
+    <string name="help_text_4">
         After that the turn is over and the opponent can rotate any wheel, with one exception: they
         cannot rotate the same wheel that was rotated just now.\n\n
 
