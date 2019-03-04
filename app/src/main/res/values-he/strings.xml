@@ -38,7 +38,7 @@
     <string name="select_device">בחירת התקן</string>
     <string name="none_found">כלום לא נמצא</string>
 
-    <string name="connect">מחובר</string>
+    <string name="connect">התחבר</string>
     <string name="discoverable">גלוי</string>
     <string name="start_two_player_game">התחל משחק</string>
     <string name="bt_not_enabled_leaving">bt_not_enabled_leaving</string>
