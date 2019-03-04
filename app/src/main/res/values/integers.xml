@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="example_token_size">30dp</dimen>
+    <dimen name="example_wheel_size">100dp</dimen>
+</resources>

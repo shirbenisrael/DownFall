@@ -39,13 +39,93 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
+                    android:maxWidth="@dimen/example_token_size"
+                    android:maxHeight="@dimen/example_token_size"
+                    android:scaleType="fitCenter"
+                    android:adjustViewBounds="true"
                     android:src="@drawable/token_yellow" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:maxWidth="@dimen/example_token_size"
+                    android:maxHeight="@dimen/example_token_size"
+                    android:scaleType="fitCenter"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/token_yellow" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxWidth="@dimen/example_token_size"
+                    android:maxHeight="@dimen/example_token_size"
+                    android:scaleType="fitCenter"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/token_yellow" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxWidth="@dimen/example_token_size"
+                    android:maxHeight="@dimen/example_token_size"
+                    android:scaleType="fitCenter"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/token_yellow" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxWidth="@dimen/example_token_size"
+                    android:maxHeight="@dimen/example_token_size"
+                    android:scaleType="fitCenter"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/token_yellow" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxWidth="@dimen/example_token_size"
+                    android:maxHeight="@dimen/example_token_size"
+                    android:scaleType="fitCenter"
+                    android:adjustViewBounds="true"
                     android:src="@drawable/token_red" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxWidth="@dimen/example_token_size"
+                    android:maxHeight="@dimen/example_token_size"
+                    android:scaleType="fitCenter"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/token_red" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxWidth="@dimen/example_token_size"
+                    android:maxHeight="@dimen/example_token_size"
+                    android:scaleType="fitCenter"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/token_red" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxWidth="@dimen/example_token_size"
+                    android:maxHeight="@dimen/example_token_size"
+                    android:scaleType="fitCenter"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/token_red" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxWidth="@dimen/example_token_size"
+                    android:maxHeight="@dimen/example_token_size"
+                    android:scaleType="fitCenter"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/token_red" />
+
             </LinearLayout>
 
             <TextView
@@ -63,18 +143,121 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:maxWidth="@dimen/example_token_size"
+                    android:maxHeight="@dimen/example_token_size"
+                    android:scaleType="fitCenter"
+                    android:adjustViewBounds="true"
                     android:src="@drawable/token_green" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:maxWidth="@dimen/example_token_size"
+                    android:maxHeight="@dimen/example_token_size"
+                    android:scaleType="fitCenter"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/token_green" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxWidth="@dimen/example_token_size"
+                    android:maxHeight="@dimen/example_token_size"
+                    android:scaleType="fitCenter"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/token_green" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxWidth="@dimen/example_token_size"
+                    android:maxHeight="@dimen/example_token_size"
+                    android:scaleType="fitCenter"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/token_green" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxWidth="@dimen/example_token_size"
+                    android:maxHeight="@dimen/example_token_size"
+                    android:scaleType="fitCenter"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/token_green" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxWidth="@dimen/example_token_size"
+                    android:maxHeight="@dimen/example_token_size"
+                    android:scaleType="fitCenter"
+                    android:adjustViewBounds="true"
                     android:src="@drawable/token_blue" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxWidth="@dimen/example_token_size"
+                    android:maxHeight="@dimen/example_token_size"
+                    android:scaleType="fitCenter"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/token_blue" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxWidth="@dimen/example_token_size"
+                    android:maxHeight="@dimen/example_token_size"
+                    android:scaleType="fitCenter"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/token_blue" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxWidth="@dimen/example_token_size"
+                    android:maxHeight="@dimen/example_token_size"
+                    android:scaleType="fitCenter"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/token_blue" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxWidth="@dimen/example_token_size"
+                    android:maxHeight="@dimen/example_token_size"
+                    android:scaleType="fitCenter"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/token_blue" />
+
             </LinearLayout>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/help_text_3" />
+
+            <LinearLayout
+                android:id="@+id/layout_for_example_wheel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxWidth="@dimen/example_wheel_size"
+                    android:maxHeight="@dimen/example_wheel_size"
+                    android:scaleType="fitCenter"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/wheel_example" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/help_text_4" />
 
             <Button
                 android:id="@+id/finish_turn_button_in_help"
@@ -86,7 +269,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/help_text_4" />
+                android:text="@string/help_text_5" />
 
         </LinearLayout>
     </ScrollView>
