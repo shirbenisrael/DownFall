@@ -44,6 +44,9 @@ public class Tutorial {
 
         m_activity.AddHole(R.id.output_tutorial, 90, PlayerType.PLAYER_0);
         m_activity.AddHole(R.id.output_tutorial, 90, PlayerType.PLAYER_1);
+
+        ((ConnectableImage)m_activity.findViewById(R.id.wheel1_tutorial)).setOnTouchListener(m_activity);
+        ((ConnectableImage)m_activity.findViewById(R.id.wheel2_tutorial)).setOnTouchListener(m_activity);
     }
 
     private void Stage1() {
