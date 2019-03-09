@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:gravity="bottom"
+    android:orientation="vertical"
+    android:visibility="invisible">
+
+    <TextView
+        android:id="@+id/tutorial_upper_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/tutorial_welcome" />
+
+    <RelativeLayout
+        android:id="@+id/tutorial_wheels_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/input_token_queue__tutorial_right_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.shirbi.downfall.InputTokenQueue
+                android:id="@+id/input_token_queue_tutorial_right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/input_right" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/wheel1_tutorial_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.shirbi.downfall.Wheel
+                android:id="@+id/wheel1_tutorial"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/wheel1" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/wheel2_tutorial_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.shirbi.downfall.Wheel
+                android:id="@+id/wheel2_tutorial"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/wheel2" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/output_tutorial_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.shirbi.downfall.Output
+                android:id="@+id/output_tutorial"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/output" />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tutorial_bottom_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/tutorial_rotate_wheel_to_queue" />
+
+    <Button
+        android:id="@+id/exit_tutorial_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onBackFromTutorialClick"
+        android:text="@string/back_string" />
+
+</LinearLayout>

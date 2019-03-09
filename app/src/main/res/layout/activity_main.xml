@@ -231,5 +231,10 @@
         android:id="@+id/help_layout"
         layout="@layout/help" />
 
+    <include
+        android:id="@+id/tutorial_layout"
+        layout="@layout/tutorial" />
+
+
 
 </android.support.constraint.ConstraintLayout>

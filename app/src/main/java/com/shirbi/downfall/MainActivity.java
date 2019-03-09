@@ -52,6 +52,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
     int m_wheel_finished_rotate_counter;
     ObjectVisibility m_objects_visibility;
     private PlayerType m_player_type;
+    private Tutorial m_tutorial;
 
     class BLUETOOTH_MESSAGES {
         static final int START_GAME = 0;
@@ -146,11 +147,11 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         }
     }
 
-    private void ConnectWheels(int bottom_id, int top_id, int bottom_angle) {
+    public void ConnectWheels(int bottom_id, int top_id, int bottom_angle) {
         ((ConnectableImage)findViewById(bottom_id)).ConnectAsBottom(((Wheel)findViewById(top_id)), bottom_angle);
     }
 
-    private void SetConnectableImageDiameter(int wheel_id, int diameter) {
+    public void SetConnectableImageDiameter(int wheel_id, int diameter) {
         ((ConnectableImage)findViewById(wheel_id)).UpdateDisplay(diameter);
     }
 
@@ -222,15 +223,15 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         boardLayout.addView(opposite_token_counter_layout, opposite_token_counter_params);
     }
 
-    private void SetWheelLocation(int wheel_id, int left, int top) {
+    public void SetWheelLocation(int wheel_id, int left, int top) {
         ((ConnectableImage)findViewById(wheel_id)).SetLocation(left, top);
     }
 
-    private void SetTokenQueueLocation(int queue_id, int left, int top) {
+    public void SetTokenQueueLocation(int queue_id, int left, int top) {
         ((ConnectableImage)findViewById(queue_id)).SetLocation(left, top);
     }
 
-    private void ConnectWheelToInputQueue(int wheel_id, int queue_id, int bottom_angle) {
+    public void ConnectWheelToInputQueue(int wheel_id, int queue_id, int bottom_angle) {
         Wheel wheel = ((Wheel)findViewById(wheel_id));
         wheel.ConnectToInputQueue(((InputTokenQueue)findViewById(queue_id)), bottom_angle);
     }
@@ -335,6 +336,8 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         m_wheel_finished_rotate_counter = m_wheels.length;
 
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+
+        m_tutorial = new Tutorial(this, base_diameter);
 
         RestoreState();
     }
@@ -613,6 +616,15 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         }
 
         RulesChanged();
+    }
+
+    public void onBackFromTutorialClick(View view) {
+        m_tutorial.Hide();
+    }
+
+    public void onTutorialClick(View view) {
+        onBackFromSettingClick(view);
+        m_tutorial.Show();
     }
 
     public void onBackFromSettingClick(View view) {
@@ -981,4 +993,6 @@ public class MainActivity extends Activity implements View.OnTouchListener {
             m_last_angle_rotated_max = m_last_angle_rotated;
         }
     }
+
+
 }
