@@ -600,6 +600,16 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         }
     }
 
+    public void SetPlayerType(PlayerType player_type) {
+        m_player_type = player_type;
+    }
+
+    public void SetObjectVisibility(ObjectVisibility visibility ) {
+        m_objects_visibility = visibility;
+        RefreshVisibilityRadioButtons();
+        RulesChanged();
+    }
+
     public ObjectVisibility GetObjectVisibility() { return m_objects_visibility; }
 
     private void RulesChanged() {

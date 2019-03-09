@@ -5,10 +5,17 @@ import android.view.View;
 public class Tutorial {
     protected MainActivity m_activity;
     protected int m_base_diameter;
+    ConnectableImage m_connectable_images[];
 
     Tutorial(MainActivity activity, int base_diameter) {
         m_activity = activity;
         m_base_diameter = base_diameter;
+
+        m_connectable_images = new ConnectableImage[4];
+        m_connectable_images[0] = ((ConnectableImage)m_activity.findViewById(R.id.input_token_queue_tutorial_right));
+        m_connectable_images[1] = ((ConnectableImage)m_activity.findViewById(R.id.wheel1_tutorial));
+        m_connectable_images[2] = ((ConnectableImage)m_activity.findViewById(R.id.wheel2_tutorial));
+        m_connectable_images[3] = ((ConnectableImage)m_activity.findViewById(R.id.output));
 
         ArrangeImages();
     }
@@ -39,9 +46,25 @@ public class Tutorial {
         m_activity.AddHole(R.id.output_tutorial, 90, PlayerType.PLAYER_1);
     }
 
+    private void Stage1() {
+        m_activity.findViewById(R.id.input_token_queue__tutorial_right_layout).setVisibility(View.VISIBLE);
+        m_activity.findViewById(R.id.wheel1_tutorial_layout).setVisibility(View.VISIBLE);
+        m_activity.findViewById(R.id.wheel2_tutorial_layout).setVisibility(View.INVISIBLE);
+        m_activity.findViewById(R.id.output_tutorial_layout).setVisibility(View.INVISIBLE);
+
+        m_activity.SetPlayerType(PlayerType.PLAYER_0);
+        m_activity.SetObjectVisibility(ObjectVisibility.INVISIBLE);
+
+        for (ConnectableImage connectableImage : m_connectable_images ) {
+            connectableImage.RulesChanged();
+        }
+    }
+
     public void Show() {
         m_activity.findViewById(R.id.main_game_layout).setVisibility(View.INVISIBLE);
         m_activity.findViewById(R.id.tutorial_layout).setVisibility(View.VISIBLE);
+
+        Stage1();
     }
 
     public void Hide() {
