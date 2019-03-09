@@ -62,6 +62,8 @@ public class Tutorial {
             connectableImage.RulesChanged();
         }
 
+        ((ConnectableImage)m_activity.findViewById(R.id.wheel1_tutorial)).Reset();
+        ((ConnectableImage)m_activity.findViewById(R.id.wheel2_tutorial)).Reset();
         ((InputTokenQueue)m_activity.findViewById(R.id.input_token_queue_tutorial_right)).Reset();
     }
 
