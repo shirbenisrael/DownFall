@@ -61,6 +61,8 @@ public class Tutorial {
         for (ConnectableImage connectableImage : m_connectable_images ) {
             connectableImage.RulesChanged();
         }
+
+        ((InputTokenQueue)m_activity.findViewById(R.id.input_token_queue_tutorial_right)).Reset();
     }
 
     public void Show() {
