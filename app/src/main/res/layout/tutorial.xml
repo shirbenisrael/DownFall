@@ -19,7 +19,7 @@
         android:layout_height="wrap_content">
 
         <RelativeLayout
-            android:id="@+id/input_token_queue__tutorial_right_layout"
+            android:id="@+id/input_token_queue_tutorial_right_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 

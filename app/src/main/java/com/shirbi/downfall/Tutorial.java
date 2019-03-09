@@ -50,7 +50,7 @@ public class Tutorial {
     }
 
     private void Stage1() {
-        m_activity.findViewById(R.id.input_token_queue__tutorial_right_layout).setVisibility(View.VISIBLE);
+        m_activity.findViewById(R.id.input_token_queue_tutorial_right_layout).setVisibility(View.VISIBLE);
         m_activity.findViewById(R.id.wheel1_tutorial_layout).setVisibility(View.VISIBLE);
         m_activity.findViewById(R.id.wheel2_tutorial_layout).setVisibility(View.INVISIBLE);
         m_activity.findViewById(R.id.output_tutorial_layout).setVisibility(View.INVISIBLE);
