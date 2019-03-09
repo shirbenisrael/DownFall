@@ -22,7 +22,7 @@ public class Tutorial {
 
     private void ArrangeImages() {
         m_activity.SetConnectableImageDiameter(R.id.input_token_queue_tutorial_right, m_base_diameter * 1);
-        m_activity.SetConnectableImageDiameter(R.id.wheel1_tutorial, m_base_diameter * 4 / 3);
+        m_activity.SetConnectableImageDiameter(R.id.wheel1_tutorial, m_base_diameter * 1);
         m_activity.SetConnectableImageDiameter(R.id.wheel2_tutorial, m_base_diameter * 3 / 2);
         m_activity.SetConnectableImageDiameter(R.id.output_tutorial, m_base_diameter * 1);
 
