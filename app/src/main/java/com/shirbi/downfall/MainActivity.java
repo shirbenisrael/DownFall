@@ -126,14 +126,14 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         return m_size.x / GameConstants.TOKEN_SIZE_DIVISOR;
     }
 
-    private void AddHole(int wheel_id, int angle, PlayerType player_type) {
+    public void AddHole(int wheel_id, int angle, PlayerType player_type) {
         Hole hole = new Hole(this);
         hole.SetDiameter(m_size.x / GameConstants.HOLE_SIZE_DIVISOR);
         hole.SetPlayerType(player_type);
         ((ConnectableImage)findViewById(wheel_id)).AddHole(hole, angle);
     }
 
-    private void AddHoles(int wheel_id, int first_angle, int num_holes) {
+    public void AddHoles(int wheel_id, int first_angle, int num_holes) {
         int angle = first_angle;
         for (int i = 0; i < num_holes; i++) {
             AddHole(wheel_id, angle, PlayerType.PLAYER_0);

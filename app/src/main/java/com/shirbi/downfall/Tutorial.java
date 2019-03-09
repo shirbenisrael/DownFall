@@ -27,6 +27,16 @@ public class Tutorial {
         m_activity.ConnectWheels(R.id.wheel2_tutorial, R.id.wheel1_tutorial, 0);
         m_activity.ConnectWheels(R.id.output_tutorial, R.id.wheel2_tutorial, 90);
 
+        m_activity.AddHole(R.id.input_token_queue_tutorial_right, 270, PlayerType.PLAYER_0);
+        m_activity.AddHole(R.id.input_token_queue_tutorial_right, 270, PlayerType.PLAYER_1);
+
+        m_activity.AddHole(R.id.wheel1_tutorial, 30, PlayerType.PLAYER_0);
+        m_activity.AddHole(R.id.wheel1_tutorial, 330, PlayerType.PLAYER_1);
+
+        m_activity.AddHoles(R.id.wheel2_tutorial, 45, 4);
+
+        m_activity.AddHole(R.id.output_tutorial, 90, PlayerType.PLAYER_0);
+        m_activity.AddHole(R.id.output_tutorial, 90, PlayerType.PLAYER_1);
     }
 
     public void Show() {
