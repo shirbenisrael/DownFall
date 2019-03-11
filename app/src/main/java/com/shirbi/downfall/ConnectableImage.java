@@ -127,4 +127,14 @@ public abstract class ConnectableImage extends RotatableImage {
     public int GetWheelNum() {
         return -1;
     }
+
+    public int GetNumTokens(PlayerType player_type) {
+        int token_num = 0;
+        for (Hole hole: m_holes) {
+            if ((hole.GetPlayerType() == player_type) && (hole.GetResident() != null)) {
+                token_num++;
+            }
+        }
+        return token_num;
+    }
 }

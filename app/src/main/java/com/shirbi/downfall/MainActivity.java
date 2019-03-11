@@ -990,6 +990,8 @@ public class MainActivity extends Activity implements View.OnTouchListener {
     }
 
     public void SendWheelMoveMessage(int wheel_num, int angle) {
+        m_tutorial.WheelRotated(wheel_num);
+
         if (!m_two_players_game_runnig) {
             return;
         }
