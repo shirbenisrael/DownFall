@@ -37,8 +37,8 @@ public class Tutorial {
         m_activity.AddHole(R.id.input_token_queue_tutorial_right, 270, PlayerType.PLAYER_0);
         m_activity.AddHole(R.id.input_token_queue_tutorial_right, 270, PlayerType.PLAYER_1);
 
-        m_activity.AddHole(R.id.wheel1_tutorial, 30, PlayerType.PLAYER_0);
-        m_activity.AddHole(R.id.wheel1_tutorial, 330, PlayerType.PLAYER_1);
+        m_activity.AddHole(R.id.wheel1_tutorial, 270, PlayerType.PLAYER_0);
+        m_activity.AddHole(R.id.wheel1_tutorial, 240, PlayerType.PLAYER_1);
 
         m_activity.AddHoles(R.id.wheel2_tutorial, 45, 4);
 
