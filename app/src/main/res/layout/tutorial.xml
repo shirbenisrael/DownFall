@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:layout_width="fill_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
-    android:gravity="bottom"
+    android:gravity="center_vertical"
     android:orientation="vertical"
     android:visibility="invisible">
 
@@ -11,7 +11,9 @@
         android:id="@+id/tutorial_upper_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/tutorial_welcome" />
+        android:gravity="center"
+        android:text="@string/tutorial_welcome"
+        android:textSize="32dp" />
 
     <RelativeLayout
         android:id="@+id/tutorial_wheels_layout"
@@ -76,6 +78,7 @@
         android:id="@+id/tutorial_bottom_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:text="@string/tutorial_rotate_wheel_to_queue" />
 
     <Button
