@@ -12,12 +12,18 @@ public class InputTokenQueue extends ConnectableImage implements SlideToken {
 
     Token.HORIZONTAL_ALIGNMENT m_horizontal_alignment;
 
+    int m_last_token_num[] = new int[PlayerType.NUM_PLAYERS];
+
     private void Init(Context context) {
         String strings[];
         strings = new String[2];
 
         for (int i = 0; i < m_tokens.length; i++) {
             m_tokens[i] = new TokenList();
+        }
+
+        for (int i = 0; i < PlayerType.NUM_PLAYERS; i++) {
+            m_last_token_num[i] = MAX_TOKENS;
         }
     }
 
@@ -76,8 +82,12 @@ public class InputTokenQueue extends ConnectableImage implements SlideToken {
         token.QueueAnimation(num_moves, animation_direction, this );
     }
 
+    public void SetLastToken(PlayerType player_type, int token_num) {
+        m_last_token_num[player_type.getInt()] = token_num;
+    }
+
     public void TokenStoppedMoving(Token token) {
-        if (token.GetNumber() == MAX_TOKENS) {
+        if (token.GetNumber() == m_last_token_num[token.GetPlayerType().getInt()]) {
             return;
         }
 
@@ -123,14 +133,8 @@ public class InputTokenQueue extends ConnectableImage implements SlideToken {
     }
 
     public void Reset() {
-        super.Reset();
+        ClearAllTokens();
 
-        for (int i = 0; i < m_tokens.length; i++) {
-            for (Token token : m_tokens[i]) {
-                token.RemoveFromParentView();
-            }
-            m_tokens[i].clear();
-        }
         Token token = new Token(m_activity);
 
         Token.COLOR color =
@@ -144,6 +148,30 @@ public class InputTokenQueue extends ConnectableImage implements SlideToken {
         token = new Token(m_activity);
         token.SetType(color, 1);
         token.SetPlayerType(PlayerType.PLAYER_1);
+        AddToken(token, MAX_TOKENS);
+    }
+
+    public void ClearAllTokens() {
+        super.Reset();
+
+        for (int i = 0; i < m_tokens.length; i++) {
+            for (Token token : m_tokens[i]) {
+                token.RemoveFromParentView();
+            }
+            m_tokens[i].clear();
+        }
+    }
+
+    public void AddTokenToPlayer(PlayerType player_type, int token_num) {
+        Token token = new Token(m_activity);
+
+        Token.COLOR color =
+                (m_horizontal_alignment == Token.HORIZONTAL_ALIGNMENT.LEFT_EDJE) ?
+                        Token.COLOR.COLOR_1 :
+                        Token.COLOR.COLOR_2;
+
+        token.SetType(color, token_num);
+        token.SetPlayerType(player_type);
         AddToken(token, MAX_TOKENS);
     }
 

@@ -64,7 +64,11 @@ public class Tutorial {
 
         ((ConnectableImage)m_activity.findViewById(R.id.wheel1_tutorial)).Reset();
         ((ConnectableImage)m_activity.findViewById(R.id.wheel2_tutorial)).Reset();
-        ((InputTokenQueue)m_activity.findViewById(R.id.input_token_queue_tutorial_right)).Reset();
+
+        InputTokenQueue input = ((InputTokenQueue)m_activity.findViewById(R.id.input_token_queue_tutorial_right));
+        input.ClearAllTokens();
+        input.SetLastToken(PlayerType.PLAYER_0,1);
+        input.AddTokenToPlayer(PlayerType.PLAYER_0, 1);
     }
 
     public void Show() {
