@@ -11,7 +11,8 @@ public class Tutorial {
     private enum STAGE {
         STAGE_NONE,
         STAGE1,
-        STAGE2
+        STAGE2,
+        STAGE3
     }
 
     private STAGE m_stage;
@@ -80,6 +81,12 @@ public class Tutorial {
                 }
                 break;
             case STAGE2:
+                // wheel 0 with no token, or wheel 1 with one token.
+                if (wheel_num == wheel.GetNumTokens(PlayerType.PLAYER_0)) {
+                    Stage3();
+                }
+                break;
+            case STAGE3:
                 break;
         }
     }
@@ -110,6 +117,11 @@ public class Tutorial {
     private void Stage2() {
         m_stage = STAGE.STAGE2;
         m_activity.findViewById(R.id.wheel2_tutorial_layout).setVisibility(View.VISIBLE);
+    }
+
+    private void Stage3() {
+        m_stage = STAGE.STAGE3;
+        m_activity.findViewById(R.id.output_tutorial_layout).setVisibility(View.VISIBLE);
     }
 
     public void Show() {
