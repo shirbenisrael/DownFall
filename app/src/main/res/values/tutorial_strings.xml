@@ -3,4 +3,8 @@
 
     <string name="tutorial_rotate_wheel_to_queue">Please rotate the wheel to catch the token from the input tube.</string>
 
+    <string name="tutorial_connect_wheels">Please rotate the wheels to fall the token from the top wheel to the bottom wheel.</string>
+
+    <string name="tutorial_rotate_wheel_to_output">Please rotate the bottom wheel to fall the token to the output tube.</string>
+
 </resources>

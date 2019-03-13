@@ -1,12 +1,14 @@
 package com.shirbi.downfall;
 
 import android.view.View;
+import android.widget.TextView;
 
 public class Tutorial {
     protected MainActivity m_activity;
     protected int m_base_diameter;
     ConnectableImage m_connectable_images[];
     Wheel m_wheels[];
+    TextView m_message_text_view;
 
     private enum STAGE {
         STAGE_NONE,
@@ -30,6 +32,8 @@ public class Tutorial {
         m_wheels = new Wheel[2];
         m_wheels[0] = (Wheel)m_connectable_images[1];
         m_wheels[1] = (Wheel)m_connectable_images[2];
+
+        m_message_text_view = (TextView)m_activity.findViewById(R.id.tutorial_bottom_text);
 
         ArrangeImages();
     }
@@ -112,16 +116,20 @@ public class Tutorial {
         input.ClearAllTokens();
         input.SetLastToken(PlayerType.PLAYER_0,1);
         input.AddTokenToPlayer(PlayerType.PLAYER_0, 1);
+
+        ShowMessage(R.string.tutorial_rotate_wheel_to_queue);
     }
 
     private void Stage2() {
         m_stage = STAGE.STAGE2;
         m_activity.findViewById(R.id.wheel2_tutorial_layout).setVisibility(View.VISIBLE);
+        ShowMessage(R.string.tutorial_connect_wheels);
     }
 
     private void Stage3() {
         m_stage = STAGE.STAGE3;
         m_activity.findViewById(R.id.output_tutorial_layout).setVisibility(View.VISIBLE);
+        ShowMessage(R.string.tutorial_rotate_wheel_to_output);
     }
 
     public void Show() {
@@ -135,5 +143,9 @@ public class Tutorial {
         m_activity.findViewById(R.id.main_game_layout).setVisibility(View.VISIBLE);
         m_activity.findViewById(R.id.tutorial_layout).setVisibility(View.INVISIBLE);
         m_stage = STAGE.STAGE_NONE;
+    }
+
+    private void ShowMessage(int id) {
+        m_message_text_view.setText(id);
     }
 }
