@@ -18,6 +18,7 @@ public class Tutorial {
         STAGE2,
         STAGE3,
         STAGE4,
+        STAGE5,
     }
 
     private STAGE m_stage;
@@ -84,6 +85,20 @@ public class Tutorial {
         }
     }
 
+    public void TokenExit(Token token) {
+        switch (m_stage) {
+            case STAGE4:
+                if (token.GetNumber() == 3) {
+                    if (token.GetPreviousToken() == null) {
+                        Stage5();
+                    }
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
     // This will be called when output think that game is end.
     // It can happen only because of bad order.
     public void GameEnd() {
@@ -96,6 +111,10 @@ public class Tutorial {
             case STAGE4:
                 Stage4();
                 ShowMessage(R.string.tutorial_bad_order_2_3);
+                break;
+            case STAGE5:
+                Stage5();
+                ShowMessage(R.string.tutorial_bad_order_4_5);
                 break;
             default:
                 break;
@@ -167,7 +186,14 @@ public class Tutorial {
         m_stage = STAGE.STAGE4;
         m_input.SetLastToken(PlayerType.PLAYER_0, 3);
         m_input.AddTokenToPlayer(PlayerType.PLAYER_0, 2);
-        ShowMessage(R.string.tutorial_fall_in_order);
+        ShowMessage(R.string.tutorial_fall_in_order_2_3);
+    }
+
+    private void Stage5() {
+        m_stage = STAGE.STAGE5;
+        m_input.SetLastToken(PlayerType.PLAYER_0, 4);
+        m_input.AddTokenToPlayer(PlayerType.PLAYER_0, 5);
+        ShowMessage(R.string.tutorial_fall_in_order_4_5);
     }
 
     public void Show() {

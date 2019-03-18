@@ -87,7 +87,9 @@ public class InputTokenQueue extends ConnectableImage implements SlideToken {
     }
 
     public void TokenStoppedMoving(Token token) {
-        if (token.GetNumber() == m_last_token_num[token.GetPlayerType().getInt()]) {
+        int final_token_number = m_last_token_num[token.GetPlayerType().getInt()];
+        int token_number = token.GetNumber();
+        if (token_number == final_token_number) {
             return;
         }
 
@@ -95,7 +97,8 @@ public class InputTokenQueue extends ConnectableImage implements SlideToken {
 
         int tokens_int_queue = m_tokens[token.GetPlayerType().getInt()].size() + 1; // include the hole
 
-        new_token.SetType(token.GetColor(), token.GetNumber()+ 1 );
+        int new_number = token_number < final_token_number ? token_number + 1 : token_number -1;
+        new_token.SetType(token.GetColor(), new_number );
         new_token.SetPlayerType(token.GetPlayerType());
         AddToken(new_token, MAX_TOKENS - tokens_int_queue);
     }

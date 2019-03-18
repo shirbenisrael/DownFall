@@ -554,6 +554,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 
     public void TokenExit(Token token) {
         if (m_tutorial.GetStage() != Tutorial.STAGE.STAGE_NONE) {
+            m_tutorial.TokenExit(token);
             return;
         }
 
