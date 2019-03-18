@@ -634,6 +634,9 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 
     public void onBackFromTutorialClick(View view) {
         m_tutorial.Hide();
+        m_player_type = PlayerType.PLAYER_0;
+        ConfigureTwoPlayersGame(false);
+        StartNewGame();
     }
 
     public void onTutorialClick(View view) {
