@@ -78,8 +78,10 @@ public class Tutorial {
         m_activity.AddHole(R.id.output_tutorial, 90, PlayerType.PLAYER_0);
         m_activity.AddHole(R.id.output_tutorial, 90, PlayerType.PLAYER_1);
 
-        m_wheels[0].setOnTouchListener(m_activity);
-        m_wheels[1].setOnTouchListener(m_activity);
+        for (int i = 0 ; i < m_wheels.length; i++ ) {
+            m_wheels[i].setOnTouchListener(m_activity);
+            m_wheels[i].DisableTwoDirectionLimitation();
+        }
     }
 
     public void WheelRotated(int wheel_num) {

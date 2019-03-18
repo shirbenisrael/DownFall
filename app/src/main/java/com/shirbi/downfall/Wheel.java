@@ -24,6 +24,7 @@ public class Wheel extends ConnectableImage {
     private Boolean m_allow_rotation;
     private int m_wheel_num;
     private ImageView m_touch_view;
+    private Boolean m_disable_two_direction_limitation;
 
     static private final int WHEEL_ROTATION_RATE = 15; // Larger = slower.
 
@@ -50,6 +51,7 @@ public class Wheel extends ConnectableImage {
         m_touch_view.setImageResource(R.drawable.forbid_rotate);
         m_touch_view.setImageAlpha(50);
         SetAllowRotation(true);
+        m_disable_two_direction_limitation = false;
     }
 
     public Wheel(Context context) {
@@ -197,7 +199,9 @@ public class Wheel extends ConnectableImage {
                     if (m_rotation_direction != direction) {
                         if (ROTATION_DIRECTION.LOCK_DEGREES < m_max_turn_rotation - abs_rotation) {
                             m_start_touch_angle = new_angle;
-                            break;
+                            if( m_disable_two_direction_limitation == false) {
+                                break;
+                            }
                         }
                     }
                 }
@@ -304,6 +308,10 @@ public class Wheel extends ConnectableImage {
         if (oldParent == null) {
             relativeLayout.addView(m_touch_view, getLayoutParams());
         }
+    }
+
+    public void DisableTwoDirectionLimitation() {
+        m_disable_two_direction_limitation = true;
     }
 }
 
