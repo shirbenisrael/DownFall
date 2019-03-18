@@ -8,13 +8,16 @@ public class Tutorial {
     protected int m_base_diameter;
     ConnectableImage m_connectable_images[];
     Wheel m_wheels[];
+    InputTokenQueue m_input;
+    Output m_output;
     TextView m_message_text_view;
 
     public enum STAGE {
         STAGE_NONE,
         STAGE1,
         STAGE2,
-        STAGE3
+        STAGE3,
+        STAGE4,
     }
 
     private STAGE m_stage;
@@ -27,15 +30,17 @@ public class Tutorial {
         m_activity = activity;
         m_base_diameter = base_diameter;
 
-        m_connectable_images = new ConnectableImage[4];
-        m_connectable_images[0] = ((ConnectableImage)m_activity.findViewById(R.id.input_token_queue_tutorial_right));
-        m_connectable_images[1] = ((ConnectableImage)m_activity.findViewById(R.id.wheel1_tutorial));
-        m_connectable_images[2] = ((ConnectableImage)m_activity.findViewById(R.id.wheel2_tutorial));
-        m_connectable_images[3] = ((ConnectableImage)m_activity.findViewById(R.id.output));
-
+        m_input = (InputTokenQueue)(m_activity.findViewById(R.id.input_token_queue_tutorial_right));
         m_wheels = new Wheel[2];
-        m_wheels[0] = (Wheel)m_connectable_images[1];
-        m_wheels[1] = (Wheel)m_connectable_images[2];
+        m_wheels[0] = (Wheel)(m_activity.findViewById(R.id.wheel1_tutorial));
+        m_wheels[1] = (Wheel)(m_activity.findViewById(R.id.wheel2_tutorial));
+        m_output = (Output)(m_activity.findViewById(R.id.output));
+
+        m_connectable_images = new ConnectableImage[4];
+        m_connectable_images[0] = m_input;
+        m_connectable_images[1] = m_wheels[0];
+        m_connectable_images[2] = m_wheels[1];
+        m_connectable_images[3] = m_output;
 
         m_message_text_view = (TextView)m_activity.findViewById(R.id.tutorial_bottom_text);
 
@@ -95,6 +100,9 @@ public class Tutorial {
                 }
                 break;
             case STAGE3:
+                if (wheel_num == 1 && wheel.GetNumTokens(PlayerType.PLAYER_0) == 0) {
+                    Stage4();
+                }
                 break;
         }
     }
@@ -116,10 +124,9 @@ public class Tutorial {
         ((ConnectableImage)m_activity.findViewById(R.id.wheel1_tutorial)).Reset();
         ((ConnectableImage)m_activity.findViewById(R.id.wheel2_tutorial)).Reset();
 
-        InputTokenQueue input = ((InputTokenQueue)m_activity.findViewById(R.id.input_token_queue_tutorial_right));
-        input.ClearAllTokens();
-        input.SetLastToken(PlayerType.PLAYER_0,1);
-        input.AddTokenToPlayer(PlayerType.PLAYER_0, 1);
+        m_input.ClearAllTokens();
+        m_input.SetLastToken(PlayerType.PLAYER_0,1);
+        m_input.AddTokenToPlayer(PlayerType.PLAYER_0, 1);
 
         ShowMessage(R.string.tutorial_rotate_wheel_to_queue);
     }
@@ -134,6 +141,13 @@ public class Tutorial {
         m_stage = STAGE.STAGE3;
         m_activity.findViewById(R.id.output_tutorial_layout).setVisibility(View.VISIBLE);
         ShowMessage(R.string.tutorial_rotate_wheel_to_output);
+    }
+
+    private void Stage4() {
+        m_stage = STAGE.STAGE4;
+        m_input.SetLastToken(PlayerType.PLAYER_0,3);
+        m_input.AddTokenToPlayer(PlayerType.PLAYER_0, 2);
+        ShowMessage(R.string.tutorial_fall_in_order);
     }
 
     public void Show() {

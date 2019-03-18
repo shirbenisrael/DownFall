@@ -7,4 +7,6 @@
 
     <string name="tutorial_rotate_wheel_to_output">Please rotate the bottom wheel to fall the token to the output tube.</string>
 
+    <string name="tutorial_fall_in_order">Please fall the tokens to the output tube in order. first token 2 and then taken 3.</string>
+
 </resources>
