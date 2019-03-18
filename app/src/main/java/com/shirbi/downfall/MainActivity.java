@@ -726,6 +726,10 @@ public class MainActivity extends Activity implements View.OnTouchListener {
     }
 
     public void EndGame(String string) {
+        if (m_tutorial.GetStage() != Tutorial.STAGE.STAGE_NONE) {
+            m_tutorial.GameEnd();
+            return;
+        }
 
         if (m_two_players_game_runnig) {
             sendTurnDoneMessage();

@@ -9,4 +9,6 @@
 
     <string name="tutorial_fall_in_order">Please fall the tokens to the output tube in order. first token 2 and then taken 3.</string>
 
+    <string name="tutorial_bad_order_2_3">Notice the order. Token 2 should be before token 3.</string>
+
 </resources>

@@ -30,11 +30,11 @@ public class Tutorial {
         m_activity = activity;
         m_base_diameter = base_diameter;
 
-        m_input = (InputTokenQueue)(m_activity.findViewById(R.id.input_token_queue_tutorial_right));
+        m_input = (InputTokenQueue) (m_activity.findViewById(R.id.input_token_queue_tutorial_right));
         m_wheels = new Wheel[2];
-        m_wheels[0] = (Wheel)(m_activity.findViewById(R.id.wheel1_tutorial));
-        m_wheels[1] = (Wheel)(m_activity.findViewById(R.id.wheel2_tutorial));
-        m_output = (Output)(m_activity.findViewById(R.id.output));
+        m_wheels[0] = (Wheel) (m_activity.findViewById(R.id.wheel1_tutorial));
+        m_wheels[1] = (Wheel) (m_activity.findViewById(R.id.wheel2_tutorial));
+        m_output = (Output) (m_activity.findViewById(R.id.output));
 
         m_connectable_images = new ConnectableImage[4];
         m_connectable_images[0] = m_input;
@@ -42,7 +42,7 @@ public class Tutorial {
         m_connectable_images[2] = m_wheels[1];
         m_connectable_images[3] = m_output;
 
-        m_message_text_view = (TextView)m_activity.findViewById(R.id.tutorial_bottom_text);
+        m_message_text_view = (TextView) m_activity.findViewById(R.id.tutorial_bottom_text);
 
         ArrangeImages();
     }
@@ -59,7 +59,7 @@ public class Tutorial {
 
         m_activity.ConnectWheelToInputQueue(R.id.wheel1_tutorial, R.id.input_token_queue_tutorial_right, 90);
 
-        m_activity.SetWheelLocation(R.id.wheel1_tutorial, m_base_diameter,30 );
+        m_activity.SetWheelLocation(R.id.wheel1_tutorial, m_base_diameter, 30);
 
         m_wheels[0].SetWheelNum(0);
         m_wheels[1].SetWheelNum(1);
@@ -78,9 +78,27 @@ public class Tutorial {
         m_activity.AddHole(R.id.output_tutorial, 90, PlayerType.PLAYER_0);
         m_activity.AddHole(R.id.output_tutorial, 90, PlayerType.PLAYER_1);
 
-        for (int i = 0 ; i < m_wheels.length; i++ ) {
+        for (int i = 0; i < m_wheels.length; i++) {
             m_wheels[i].setOnTouchListener(m_activity);
             m_wheels[i].DisableTwoDirectionLimitation();
+        }
+    }
+
+    // This will be called when output think that game is end.
+    // It can happen only because of bad order.
+    public void GameEnd() {
+        m_input.ClearAllTokens();
+        m_wheels[0].Reset();
+        m_wheels[1].Reset();
+        m_output.Reset();
+
+        switch (m_stage) {
+            case STAGE4:
+                Stage4();
+                ShowMessage(R.string.tutorial_bad_order_2_3);
+                break;
+            default:
+                break;
         }
     }
 
@@ -119,15 +137,15 @@ public class Tutorial {
         m_activity.SetPlayerType(PlayerType.PLAYER_0);
         m_activity.SetObjectVisibility(ObjectVisibility.INVISIBLE);
 
-        for (ConnectableImage connectableImage : m_connectable_images ) {
+        for (ConnectableImage connectableImage : m_connectable_images) {
             connectableImage.RulesChanged();
         }
 
-        ((ConnectableImage)m_activity.findViewById(R.id.wheel1_tutorial)).Reset();
-        ((ConnectableImage)m_activity.findViewById(R.id.wheel2_tutorial)).Reset();
+        ((ConnectableImage) m_activity.findViewById(R.id.wheel1_tutorial)).Reset();
+        ((ConnectableImage) m_activity.findViewById(R.id.wheel2_tutorial)).Reset();
 
         m_input.ClearAllTokens();
-        m_input.SetLastToken(PlayerType.PLAYER_0,1);
+        m_input.SetLastToken(PlayerType.PLAYER_0, 1);
         m_input.AddTokenToPlayer(PlayerType.PLAYER_0, 1);
 
         ShowMessage(R.string.tutorial_rotate_wheel_to_queue);
@@ -147,7 +165,7 @@ public class Tutorial {
 
     private void Stage4() {
         m_stage = STAGE.STAGE4;
-        m_input.SetLastToken(PlayerType.PLAYER_0,3);
+        m_input.SetLastToken(PlayerType.PLAYER_0, 3);
         m_input.AddTokenToPlayer(PlayerType.PLAYER_0, 2);
         ShowMessage(R.string.tutorial_fall_in_order);
     }
