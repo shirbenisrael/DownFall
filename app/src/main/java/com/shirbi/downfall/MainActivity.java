@@ -553,6 +553,10 @@ public class MainActivity extends Activity implements View.OnTouchListener {
     }
 
     public void TokenExit(Token token) {
+        if (m_tutorial.GetStage() != Tutorial.STAGE.STAGE_NONE) {
+            return;
+        }
+
         PlayerType player_type = token.GetPlayerType();
         View view_to_attach = m_player_text_view_token_counter_left[player_type.getInt()];
 

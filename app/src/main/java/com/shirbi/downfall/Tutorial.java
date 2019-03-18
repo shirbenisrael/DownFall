@@ -10,7 +10,7 @@ public class Tutorial {
     Wheel m_wheels[];
     TextView m_message_text_view;
 
-    private enum STAGE {
+    public enum STAGE {
         STAGE_NONE,
         STAGE1,
         STAGE2,
@@ -18,6 +18,10 @@ public class Tutorial {
     }
 
     private STAGE m_stage;
+
+    public STAGE GetStage() {
+        return m_stage;
+    }
 
     Tutorial(MainActivity activity, int base_diameter) {
         m_activity = activity;
