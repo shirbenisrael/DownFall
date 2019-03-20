@@ -1,5 +1,8 @@
 package com.shirbi.downfall;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.os.Build;
 import android.view.View;
 import android.widget.TextView;
 
@@ -110,11 +113,11 @@ public class Tutorial {
         switch (m_stage) {
             case STAGE4:
                 Stage4();
-                ShowMessage(R.string.tutorial_bad_order_2_3);
+                ShowErrorMessage(R.string.tutorial_bad_order_2_3);
                 break;
             case STAGE5:
                 Stage5();
-                ShowMessage(R.string.tutorial_bad_order_4_5);
+                ShowErrorMessage(R.string.tutorial_bad_order_4_5);
                 break;
             default:
                 break;
@@ -211,5 +214,22 @@ public class Tutorial {
 
     private void ShowMessage(int id) {
         m_message_text_view.setText(id);
+    }
+
+    private void ShowErrorMessage(int id) {
+        AlertDialog.Builder builder;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder = new AlertDialog.Builder(m_activity, android.R.style.Theme_Material_Dialog_Alert);
+        } else {
+            builder = new AlertDialog.Builder(m_activity);
+        }
+
+        builder.setMessage(id);
+        builder.setNeutralButton(R.string.confirm, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        //builder.setIcon(R.drawable.some_icon); // TODO: Add this
+        builder.show();
     }
 }
