@@ -540,7 +540,11 @@ public class MainActivity extends Activity implements View.OnTouchListener {
             m_last_angle_rotation_index++;
             RotateByOtherPlayer();
         } else {
-            EnableButtons(true);
+            if (m_tutorial.GetStage() != Tutorial.STAGE.STAGE_NONE) {
+                m_tutorial.WheelFinishedRotating();
+            } else {
+                EnableButtons(true);
+            }
         }
     }
 

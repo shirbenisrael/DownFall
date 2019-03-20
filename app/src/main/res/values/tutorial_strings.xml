@@ -15,4 +15,8 @@
 
     <string name="tutorial_bad_order_4_5">Notice the order. Token 4 should be before token 5.</string>
 
+    <string name="tutorial_opponent_token">Green token belongs to opponent. Try not to drop it to output tube</string>
+
+    <string name="tutorial_opponent_token_fall">You should not help dropping opponent\'s token</string>
+
 </resources>

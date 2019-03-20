@@ -15,6 +15,9 @@ public class Tutorial {
     Output m_output;
     TextView m_message_text_view;
 
+    static private final int SECOND_WHEEL_PLAYER_FIRST_ANGLE = 45;
+    static private final int SECOND_WHEEL_NUM_HOLES = 4;
+
     public enum STAGE {
         STAGE_NONE,
         STAGE1,
@@ -22,6 +25,9 @@ public class Tutorial {
         STAGE3,
         STAGE4,
         STAGE5,
+        STAGE6,
+        STAGE7,
+        STAGE8,
     }
 
     private STAGE m_stage;
@@ -88,6 +94,19 @@ public class Tutorial {
         }
     }
 
+    public void WheelFinishedRotating() {
+        switch (m_stage) {
+            case STAGE6:
+                Stage7();
+                break;
+            case STAGE7:
+                Stage8();
+                break;
+            default:
+                break;
+        }
+    }
+
     public void TokenExit(Token token) {
         switch (m_stage) {
             case STAGE4:
@@ -97,6 +116,17 @@ public class Tutorial {
                     }
                 }
                 break;
+            case STAGE5:
+                if (token.GetNumber() == 5) {
+                    if (token.GetPreviousToken() == null) {
+                        Stage6();
+                    }
+                }
+            case STAGE8:
+                if (token.GetPlayerType() == PlayerType.PLAYER_1) {
+                    ShowErrorMessage(R.string.tutorial_opponent_token_fall);
+                    Stage6();
+                }
             default:
                 break;
         }
@@ -149,6 +179,13 @@ public class Tutorial {
         }
     }
 
+    private void SetObjectVisibility(ObjectVisibility objectVisibility) {
+        m_activity.SetObjectVisibility(objectVisibility);
+        for (ConnectableImage connectableImage : m_connectable_images) {
+            connectableImage.RulesChanged();
+        }
+    }
+
     private void Stage1() {
         m_stage = STAGE.STAGE1;
         m_activity.findViewById(R.id.input_token_queue_tutorial_right_layout).setVisibility(View.VISIBLE);
@@ -157,11 +194,7 @@ public class Tutorial {
         m_activity.findViewById(R.id.output_tutorial_layout).setVisibility(View.INVISIBLE);
 
         m_activity.SetPlayerType(PlayerType.PLAYER_0);
-        m_activity.SetObjectVisibility(ObjectVisibility.INVISIBLE);
-
-        for (ConnectableImage connectableImage : m_connectable_images) {
-            connectableImage.RulesChanged();
-        }
+        SetObjectVisibility(ObjectVisibility.INVISIBLE);
 
         ((ConnectableImage) m_activity.findViewById(R.id.wheel1_tutorial)).Reset();
         ((ConnectableImage) m_activity.findViewById(R.id.wheel2_tutorial)).Reset();
@@ -197,6 +230,41 @@ public class Tutorial {
         m_input.SetLastToken(PlayerType.PLAYER_0, 4);
         m_input.AddTokenToPlayer(PlayerType.PLAYER_0, 5);
         ShowMessage(R.string.tutorial_fall_in_order_4_5);
+    }
+
+    private void Stage6() {
+        m_stage = STAGE.STAGE6;
+        m_input.ClearAllTokens();
+        m_wheels[0].Reset();
+        m_wheels[1].Reset();
+        m_output.Reset();
+        SetObjectVisibility(ObjectVisibility.ALWAYS_VISIBLE);
+        m_input.SetLastToken(PlayerType.PLAYER_1, 1);
+        m_input.AddTokenToPlayer(PlayerType.PLAYER_1, 1);
+        for (int i = 0; i < m_wheels.length; i++) {
+            m_wheels[i].SetAllowRotation(false);
+        }
+        ShowMessage(R.string.tutorial_opponent_token);
+
+        // This will put the player on top.
+        int angle = SECOND_WHEEL_PLAYER_FIRST_ANGLE - m_wheels[1].GetCurrentAngle();
+        // This will put the opponent hole on top.
+        angle += 180 / SECOND_WHEEL_NUM_HOLES;
+        m_wheels[1].AddRotation(angle);
+    }
+
+    public void Stage7() {
+        m_stage = STAGE.STAGE7;
+        m_wheels[0].AddRotation(720);
+    }
+
+    public void Stage8() {
+        m_stage = STAGE.STAGE8;
+        for (int i = 0; i < m_wheels.length; i++) {
+            m_wheels[i].SetAllowRotation(true);
+        }
+        m_input.SetLastToken(PlayerType.PLAYER_0, 1);
+        m_input.AddTokenToPlayer(PlayerType.PLAYER_0, 1);
     }
 
     public void Show() {
