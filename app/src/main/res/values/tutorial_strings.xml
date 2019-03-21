@@ -3,11 +3,11 @@
 
     <string name="tutorial_rotate_wheel_to_queue">Please rotate the wheel to catch the token from the input tube.</string>
 
-    <string name="tutorial_connect_wheels">Please rotate the wheels to fall the token from the top wheel to the bottom wheel.</string>
+    <string name="tutorial_connect_wheels">Please rotate the wheels to drop the token from the top wheel to the bottom wheel.</string>
 
-    <string name="tutorial_rotate_wheel_to_output">Please rotate the bottom wheel to fall the token to the output tube.</string>
+    <string name="tutorial_rotate_wheel_to_output">Please rotate the bottom wheel to drop the token to the output tube.</string>
 
-    <string name="tutorial_fall_in_order_2_3">Please fall the tokens to the output tube in order. first token 2 and then taken 3.</string>
+    <string name="tutorial_fall_in_order_2_3">Please drop the tokens to the output tube in order. first token 2 and then taken 3.</string>
 
     <string name="tutorial_bad_order_2_3">Notice the order. Token 2 should be before token 3.</string>
 
@@ -15,7 +15,7 @@
 
     <string name="tutorial_bad_order_4_5">Notice the order. Token 4 should be before token 5.</string>
 
-    <string name="tutorial_opponent_token">Green token belongs to opponent. Try not to drop it to output tube</string>
+    <string name="tutorial_opponent_token">Green token belongs to opponent. Try not to drop it to output tube.</string>
 
     <string name="tutorial_opponent_token_fall">You should not help dropping opponent\'s token</string>
 

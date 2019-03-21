@@ -27,6 +27,7 @@
     <string name="confirm_player_0">שחק צהוב-אדום</string>
     <string name="confirm_player_1">שחק ירוק-כחול</string>
     <string name="cancel">ביטול</string>
+    <string name="tutorial">מורה דרך</string>
 
     <string name="game_over">המשחק נגמר</string>
 

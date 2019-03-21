@@ -1,0 +1,12 @@
+<resources>
+    <string name="tutorial_welcome">ברוכים הבאים לנפילה חופשית</string>
+    <string name="tutorial_rotate_wheel_to_queue">סובבו את הגלגל על מנת לתפוס את האסימון מצינור הכניסה</string>
+    <string name="tutorial_connect_wheels">סובבו את הגלגלים על מנת להפיל את האסימון מהגלגל העליון אל הגלגל התחתון</string>
+    <string name="tutorial_rotate_wheel_to_output">סובבו את הגלגל התחתון כדי להפיל את האסימון על צינור היציאה</string>
+    <string name="tutorial_fall_in_order_2_3">הפילו את האסימונים לצינור היציאה. קודם אסימון 2 ואז אסימון 3</string>
+    <string name="tutorial_bad_order_2_3">שימו לב לסדר. אסימון 2 לפני אסימון 3.</string>
+    <string name="tutorial_fall_in_order_4_5">הפילו את האסימונים לצינור היציאה. קודם אסימון 4 ואז אסימון 5</string>
+    <string name="tutorial_bad_order_4_5">שימו לב לסדר. אסימון 4 לפני אסימון 5.</string>
+    <string name="tutorial_opponent_token">האסימון הירוק שייך ליריב. נסו לא להפיל אותו החוצה.</string>
+    <string name="tutorial_opponent_token_fall">" רצוי לא לעזור ליריב להפיל את אסימוניו."</string>
+</resources>
