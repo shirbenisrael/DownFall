@@ -75,6 +75,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         editor.putBoolean(getString(R.string.m_player_selected_wheel), m_player_selected_wheel);
         editor.putInt(getString(R.string.objects_visibility), m_objects_visibility.getInt());
         editor.putInt(getString(R.string.player_type), m_player_type.getInt());
+        editor.putBoolean(getString(R.string.tutorial_ended), m_tutorial.GetStage() == Tutorial.STAGE.STAGE_NONE);
 
         for (int i = 0; i < m_connectable_images.length; i++) {
             m_connectable_images[i].StoreState(editor);
@@ -105,6 +106,12 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 
         for (int i = 0; i < m_connectable_images.length; i++) {
             m_connectable_images[i].RestoreState(sharedPref);
+        }
+
+        boolean tutorial_ended = sharedPref.getBoolean(getString(R.string.tutorial_ended), false);
+        if (!tutorial_ended) {
+            EnableButtons(true); // to allow screen touch.
+            m_tutorial.Show();
         }
     }
 
