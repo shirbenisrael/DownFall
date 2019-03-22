@@ -336,6 +336,7 @@ public class Token extends RotatableImage {
 
                 if (m_is_inflate) {
                     RemoveFromParentView();
+                    m_is_inflate = false;
                 }
             }
         }
