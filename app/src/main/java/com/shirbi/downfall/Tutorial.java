@@ -34,6 +34,7 @@ public class Tutorial {
         STAGE9,
         STAGE10,
         STAGE11,
+        STAGE12,
     }
 
     private STAGE m_stage;
@@ -157,6 +158,14 @@ public class Tutorial {
                     ClearAllTokens();
                     ShowErrorMessage(R.string.tutorial_opponent_token_fall);
                     Stage9();
+                } else {
+                    int token_count = m_input.GetNumTokensInQueue(PlayerType.PLAYER_0);
+                    token_count += m_input.GetNumTokens(PlayerType.PLAYER_0);
+                    token_count += m_wheels[0].GetNumTokens(PlayerType.PLAYER_0);
+                    token_count += m_wheels[1].GetNumTokens(PlayerType.PLAYER_0);
+                    if (token_count == 0) {
+                        Stage12();
+                    }
                 }
                 break;
             default:
@@ -334,6 +343,12 @@ public class Tutorial {
         ShowMessage(R.string.tutorial_4_colors);
     }
 
+    public void Stage12() {
+        m_stage = STAGE.STAGE12;
+        m_wheels[1].AddRotation(360);
+        EndTutorial();
+    }
+
     public void Show() {
         m_activity.findViewById(R.id.main_game_layout).setVisibility(View.INVISIBLE);
         m_activity.findViewById(R.id.tutorial_layout).setVisibility(View.VISIBLE);
@@ -362,6 +377,24 @@ public class Tutorial {
         builder.setMessage(id);
         builder.setNeutralButton(R.string.confirm, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        //builder.setIcon(R.drawable.some_icon); // TODO: Add this
+        builder.show();
+    }
+
+    private void EndTutorial() {
+        AlertDialog.Builder builder;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder = new AlertDialog.Builder(m_activity, android.R.style.Theme_Material_Dialog_Alert);
+        } else {
+            builder = new AlertDialog.Builder(m_activity);
+        }
+
+        builder.setMessage(R.string.tutorial_finished);
+        builder.setNeutralButton(R.string.confirm, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                m_activity.ExitTutorial();
             }
         });
         //builder.setIcon(R.drawable.some_icon); // TODO: Add this

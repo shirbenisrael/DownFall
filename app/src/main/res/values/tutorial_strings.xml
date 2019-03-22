@@ -23,4 +23,9 @@
 
     <string name="tutorial_bad_order_generic">Remember the order? </string>
 
+    <string name="tutorial_finished">Tutorial finished. You are ready to play the real game. \n\n
+        You can always press Help button to see full game instruction or press Tutorial button in the Setting page
+        to start tutorial again.
+    </string>
+
 </resources>

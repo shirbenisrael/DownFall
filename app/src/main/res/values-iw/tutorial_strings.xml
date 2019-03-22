@@ -11,4 +11,7 @@
     <string name="tutorial_opponent_token_fall">" רצוי לא לעזור ליריב להפיל את אסימוניו."</string>
     <string name="tutorial_4_colors">אדום וצהוב: שלכם \n כחול וירוק: של היריב</string>
     <string name="tutorial_bad_order_generic">זוכרים את הסדר?</string>
+    <string name="tutorial_finished">ההדרכה הסתיימה. אתם מוכנים למשחק האמיתי. \n\n
+        תמיד ניתן לחזור לקרוא את החוקים המלאים בלחיצה על כפתור העזרה או להפעיל את מורה הדרך מחדש דרך מסך ההגדרות.
+    </string>
 </resources>

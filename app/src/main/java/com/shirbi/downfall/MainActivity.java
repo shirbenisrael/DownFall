@@ -644,6 +644,13 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         RulesChanged();
     }
 
+    public void ExitTutorial() {
+        m_tutorial.Hide();
+        m_player_type = PlayerType.PLAYER_0;
+        ConfigureTwoPlayersGame(false);
+        StartNewGame();
+    }
+
     public void onBackFromTutorialClick(View view) {
         AlertDialog.Builder builder;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -654,10 +661,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         builder.setTitle(getString(R.string.exit_tutorial));
         builder.setPositiveButton(getString(R.string.confirm), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                m_tutorial.Hide();
-                m_player_type = PlayerType.PLAYER_0;
-                ConfigureTwoPlayersGame(false);
-                StartNewGame();
+                ExitTutorial();
             }
         });
         builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
