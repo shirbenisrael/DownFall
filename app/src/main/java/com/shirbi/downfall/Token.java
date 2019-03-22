@@ -155,7 +155,7 @@ public class Token extends RotatableImage {
         if (oldParent != null) {
             ((ViewGroup)oldParent).removeView(m_number_image);
         }
-        
+
         newParent.addView(this, params);
         newParent.addView(m_number_image, params);
 

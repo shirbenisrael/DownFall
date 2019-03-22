@@ -19,4 +19,8 @@
 
     <string name="tutorial_opponent_token_fall">You should not help dropping opponent\'s token</string>
 
+    <string name="tutorial_4_colors">Red + Yellow: Yours\n Blue + Greens: Opponent\'s</string>
+
+    <string name="tutorial_bad_order_generic">Remember the order? </string>
+
 </resources>

@@ -9,4 +9,6 @@
     <string name="tutorial_bad_order_4_5">שימו לב לסדר. אסימון 4 לפני אסימון 5.</string>
     <string name="tutorial_opponent_token">האסימון הירוק שייך ליריב. נסו לא להפיל אותו החוצה.</string>
     <string name="tutorial_opponent_token_fall">" רצוי לא לעזור ליריב להפיל את אסימוניו."</string>
+    <string name="tutorial_4_colors">אדום וצהוב: שלכם \n כחול וירוק: של היריב</string>
+    <string name="tutorial_bad_order_generic">זוכרים את הסדר?</string>
 </resources>

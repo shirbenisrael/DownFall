@@ -313,5 +313,14 @@ public class Wheel extends ConnectableImage {
     public void DisableTwoDirectionLimitation() {
         m_disable_two_direction_limitation = true;
     }
+
+    public void CreateToken(Token.COLOR color, int number, int base_angle) {
+        for ( Hole hole : m_holes) {
+            if ((hole.GetBaseAngle() % 360 == base_angle) && (hole.GetResident() == null)) {
+                hole.CreateToken(color, number);
+                break;
+            }
+        }
+    }
 }
 

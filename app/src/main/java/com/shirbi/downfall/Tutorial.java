@@ -15,6 +15,8 @@ public class Tutorial {
     Output m_output;
     TextView m_message_text_view;
 
+    static private final int FIRST_WHEEL_PLAYER_ANGLE = 270;
+    static private final int FIRST_WHEEL_OPPONENT_ANGLE = 240;
     static private final int SECOND_WHEEL_PLAYER_FIRST_ANGLE = 45;
     static private final int SECOND_WHEEL_NUM_HOLES = 4;
 
@@ -28,6 +30,9 @@ public class Tutorial {
         STAGE6,
         STAGE7,
         STAGE8,
+        STAGE9,
+        STAGE10,
+        STAGE11,
     }
 
     private STAGE m_stage;
@@ -80,8 +85,8 @@ public class Tutorial {
         m_activity.AddHole(R.id.input_token_queue_tutorial_right, 270, PlayerType.PLAYER_0);
         m_activity.AddHole(R.id.input_token_queue_tutorial_right, 270, PlayerType.PLAYER_1);
 
-        m_activity.AddHole(R.id.wheel1_tutorial, 270, PlayerType.PLAYER_0);
-        m_activity.AddHole(R.id.wheel1_tutorial, 240, PlayerType.PLAYER_1);
+        m_activity.AddHole(R.id.wheel1_tutorial, FIRST_WHEEL_PLAYER_ANGLE, PlayerType.PLAYER_0);
+        m_activity.AddHole(R.id.wheel1_tutorial, FIRST_WHEEL_OPPONENT_ANGLE, PlayerType.PLAYER_1);
 
         m_activity.AddHoles(R.id.wheel2_tutorial, 45, 4);
 
@@ -94,6 +99,12 @@ public class Tutorial {
         }
     }
 
+    private void SetAllowRotation(boolean is_allow) {
+        for (int i = 0; i < m_wheels.length; i++) {
+            m_wheels[i].SetAllowRotation(is_allow);
+        }
+    }
+
     public void WheelFinishedRotating() {
         switch (m_stage) {
             case STAGE6:
@@ -101,6 +112,12 @@ public class Tutorial {
                 break;
             case STAGE7:
                 Stage8();
+                break;
+            case STAGE9:
+                Stage10();
+                break;
+            case STAGE10:
+                Stage11();
                 break;
             default:
                 break;
@@ -122,23 +139,38 @@ public class Tutorial {
                         Stage6();
                     }
                 }
+                break;
             case STAGE8:
                 if (token.GetPlayerType() == PlayerType.PLAYER_1) {
                     ShowErrorMessage(R.string.tutorial_opponent_token_fall);
                     Stage6();
+                } else {
+                    Stage9();
                 }
+                break;
+            case STAGE11:
+                if (token.GetPlayerType() == PlayerType.PLAYER_1) {
+                    ClearAllTokens();
+                    ShowErrorMessage(R.string.tutorial_opponent_token_fall);
+                    Stage9();
+                }
+                break;
             default:
                 break;
         }
     }
 
-    // This will be called when output think that game is end.
-    // It can happen only because of bad order.
-    public void GameEnd() {
+    private void ClearAllTokens() {
         m_input.ClearAllTokens();
         m_wheels[0].Reset();
         m_wheels[1].Reset();
         m_output.Reset();
+    }
+
+    // This will be called when output think that game is end.
+    // It can happen only because of bad order.
+    public void GameEnd() {
+        ClearAllTokens();
 
         switch (m_stage) {
             case STAGE4:
@@ -148,6 +180,10 @@ public class Tutorial {
             case STAGE5:
                 Stage5();
                 ShowErrorMessage(R.string.tutorial_bad_order_4_5);
+                break;
+            case STAGE11:
+                ShowErrorMessage(R.string.tutorial_bad_order_generic);
+                Stage9();
                 break;
             default:
                 break;
@@ -241,9 +277,8 @@ public class Tutorial {
         SetObjectVisibility(ObjectVisibility.ALWAYS_VISIBLE);
         m_input.SetLastToken(PlayerType.PLAYER_1, 1);
         m_input.AddTokenToPlayer(PlayerType.PLAYER_1, 1);
-        for (int i = 0; i < m_wheels.length; i++) {
-            m_wheels[i].SetAllowRotation(false);
-        }
+        SetAllowRotation(false);
+
         ShowMessage(R.string.tutorial_opponent_token);
 
         // This will put the player on top.
@@ -260,11 +295,39 @@ public class Tutorial {
 
     public void Stage8() {
         m_stage = STAGE.STAGE8;
-        for (int i = 0; i < m_wheels.length; i++) {
-            m_wheels[i].SetAllowRotation(true);
-        }
+        SetAllowRotation(true);
         m_input.SetLastToken(PlayerType.PLAYER_0, 1);
         m_input.AddTokenToPlayer(PlayerType.PLAYER_0, 1);
+    }
+
+    public void Stage9() {
+        m_stage = STAGE.STAGE9;
+        SetAllowRotation(false);
+
+        // Rotate back.
+        int angle = - m_wheels[1].GetCurrentAngle() - SECOND_WHEEL_PLAYER_FIRST_ANGLE;
+        // Dump any old token
+        if (m_wheels[1].GetNumTokens(PlayerType.PLAYER_1) != 0) {
+            angle -= 360;
+        }
+        m_wheels[1].AddRotation(angle);
+    }
+
+    public void Stage10() {
+        m_stage = STAGE.STAGE10;
+        int angle = - m_wheels[0].GetCurrentAngle();
+        m_wheels[0].AddRotation(angle);
+    }
+
+    public void Stage11() {
+        m_stage = STAGE.STAGE11;
+        SetAllowRotation(true);
+        m_wheels[1].CreateToken(Token.COLOR.COLOR_1, 1, 0 );
+        m_wheels[1].CreateToken(Token.COLOR.COLOR_2, 1, 90);
+        m_wheels[0].CreateToken(Token.COLOR.COLOR_1, 1, FIRST_WHEEL_PLAYER_ANGLE);
+        m_input.SetLastToken(PlayerType.PLAYER_0, 1);
+        m_input.AddTokenToPlayer(PlayerType.PLAYER_0, 2);
+        ShowMessage(R.string.tutorial_4_colors);
     }
 
     public void Show() {

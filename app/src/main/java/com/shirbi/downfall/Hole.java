@@ -198,22 +198,26 @@ public class Hole extends RotatableImage {
         editor.putInt(key, (int) data);
     }
 
+    public void CreateToken(Token.COLOR color, int number) {
+        Token token = new Token(m_activity);
+        token.SetPlayerType(m_player_type);
+
+        token.SetType(color, number);
+        token.Rotate(0); /* This will scale the token image to the correct size */
+        token.Register();
+
+        SetResident(token);
+        SetAngle(m_current_angle - m_baseAngle); /* Will put the token on the hole */
+    }
+
     public void RestoreState(String prefix, SharedPreferences sharedPref) {
         String key = prefix + "_" + m_baseAngle;
         int data = sharedPref.getInt(key, -1);
 
         if (data != -1) {
-            Token token = new Token(m_activity);
-            token.SetPlayerType(m_player_type);
             Token.COLOR color = Token.COLOR.values()[data % 10];
             int number = data / 10;
-
-            token.SetType(color, number);
-            token.Rotate(0); /* This will scale the token image to the correct size */
-            token.Register();
-
-            SetResident(token);
-            SetAngle(m_current_angle - m_baseAngle); /* Will put the token on the hole */
+            CreateToken(color, number);
         }
     }
 }
