@@ -155,7 +155,7 @@ public class Token extends RotatableImage {
         if (oldParent != null) {
             ((ViewGroup)oldParent).removeView(m_number_image);
         }
-
+        
         newParent.addView(this, params);
         newParent.addView(m_number_image, params);
 
@@ -246,6 +246,12 @@ public class Token extends RotatableImage {
     private Runnable m_timer_tick = new Runnable() {
         public void run() {
             m_count_down--;
+
+            // There is a chance that this task was already queued couple of times to ui thread.
+            // make sure it doesn't go to negative count down.
+            if (m_count_down < 0) {
+                return;
+            }
 
             if (m_count_down == 0) {
                 m_timer.cancel();
