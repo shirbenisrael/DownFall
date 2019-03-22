@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class Tutorial {
@@ -125,6 +126,9 @@ public class Tutorial {
     }
 
     public void TokenExit(Token token) {
+        token.Inflate((RelativeLayout)m_activity.findViewById(R.id.tutorial_wheels_layout),
+                m_base_diameter / 2, m_base_diameter / 2);
+
         switch (m_stage) {
             case STAGE4:
                 if (token.GetNumber() == 3) {
