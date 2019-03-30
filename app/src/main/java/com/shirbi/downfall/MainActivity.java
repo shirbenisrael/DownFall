@@ -53,6 +53,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
     ObjectVisibility m_objects_visibility;
     private PlayerType m_player_type;
     private Tutorial m_tutorial;
+    private PointingFinger m_pointing_finger;
 
     class BLUETOOTH_MESSAGES {
         static final int START_GAME = 0;
@@ -185,9 +186,13 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         boardLayout.removeView(turn_done_button);
         boardLayout.addView(turn_done_button, params);
 
+        m_pointing_finger.PointToObject(turn_done_button, height);
+
         Button turn_done_button_in_help = (Button)findViewById(R.id.finish_turn_button_in_help);
         turn_done_button_in_help.setWidth(width);
         turn_done_button_in_help.setHeight(height);
+
+
     }
 
     private void SetTokenCountersLocation() {
@@ -248,6 +253,8 @@ public class MainActivity extends Activity implements View.OnTouchListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        m_pointing_finger = new PointingFinger(this);
 
         m_two_players_game_runnig = false;
         m_objects_visibility = ObjectVisibility.ALWAYS_VISIBLE;
@@ -382,6 +389,11 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         }
 
         wheel.onTouch(v, event);
+
+        if (m_tutorial.GetStage() == Tutorial.STAGE.STAGE_NONE) {
+            m_pointing_finger.StartCountDown();
+        }
+
         return true;
     }
 
@@ -418,6 +430,7 @@ public class MainActivity extends Activity implements View.OnTouchListener {
     }
 
     public void onFinishTurnButtonClick(View view) {
+        m_pointing_finger.Hide();
         m_player_selected_wheel = false;
         EnableButtons(false);
 
