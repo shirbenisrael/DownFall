@@ -16,7 +16,6 @@ public class Wheel extends ConnectableImage {
     private int m_start_touch_angle; //angle of finger touch with respect to center.
     private int m_previous_angle, m_current_angle; //angles of wheel with respect to its base rotation.
     private int m_turn_rotation, m_max_turn_rotation; // number of degrees in this turn
-    private long m_start_time_milliseconds;
     private Timer m_timer;
     private TimerTask m_timer_task;
     private int m_auto_rotate_angle;
@@ -163,14 +162,11 @@ public class Wheel extends ConnectableImage {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN: {
                 m_start_touch_angle = (int)Math.toDegrees(Math.atan2(x - xc, yc - y));
-                m_start_time_milliseconds = System.currentTimeMillis();
                 break;
             }
             case MotionEvent.ACTION_MOVE: {
                 int new_angle = (int)Math.toDegrees(Math.atan2(x - xc, yc - y));
 
-                long current_time_milliseconds = System.currentTimeMillis();
-                long delta_time_milliseconds = current_time_milliseconds - m_start_time_milliseconds;
                 int rotation_angle = new_angle - m_start_touch_angle;
                 while (rotation_angle < -180) {
                     rotation_angle += 360;
@@ -180,6 +176,10 @@ public class Wheel extends ConnectableImage {
                 }
 
                 if (rotation_angle == 0) {
+                    break;
+                }
+
+                if (Math.abs(rotation_angle) > 90) {
                     break;
                 }
 
@@ -208,20 +208,21 @@ public class Wheel extends ConnectableImage {
 
                 m_turn_rotation += rotation_angle;
 
-                m_start_time_milliseconds = current_time_milliseconds;
-                if (Math.abs(rotation_angle / (delta_time_milliseconds)) < 0.5) {
-                    m_current_angle = (m_previous_angle + rotation_angle);
-                    int round_down = (((int)m_current_angle) / 360) * 360;
-                    m_current_angle -= round_down;
+                int message_rotation = rotation_angle;
 
-                    m_previous_angle = m_current_angle;
-                    m_start_touch_angle = new_angle;
-
+                do {
+                    int small_rotation = rotation_angle;
+                    if (Math.abs(rotation_angle) >= Connection.MAX_DIFF_DEGREE) {
+                        small_rotation = (rotation_angle > 0) ? Connection.MAX_DIFF_DEGREE : -Connection.MAX_DIFF_DEGREE;
+                    }
+                    rotation_angle -= small_rotation;
+                    m_current_angle += small_rotation;
                     Rotate(m_current_angle);
+                } while (rotation_angle != 0);
+                m_previous_angle = m_current_angle;
+                m_start_touch_angle = new_angle;
 
-                    m_activity.SendWheelMoveMessage(m_wheel_num, (int)rotation_angle);
-                }
-
+                m_activity.SendWheelMoveMessage(m_wheel_num, message_rotation);
                 break;
             }
             case MotionEvent.ACTION_UP: {
