@@ -25,6 +25,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.lang.ref.WeakReference;
+import java.util.HashSet;
+import java.util.Set;
 
 import static com.shirbi.downfall.BluetoothChatService.TOAST;
 
@@ -756,6 +758,10 @@ public class MainActivity extends Activity implements View.OnTouchListener {
         return enable_sound_check_box.isChecked();
     }
 
+    // Set of all media players which are currently working. Used to prevent garbage collector from
+    // clean them and stop the sounds.
+    private Set<MediaPlayer> m_media_players = new HashSet<MediaPlayer>();
+
     public void PlaySound(int sound_id) {
         if (!IsSoundEnable()) {
             return;
@@ -763,10 +769,12 @@ public class MainActivity extends Activity implements View.OnTouchListener {
 
         MediaPlayer media_player;
         media_player = MediaPlayer.create(this, sound_id);
+        m_media_players.add(media_player);
         media_player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
                 mp.release();
+                m_media_players.remove(mp);
             }
         });
         media_player.start();
