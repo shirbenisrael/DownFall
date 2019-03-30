@@ -42,12 +42,16 @@ public class Output extends ConnectableImage implements SlideToken {
 
         Boolean game_end = false;
 
+        int sound_id = R.raw.token_exit;
+
         if (m_player_num_tokens_left[player_num] == 0) {
             String string;
             if (token.GetPlayerType() == m_activity.GetPlayerType()) {
                 string = m_activity.getString(R.string.win);
+                sound_id = R.raw.win;
             } else {
                 string = m_activity.getString(R.string.lose);
+                sound_id = R.raw.lose;
             }
             m_activity.EndGame(string);
             game_end = true;
@@ -57,16 +61,16 @@ public class Output extends ConnectableImage implements SlideToken {
             String string;
             if (token.GetPlayerType() == m_activity.GetPlayerType()) {
                 string = m_activity.getString(R.string.lose_order);
+                sound_id = R.raw.lose;
             } else {
                 string = m_activity.getString(R.string.win_order);
+                sound_id = R.raw.win;
             }
             m_activity.EndGame(string);
             game_end = true;
         }
 
-        if(!game_end) {
-            m_activity.PlaySound(R.raw.token_exit);
-        }
+        m_activity.PlaySound(sound_id);
     }
 
     public void Reset() {
